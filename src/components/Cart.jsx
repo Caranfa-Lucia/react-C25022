@@ -26,7 +26,7 @@ const Cart = () => {
               <div>¡El carrito posee {count} {count === 1 ? 'producto' : 'productos'}!</div>
               <div style={emptyChartStyle} onClick={() => handleClearCart()}>
                 Vaciar carrito
-                <i class="la la-cart-arrow-down" style={{ fontSize: '25px' }}></i>
+                <i className="la la-cart-arrow-down" style={{ fontSize: '25px' }}></i>
               </div>
             </div>
             <ul style={productsListStyle}>
@@ -50,7 +50,7 @@ const Cart = () => {
       {isCartPage &&
         <div>
           <Link to="/home" style={{ textDecoration: 'none', color: '#6433a6', fontWeight: 600, marginLeft: '30px', fontSize: '18px' }}>
-            <i class="la la-chevron-left"></i>
+            <i className="la la-chevron-left"></i>
             Seguir comprando
           </Link>
         </div>
@@ -80,7 +80,7 @@ const listStyle = {
   display: "flex",
   justifyContent: "space-between",
   flexDirection: "column",
-  "@media (min-width: 1200px)": {
+  "@media (minWidth: 1200px)": {
     flexDirection: "row",
     justifyContent: "center",
   }
@@ -93,7 +93,7 @@ const cartPageListStyle = {
   justifyContent: "space-between",
   flexDirection: "column",
   minHeight: "70vh",
-  "@media (min-width: 1200px)": {
+  "@media (minWidth: 1200px)": {
     flexDirection: "row",
     justifyContent: "center",
   }
@@ -102,7 +102,7 @@ const cartPageListStyle = {
 const listContainerStyle = {
   width: "100%",
   marginRight: 40,
-  "@media (min-width: 1200px)": {
+  "@media (minWidth: 1200px)": {
     width: "80%",
     margin: "0 auto",
   }
@@ -155,7 +155,7 @@ const productItemStyle = {
   justifyContent: "space-between",
   marginBottom: "10px",
   width: "100%",
-  "@media (min-width: 1200px)": {
+  "@media (minWidth: 1200px)": {
     width: "80%",
     margin: "0 auto",
     justifyContent: "center",
@@ -168,7 +168,7 @@ const cartPageProductItemStyle = {
   justifyContent: "space-around",
   padding: "0px 250px 10px 250px",
   width: "100%",
-  "@media (min-width: 1200px)": {
+  "@media (minWidth: 1200px)": {
     width: "80%",
     margin: "0 auto",
     justifyContent: "center",

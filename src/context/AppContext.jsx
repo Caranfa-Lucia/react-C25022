@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useFetchProducts } from '../hooks/useFetchProducts';
-import { users } from '../assets/users';
 
 const AppContext = createContext();
 
@@ -12,16 +11,21 @@ export const AppProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [showBlockedModal, setShowBlockedModal] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [showBlockedAdminModal, setShowBlockedAdminModal] = useState(false);
 
   const { productos, cargando, error } = useFetchProducts();
 
-    useEffect(() => {
+  useEffect(() => {
     const storedLogin = localStorage.getItem('isLoggedIn');
     if (storedLogin === 'true') setIsLoggedIn(true);
 
-const storedGroupedProducts = localStorage.getItem('groupedProducts');
-if (storedGroupedProducts) {
-  const parsed = JSON.parse(storedGroupedProducts);
+    const storedAdminLogin = localStorage.getItem('isAdminLoggedIn');
+    if (storedAdminLogin === 'true') setIsAdminLoggedIn(true);
+
+    const storedGroupedProducts = localStorage.getItem('groupedProducts');
+    if (storedGroupedProducts) {
+      const parsed = JSON.parse(storedGroupedProducts);
       const reconstructed = parsed.flatMap(p =>
         Array(p.quantity).fill({ id: p.id, name: p.name, price: p.price })
       );
@@ -57,17 +61,16 @@ if (storedGroupedProducts) {
   const groupedProducts = Object.values(productMap);
 
   useEffect(() => {
-  if (groupedProducts.length > 0) {
-    localStorage.setItem('groupedProducts', JSON.stringify(groupedProducts));
-  } else {
-    localStorage.removeItem('groupedProducts');
-  }
-}, [groupedProducts]);
+    if (groupedProducts.length > 0) {
+      localStorage.setItem('groupedProducts', JSON.stringify(groupedProducts));
+    } else {
+      localStorage.removeItem('groupedProducts');
+    }
+  }, [groupedProducts]);
 
   return (
     <AppContext.Provider
       value={{
-        users,
         productos,
         cargando,
         error,
@@ -86,7 +89,11 @@ if (storedGroupedProducts) {
         authLoading,
         handleCount,
         groupedProducts,
-        handleClearCart
+        handleClearCart,
+        isAdminLoggedIn,
+        setIsAdminLoggedIn,
+        showBlockedAdminModal,
+        setShowBlockedAdminModal
       }}
     >
       {children}
