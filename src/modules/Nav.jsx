@@ -37,12 +37,17 @@ function Nav() {
     }
   };
 
+  const getLinkStyle = (path) => ({
+  ...navbarListItem,
+  fontSize: location.pathname === path ? "32px" : "16px",
+});
+
   return (
     <nav style={navbarStyle}>
       <ul style={navbarList}>
-        <li><Link to="/home" style={navbarListItem}> Inicio</Link></li>
-        <li><Link to="/aboutUs" style={navbarListItem}>Acerca de</Link></li>
-        <li><Link to="/contactUs" style={navbarListItem}>Contacto</Link></li>
+        <li><Link to="/home" style={getLinkStyle("/home")}> Inicio</Link></li>
+        <li><Link to="/aboutUs" style={getLinkStyle("/aboutUs")}>Acerca de</Link></li>
+        <li><Link to="/contactUs" style={getLinkStyle("/contactUs")}>Contacto</Link></li>
         <li style={navbarListItem} >
           <div onClick={() => {
             if (isLoggedIn) {
