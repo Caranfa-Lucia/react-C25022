@@ -3,17 +3,16 @@ function Footer() {
 
   return (
     <footer style={footerStyle}>
-      <p>&copy; 2024 - Mi Aplicación React</p>
+      <p>&copy; 2025 - Mi Aplicación React - Caranfa Lucía, comisión 25022</p>
     </footer>
   );
 }
 
 const footerStyle = {
   backgroundColor: "#f1f1f1",
-  padding: "10px",
+  padding: "50px 10px",
   textAlign: "center",
   color: "#000",
-  marginTop: "20px"
 };
 
 export default Footer;  

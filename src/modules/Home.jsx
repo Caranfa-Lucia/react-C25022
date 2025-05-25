@@ -1,34 +1,33 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { useAppContext } from '../context/AppContext';
 import Gallery from './Gallery';
 import Cart from '../components/Cart';
 
 function Home() {
-
-   const {
+  const {
     productos,
     cargando,
     error,
-    count,
     setCount,
     setProductList,
     openCart,
     setOpenCart,
     handleCount,
-    groupedProducts,
   } = useAppContext();
+
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
 
   useEffect(() => {
     setOpenCart(false);
-  }, []);
 
-  const cartContainerStyle = {
-    width: openCart ? "40%" : "0%",
-    transition: "width 0.8s ease",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-  };
-  
+    const handleResize = () => {
+      setIsTablet(window.innerWidth <= 900);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const galleryProps = {
     setCount,
@@ -37,38 +36,53 @@ function Home() {
     cargando,
     error,
     handleCount
-  }
-
-  const cartProps = {
-    count,
-    groupedProducts,
-    setProductList,
-    setCount
-  }
+  };
 
   return (
-    <main>
-      <div style={mainContainerStyle}>
-        <div style={{ width: openCart ? "60%" : "95%" }}>
-          <Gallery {...galleryProps} />
-        </div>
-        {openCart &&
-          <div style={cartContainerStyle}>
-            <Cart {...cartProps} />
-          </div>
-        }
-      </div>
-    </main>
+<main>
+  <MainContainer>
+    {!(openCart && isTablet) && (
+      <GalleryWrapper openCart={openCart} isTablet={isTablet}>
+        <Gallery {...galleryProps} />
+      </GalleryWrapper>
+    )}
+
+    {openCart && (
+      <CartWrapper openCart={openCart} isTablet={isTablet}>
+        <Cart />
+      </CartWrapper>
+    )}
+  </MainContainer>
+</main>
   );
-}
 
-const mainContainerStyle = {
-  display: "flex",
-  flexDirection: "row",
-  wrap: "wrap",
-  justifyContent: "space-between",
-  padding: "40px",
-  backgroundColor: "#ededed" 
 }
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 40px;
+  background-color: #ededed;
 
-export default Home;  
+  @media (max-width: 1145px) {
+    justify-content: center;
+  }
+`;
+
+const GalleryWrapper = styled.div`
+  width: ${({ openCart, isTablet }) => {
+    if (openCart) return isTablet ? '10%' : '60%';
+    return '95%';
+  }};
+  transition: width 0.8s ease;
+`;
+
+const CartWrapper = styled.div`
+  width: ${({ openCart, isTablet }) => (openCart ? (isTablet ? '90%' : '40%') : '0%')};
+  transition: width 0.8s ease;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+export default Home;
