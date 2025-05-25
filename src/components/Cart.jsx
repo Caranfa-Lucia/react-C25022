@@ -120,8 +120,6 @@ const Cart = () => {
 
 export default Cart;
 
-// 🧩 ESTILOS
-
 const CartPageWrapper = styled.div`
   padding: 50px;
   display: flex;
