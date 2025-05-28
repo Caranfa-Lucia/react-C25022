@@ -21,7 +21,8 @@ const Cart = () => {
   const {
     count,
     groupedProducts,
-    handleClearCart
+    handleClearCart,
+    handleRemoveItem
   } = useAppContext();
 
   return (
@@ -31,7 +32,7 @@ const Cart = () => {
           <EmptyProductList>¡El carrito está vacío!</EmptyProductList>
           {isCartPage && (
             <ContinueShoppingWrapper>
-              <Link to="/home" style={{paddingBottom: "50px"}}>
+              <Link to="/home" style={{ paddingBottom: "50px" }}>
                 <i className="la la-chevron-left"></i> Ir al inicio
               </Link>
             </ContinueShoppingWrapper>
@@ -54,8 +55,15 @@ const Cart = () => {
                   <ul style={productsListStyle}>
                     {groupedProducts.map((product) => (
                       <StyledProductItem key={`Producto-${product.id}`} isCartPage={isCartPage}>
-                        <div>{product.quantity} - {product.name}</div>
-                        <div>${product.price * product.quantity}</div>
+                        <div style={{ gridArea: 'name' }}>
+                          {product.quantity} - {product.name}
+                        </div>
+                        <div style={{ gridArea: 'price' }}>
+                          ${product.price * product.quantity}
+                        </div>
+                        <DeleteButton style={{ gridArea: 'delete', justifySelf: 'end' }} onClick={() => handleRemoveItem(product.id)}>
+                          <i className="la la-trash" style={{ marginLeft: '8px', fontSize: '20px' }}></i>
+                        </DeleteButton>
                       </StyledProductItem>
                     ))}
                   </ul>
@@ -89,8 +97,15 @@ const Cart = () => {
                 <ul style={productsListStyle}>
                   {groupedProducts.map((product) => (
                     <StyledProductItem key={`Producto-${product.id}`} isCartPage={isCartPage}>
-                      <div>{product.quantity} - {product.name}</div>
-                      <div>${product.price * product.quantity}</div>
+                      <div style={{ gridArea: 'name' }}>
+                        {product.quantity} - {product.name}
+                      </div>
+                      <div style={{ gridArea: 'price', justifySelf: 'end', marginRight: '25px' }}>
+                        ${product.price * product.quantity}
+                      </div>
+                      <DeleteButton style={{ gridArea: 'delete', justifySelf: 'end', marginRight: '25px' }} onClick={() => handleRemoveItem(product.id)}>
+                        <i className="la la-trash" style={{ marginLeft: '8px', fontSize: '20px' }}></i>
+                      </DeleteButton>
                     </StyledProductItem>
                   ))}
                 </ul>
@@ -136,6 +151,7 @@ const StyledCartContainer = styled.div`
   min-height: 70vh;
   width: 100%;
   max-width: 800px;
+  overflow: visible;
 
   @media (min-width: 768px) {
     flex-direction: ${(props) => (props.isCartPage ? "column" : "column")};
@@ -143,6 +159,7 @@ const StyledCartContainer = styled.div`
 `;
 
 const SlideContainer = styled.div`
+overflow: visible;
   animation: ${slideInRight} 0.5s ease forwards;
 `;
 
@@ -230,16 +247,23 @@ const ContinueShoppingWrapper = styled.div`
 
 const StyledProductItem = styled.li`
   display: grid;
+  grid-template-areas:
+    "name price"
+    "delete delete";
   grid-template-columns: 1fr auto;
-  gap: 10px;
+  gap: 5px;
   padding: 10px 0;
   margin: ${(props) => (props.isCartPage ? "0 10px" : "0 20px")};
   width: 100%;
   border-bottom: 1px solid #ddd;
   font-size: 15px;
+  align-items: center;
 
   @media (max-width: 768px) {
     padding: 10px;
+    grid-template-areas:
+      "name price"
+      "delete delete";
     grid-template-columns: 1fr auto;
   }
 `;
@@ -266,7 +290,7 @@ const EmptyProductList = styled.div`
 `;
 
 const ListContainer = styled.div`
-  width:   ${(props) => (props.isCartPage ? " 600px" : "100%")};
+  width:   ${(props) => (props.isCartPage ? "600px" : "100%")};
   min-width: 80%;
   margin-right: 40px;
     @media (max-width: 768px) {
@@ -298,4 +322,20 @@ const PayButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  color: #b83333;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: 14px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    color: #ff0000;
+  }
 `;

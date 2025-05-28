@@ -39,9 +39,9 @@ function Nav() {
   };
 
   const getLinkStyle = (path) => ({
-  ...navbarListItem,
-  fontSize: location.pathname === path ? "32px" : "16px",
-});
+    ...navbarListItem,
+    fontSize: location.pathname === path ? "32px" : "16px",
+  });
 
   return (
     <nav style={navbarStyle}>
@@ -62,7 +62,15 @@ function Nav() {
             }
           }}>
             {isLoggedIn || isAdminLoggedIn ? "Cerrar sesión" : "Iniciar sesión"}
-          </div></li>
+          </div>
+        </li>
+        {isAdminLoggedIn &&
+          <li>
+            <Link to="/admin" style={getLinkStyle("/admin")}>
+              <i className="las la-user-secret" style={{ fontSize: "48px" }}></i>
+            </Link>
+          </li>
+        }
         <li>
           <div style={{
             display: "flex",

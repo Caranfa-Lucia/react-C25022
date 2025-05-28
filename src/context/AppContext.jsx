@@ -42,6 +42,13 @@ export const AppProvider = ({ children }) => {
     setProductList(prev => [...prev, newProduct]);
   };
 
+const handleRemoveItem = (productId) => {
+  setProductList((prevList) => {
+    const updatedList = prevList.filter(product => product.id !== productId);
+    setCount(updatedList.length);
+    return updatedList;
+  });
+};
   const handleClearCart = () => {
     setProductList([]);
     setCount(0);
@@ -89,6 +96,7 @@ export const AppProvider = ({ children }) => {
         authLoading,
         handleCount,
         groupedProducts,
+        handleRemoveItem,
         handleClearCart,
         isAdminLoggedIn,
         setIsAdminLoggedIn,
