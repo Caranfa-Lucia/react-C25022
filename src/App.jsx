@@ -11,6 +11,7 @@ import Admin from './modules/Admin';
 import NotFound from './modules/NotFound';
 import BlockedSectionModal from './components/BlockedSectionModal';
 import ProtectedRoutes from './routes/ProtectedRoutes';
+import AdminRoute from './routes/AdminRoutes';
 import './styles/App.css';
 
 function App() {
@@ -25,9 +26,9 @@ function App() {
 
   const AdminComponent = () => {
     return (
-      <ProtectedRoutes>
+      <AdminRoute>
         <Admin />
-      </ProtectedRoutes>
+      </AdminRoute>
       )
   };
 

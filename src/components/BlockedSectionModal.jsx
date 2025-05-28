@@ -4,24 +4,47 @@ import stop from '../images/stop.png';
 
 const BlockedSectionModal = () => {
 
- const {
+  const {
     isLoggedIn,
     showBlockedModal,
+    isAdminLoggedIn,
+    showBlockedAdminModal,
     setShowBlockedModal,
+    setShowBlockedAdminModal
   } = useAppContext();
 
-        const handleClose = () => {
+  const blockedModalText = "Por favor, inicie sesión como cliente para ingresar a la sección del carrito y realizar el pago.";
+  const blockedAdminModalText = "Por favor, inicie sesion como administrador para ingresar al panel de administracion.";
+
+  const handleClose = () => {
     setShowBlockedModal(false);
+    setShowBlockedAdminModal(false);
   };
 
   return (
     <div>
-{!isLoggedIn && showBlockedModal && (
+      {!isLoggedIn && showBlockedModal && (
         <div style={modalOverlayStyle}>
           <div style={modalStyle}>
             <img src={stop} alt="Stop" width="100px" height="100px" />
             <div style={modalText}>
-              <p>Para ingresar a la página del carrito y abonar tus productos, o para ingresar a la sección administrativa, debes iniciar sesión.</p>
+              <p>{blockedModalText}</p>
+            </div>
+            <button
+              style={buttonStyle}
+              onClick={handleClose}
+            >
+              Continuar
+            </button>
+          </div>
+        </div>
+      )}
+      {!isAdminLoggedIn && showBlockedAdminModal && (
+        <div style={modalOverlayStyle}>
+          <div style={modalStyle}>
+            <img src={stop} alt="Stop" width="100px" height="100px" />
+            <div style={modalText}>
+              <p>{blockedAdminModalText}</p>
             </div>
             <button
               style={buttonStyle}
@@ -55,7 +78,7 @@ const modalStyle = {
   borderRadius: '8px',
   textAlign: 'center',
   width: '320px',
-  height: '350px'
+  height: '310px'
 };
 
 const modalText = {

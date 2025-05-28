@@ -10,16 +10,17 @@ function Nav() {
   const navigate = useNavigate();
   const isNotHomePage = location.pathname !== "/home";
 
-   const {
-      users,
-      count,
-      openCart,
-      setOpenCart,
-      isLoggedIn,
-      setIsLoggedIn,
-      showModal,
-      setShowModal,
-    } = useAppContext();
+  const {
+    count,
+    openCart,
+    setOpenCart,
+    isLoggedIn,
+    setIsLoggedIn,
+    showModal,
+    setShowModal,
+    isAdminLoggedIn,
+    setIsAdminLoggedIn
+  } = useAppContext();
 
   const arrowStyle = {
     cursor: "pointer",
@@ -53,11 +54,14 @@ function Nav() {
             if (isLoggedIn) {
               setIsLoggedIn(false);
               localStorage.removeItem('isLoggedIn');
+            } else if (isAdminLoggedIn) {
+              setIsAdminLoggedIn(false);
+              localStorage.removeItem('isAdminLoggedIn');
             } else {
               setShowModal(true);
             }
           }}>
-            {isLoggedIn ? "Cerrar sesión" : "Iniciar sesión"}
+            {isLoggedIn || isAdminLoggedIn ? "Cerrar sesión" : "Iniciar sesión"}
           </div></li>
         <li>
           <div style={{
@@ -94,15 +98,16 @@ function Nav() {
           </div>
         </li>
       </ul>
-            {showModal && (
-              <LoginModal
-                isLoggedIn={isLoggedIn}
-                setIsLoggedIn={setIsLoggedIn}
-                showModal={showModal}
-                setShowModal={setShowModal}
-                users={users}
-              />
-            )}
+      {showModal && (
+        <LoginModal
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          isAdminLoggedIn={isAdminLoggedIn}
+          setIsAdminLoggedIn={setIsAdminLoggedIn}
+        />
+      )}
     </nav>
   );
 }
