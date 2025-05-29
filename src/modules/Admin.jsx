@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import FormularioProducto from "../components/ProductForm";
+import ProductForm from "../components/ProductForm";
+import EditProductForm from "../components/EditProductForm";
 
 const API_URL = 'https://68081fa0942707d722dd5b68.mockapi.io/products/products';
 
 const Admin = () => {
-    const [productos, setProductos] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
     const [error, setError] = useState(false);
+    const [isEdition, setIsEdition] = useState(false);
+    const [selectedProduct, setselectedProduct] = useState(null);
 
     useEffect(() => {
         fetch(API_URL)
             .then((response) => response.json())
             .then((data) => {
                 setTimeout(() => {
-                    setProductos(data);
+                    setProducts(data);
                     setLoading(false);
                 }, 2000);
             })
@@ -26,7 +29,7 @@ const Admin = () => {
             });
     }, []);
 
-    const agregarProducto = async (producto) => {
+    const addProduct = async (producto) => {
         try {
             const respuesta = await fetch(API_URL, {
                 method: 'POST',
@@ -41,11 +44,55 @@ const Admin = () => {
             }
 
             const data = await respuesta.json();
-            setProductos((prevProductos) => [...prevProductos, data]);
+            setProducts((prevProducts) => [...prevProducts, data]);
             alert('Producto agregado correctamente');
             setOpen(false);
         } catch (error) {
             console.log(error.message);
+        }
+    };
+
+    const deleteProduct = async (id) => {
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                throw new Error('Error al eliminar producto');
+            }
+            alert('Producto eliminado correctamente');
+            setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+        } catch (error) {
+            console.error("error");
+        }
+    };
+
+    const saveEditedProduct = async (product) => {
+        try {
+            const response = await fetch(`${API_URL}/${product.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(product)
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al editar producto');
+            }
+
+            const updatedProduct = await response.json();
+
+            alert('Producto editado correctamente');
+
+            setProducts((prevProducts) =>
+                prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+            );
+
+            setIsEdition(false);
+            setselectedProduct(null);
+        } catch (error) {
+            console.error("error", error);
         }
     };
 
@@ -59,24 +106,26 @@ const Admin = () => {
                     {error && <ErrorMessage>Hubo un error al cargar los productos.</ErrorMessage>}
 
                     <ProductGrid>
-                        {productos.map((product) => (
+                        {products.map((product) => (
                             <ProductCard key={`${product.id}-${product.name}`}>
                                 <ProductImage src={product.image} alt={product.name} />
                                 <ProductName>{product.name}</ProductName>
                                 <ProductPrice>${product.price}</ProductPrice>
                                 <ButtonGroup>
-                                    <EditButton>Editar</EditButton>
-                                    <DeleteButton>Eliminar</DeleteButton>
+                                    <EditButton onClick={() => {
+                                        setselectedProduct(product);
+                                        setIsEdition(true);
+                                    }}>Editar</EditButton>
+                                    <DeleteButton onClick={() => deleteProduct(product.id)}>Eliminar</DeleteButton>
                                 </ButtonGroup>
                             </ProductCard>
                         ))}
                     </ProductGrid>
                 </>
             )}
-
             <AddButton onClick={() => setOpen(true)}>Agregar producto nuevo</AddButton>
-
-            {open && <FormularioProducto onAgregar={agregarProducto} />}
+            {open && <ProductForm onAdding={addProduct} onClose={() => setOpen(false)} />}
+            {isEdition && selectedProduct && <EditProductForm selectedProduct={selectedProduct} onEditing={saveEditedProduct} />}
         </Container>
     );
 };

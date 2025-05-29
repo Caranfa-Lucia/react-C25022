@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 
-function ProductToAddForm({ 
-    onAdding,
-    onClose
+function EditProductForm({ 
+    onEditing,
+    selectedProduct
  }) {
-    const [productToAdd, setProductToAdd] = useState({
+    const [productToEdit, setProductToEdit] = useState({
+        id: '',
         name: '',
         price: '',
         description: '',
@@ -14,23 +15,29 @@ function ProductToAddForm({
 
     const [errors, setErrors] = useState({});
 
+    useEffect(() => {
+        if (selectedProduct) {
+            setProductToEdit(selectedProduct);
+        }
+    }, [selectedProduct]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setProductToAdd({ ...productToAdd, [name]: value });
+        setProductToEdit({ ...productToEdit, [name]: value });
     };
 
     const validarFormulario = () => {
         const newErrors = {};
-        if (!productToAdd.name.trim()) {
+        if (!productToEdit.name.trim()) {
             newErrors.name = 'El nombre es obligatorio.';
         }
-        if (!productToAdd.price || productToAdd.price <= 0) {
+        if (!productToEdit.price || productToEdit.price <= 0) {
             newErrors.price = 'El precio debe ser mayor a 0.';
         }
-        if (!productToAdd.description.trim() || productToAddo.description.length < 10) {
+        if (!productToEdit.description.trim() || productToEdit.description.length < 10) {
             newErrors.description = 'La descripción debe tener al menos 10 caracteres.';
         }
-        if (!productToAdd.image.trim()) {
+        if (!productToEdit.image.trim()) {
             newErrors.image = 'La imagen es obligatoria.';
         }
         setErrors(newErrors);
@@ -41,43 +48,39 @@ function ProductToAddForm({
         e.preventDefault();
         if (!validarFormulario()) return;
 
-        onAdding(productToAdd);
-        setProductToAdd({ name: '', price: '', description: '', image: '' });
+        onEditing(productToEdit);
+        setProductToEdit({ name: '', price: '', description: '', image: '' });
     };
 
     return (
         <FormContainer onSubmit={handleSubmit}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <FormTitle>Agregar Producto</FormTitle>
-                <div onClick={() => onClose()} style={{ cursor: "pointer", fontSize: "20px" }}>
-                    X
-                </div>
-            </div>
+            <FormTitle>Editar Producto</FormTitle>
+
             <FormGroup>
                 <Label>Nombre:</Label>
-                <Input type="text" name="name" value={productToAdd.name} onChange={handleChange} />
+                <Input type="text" name="name" value={productToEdit.name} onChange={handleChange} />
                 {errors.name && <ErrorText>{errors.name}</ErrorText>}
             </FormGroup>
 
             <FormGroup>
                 <Label>Precio:</Label>
-                <Input type="number" name="price" value={productToAdd.price} onChange={handleChange} min="0" />
+                <Input type="number" name="price" value={productToEdit.price} onChange={handleChange} min="0" />
                 {errors.price && <ErrorText>{errors.price}</ErrorText>}
             </FormGroup>
 
             <FormGroup>
                 <Label>Descripción:</Label>
-                <TextArea name="description" value={productToAdd.description} onChange={handleChange} />
+                <TextArea name="description" value={productToEdit.description} onChange={handleChange} />
                 {errors.description && <ErrorText>{errors.description}</ErrorText>}
             </FormGroup>
 
             <FormGroup>
                 <Label>Imagen (URL):</Label>
-                <Input type="text" name="image" value={productToAdd.image} onChange={handleChange} />
+                <Input type="text" name="image" value={productToEdit.image} onChange={handleChange} />
                 {errors.image && <ErrorText>{errors.image}</ErrorText>}
             </FormGroup>
 
-            <SubmitButton type="submit">Agregar Producto</SubmitButton>
+            <SubmitButton type="submit" >Actualizar</SubmitButton>
         </FormContainer>
     );
 }
@@ -146,4 +149,4 @@ const SubmitButton = styled.button`
     }
 `;
 
-export default ProductToAddForm;
+export default EditProductForm;
