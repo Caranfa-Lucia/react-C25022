@@ -1,10 +1,13 @@
+/* COMPONENTE DEPRECADO DESPUÉS DE LA CLASE 12
+
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 
-function EditProductForm({ 
+function EditProductForm({
     onEditing,
-    selectedProduct
- }) {
+    selectedProduct,
+    onClose
+}) {
     const [productToEdit, setProductToEdit] = useState({
         id: '',
         name: '',
@@ -54,8 +57,12 @@ function EditProductForm({
 
     return (
         <FormContainer onSubmit={handleSubmit}>
-            <FormTitle>Editar Producto</FormTitle>
-
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <FormTitle>Editar Producto</FormTitle>
+                <div onClick={() => onClose()} style={{ cursor: "pointer", fontSize: "20px" }}>
+                    X
+                </div>
+            </div>
             <FormGroup>
                 <Label>Nombre:</Label>
                 <Input type="text" name="name" value={productToEdit.name} onChange={handleChange} />
@@ -149,4 +156,4 @@ const SubmitButton = styled.button`
     }
 `;
 
-export default EditProductForm;
+export default EditProductForm; */

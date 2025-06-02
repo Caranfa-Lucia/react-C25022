@@ -1,100 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import { AdminContext } from '../context/AdminContext';
 import styled from "styled-components";
 import ProductForm from "../components/ProductForm";
-import EditProductForm from "../components/EditProductForm";
-
-const API_URL = 'https://68081fa0942707d722dd5b68.mockapi.io/products/products';
 
 const Admin = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [open, setOpen] = useState(false);
-    const [error, setError] = useState(false);
-    const [isEdition, setIsEdition] = useState(false);
+
+    const { products, loading, error, addProduct, deleteProduct, saveEditedProduct, isEdition, setIsEdition, open, setOpen } = useContext(AdminContext);
     const [selectedProduct, setselectedProduct] = useState(null);
-
-    useEffect(() => {
-        fetch(API_URL)
-            .then((response) => response.json())
-            .then((data) => {
-                setTimeout(() => {
-                    setProducts(data);
-                    setLoading(false);
-                }, 2000);
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-                setError(true);
-                setLoading(false);
-            });
-    }, []);
-
-    const addProduct = async (producto) => {
-        try {
-            const respuesta = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(producto)
-            });
-
-            if (!respuesta.ok) {
-                throw new Error('Error al agregar producto');
-            }
-
-            const data = await respuesta.json();
-            setProducts((prevProducts) => [...prevProducts, data]);
-            alert('Producto agregado correctamente');
-            setOpen(false);
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
-
-    const deleteProduct = async (id) => {
-        try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                throw new Error('Error al eliminar producto');
-            }
-            alert('Producto eliminado correctamente');
-            setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
-        } catch (error) {
-            console.error("error");
-        }
-    };
-
-    const saveEditedProduct = async (product) => {
-        try {
-            const response = await fetch(`${API_URL}/${product.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(product)
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al editar producto');
-            }
-
-            const updatedProduct = await response.json();
-
-            alert('Producto editado correctamente');
-
-            setProducts((prevProducts) =>
-                prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-            );
-
-            setIsEdition(false);
-            setselectedProduct(null);
-        } catch (error) {
-            console.error("error", error);
-        }
-    };
 
     return (
         <Container>
@@ -114,7 +26,7 @@ const Admin = () => {
                                 <ButtonGroup>
                                     <EditButton onClick={() => {
                                         setselectedProduct(product);
-                                        setIsEdition(true);
+                                        setOpen(true);
                                     }}>Editar</EditButton>
                                     <DeleteButton onClick={() => deleteProduct(product.id)}>Eliminar</DeleteButton>
                                 </ButtonGroup>
@@ -123,9 +35,29 @@ const Admin = () => {
                     </ProductGrid>
                 </>
             )}
-            <AddButton onClick={() => setOpen(true)}>Agregar producto nuevo</AddButton>
-            {open && <ProductForm onAdding={addProduct} onClose={() => setOpen(false)} />}
-            {isEdition && selectedProduct && <EditProductForm selectedProduct={selectedProduct} onEditing={saveEditedProduct} />}
+            <AddButton onClick={() => {
+                setselectedProduct(null);
+                setOpen(true);
+            }}>
+                Agregar producto nuevo
+            </AddButton>
+            {open &&
+                <ProductForm
+                    selectedProduct={selectedProduct}
+                    onSubmit={(data) => {
+                        if (data.id) {
+                            saveEditedProduct(data);
+                        } else {
+                            addProduct(data);
+                        }
+                        setselectedProduct(null);
+                    }}
+                    onClose={() => {
+                        setselectedProduct(null);
+                        setOpen(false);
+                    }}
+                />
+            }
         </Container>
     );
 };
