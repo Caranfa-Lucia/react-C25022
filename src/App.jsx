@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { AdminProvider } from './context/AdminContext';
 import Header from './modules/Header';
 import Nav from './modules/Nav';
 import Home from './modules/Home';
@@ -21,15 +22,17 @@ function App() {
       <ProtectedRoutes>
         <Cart />
       </ProtectedRoutes>
-      )
+    )
   };
 
   const AdminComponent = () => {
     return (
-      <AdminRoute>
-        <Admin />
-      </AdminRoute>
-      )
+      <AdminProvider>
+        <AdminRoute>
+          <Admin />
+        </AdminRoute>
+      </AdminProvider>
+    )
   };
 
   return (
@@ -42,8 +45,8 @@ function App() {
         <Route path="/aboutUs" element={<AboutUs />} />
         <Route path="/contactUs" element={<ContactUs />} />
         <Route path="/productDetail/:id" element={<ProductDetailSection />} />
-        <Route path="/cart" element={<CartComponent/>}/>
-        <Route path="/admin" element={<AdminComponent />}/>
+        <Route path="/cart" element={<CartComponent />} />
+        <Route path="/admin" element={<AdminComponent />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BlockedSectionModal />
