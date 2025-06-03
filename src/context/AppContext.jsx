@@ -14,7 +14,17 @@ export const AppProvider = ({ children }) => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [showBlockedAdminModal, setShowBlockedAdminModal] = useState(false);
 
-  const { productos, cargando, error } = useFetchProducts();
+  const {
+    productos,
+    loading,
+    error,
+    setProductos,
+    obtenerProductos
+  } = useFetchProducts();
+
+  useEffect(() => {
+    obtenerProductos();
+  }, [obtenerProductos]);
 
   useEffect(() => {
     const storedLogin = localStorage.getItem('isLoggedIn');
@@ -42,13 +52,14 @@ export const AppProvider = ({ children }) => {
     setProductList(prev => [...prev, newProduct]);
   };
 
-const handleRemoveItem = (productId) => {
-  setProductList((prevList) => {
-    const updatedList = prevList.filter(product => product.id !== productId);
-    setCount(updatedList.length);
-    return updatedList;
-  });
-};
+  const handleRemoveItem = (productId) => {
+    setProductList((prevList) => {
+      const updatedList = prevList.filter(product => product.id !== productId);
+      setCount(updatedList.length);
+      return updatedList;
+    });
+  };
+
   const handleClearCart = () => {
     setProductList([]);
     setCount(0);
@@ -79,7 +90,8 @@ const handleRemoveItem = (productId) => {
     <AppContext.Provider
       value={{
         productos,
-        cargando,
+        setProductos,
+        loading,
         error,
         count,
         setCount,
@@ -101,7 +113,8 @@ const handleRemoveItem = (productId) => {
         isAdminLoggedIn,
         setIsAdminLoggedIn,
         showBlockedAdminModal,
-        setShowBlockedAdminModal
+        setShowBlockedAdminModal,
+        obtenerProductos,
       }}
     >
       {children}

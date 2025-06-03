@@ -1,8 +1,13 @@
 import React from 'react'
+import { Helmet } from "react-helmet-async";
 
 const AboutUs = () => {
     return (
         <div style={{ textAlign: "center", minHeight: "70vh", marginTop: "50px" }}>
+            <Helmet>
+                <title>Sobre nosotros!</title>
+                <meta name="description" content="Descripción de la sección." />
+            </Helmet>
             <h1>Título de la sección</h1>
             <div style={{ width: "80%", textAlign: "center", margin: "30px auto" }}>
                 <p style={{ textAlign: "justify", marginBottom: "20px" }}>

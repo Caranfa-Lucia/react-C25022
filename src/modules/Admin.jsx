@@ -1,15 +1,21 @@
 import React, { useState, useContext } from "react";
 import { AdminContext } from '../context/AdminContext';
+import { useAppContext } from '../context/AppContext';
 import styled from "styled-components";
 import ProductForm from "../components/ProductForm";
+import { Helmet } from "react-helmet-async";
 
 const Admin = () => {
-
-    const { products, loading, error, addProduct, deleteProduct, saveEditedProduct, isEdition, setIsEdition, open, setOpen } = useContext(AdminContext);
+    const { productos } = useAppContext();
+    const { loading, error, addProduct, deleteProduct, saveEditedProduct, open, setOpen } = useContext(AdminContext);
     const [selectedProduct, setselectedProduct] = useState(null);
 
     return (
         <Container>
+            <Helmet>
+                <title>ADMIN</title>
+                <meta name="description" content="Administración de productos." />
+            </Helmet>
             {loading ? (
                 <p>Cargando...</p>
             ) : (
@@ -18,7 +24,7 @@ const Admin = () => {
                     {error && <ErrorMessage>Hubo un error al cargar los productos.</ErrorMessage>}
 
                     <ProductGrid>
-                        {products.map((product) => (
+                        {productos?.map((product) => (
                             <ProductCard key={`${product.id}-${product.name}`}>
                                 <ProductImage src={product.image} alt={product.name} />
                                 <ProductName>{product.name}</ProductName>

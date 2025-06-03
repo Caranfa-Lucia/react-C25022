@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { useAppContext } from '../context/AppContext';
 import Gallery from './Gallery';
 import Cart from '../components/Cart';
+import { Helmet } from 'react-helmet-async';
 
 function Home() {
   const {
     productos,
-    cargando,
+    loading,
     error,
     setCount,
     setProductList,
@@ -33,27 +34,31 @@ function Home() {
     setCount,
     setProductList,
     productos,
-    cargando,
+    loading,
     error,
     handleCount
   };
 
   return (
-<main>
-  <MainContainer>
-    {!(openCart && isTablet) && (
-      <GalleryWrapper openCart={openCart} isTablet={isTablet}>
-        <Gallery {...galleryProps} />
-      </GalleryWrapper>
-    )}
+    <main>
+      <Helmet>
+        <title>Bienvenido a mi Ecommerce!</title>
+        <meta name="description" content="Galería y home del ecommerce." />
+      </Helmet>
+      <MainContainer>
+        {!(openCart && isTablet) && (
+          <GalleryWrapper openCart={openCart} isTablet={isTablet}>
+            <Gallery {...galleryProps} />
+          </GalleryWrapper>
+        )}
 
-    {openCart && (
-      <CartWrapper openCart={openCart} isTablet={isTablet}>
-        <Cart />
-      </CartWrapper>
-    )}
-  </MainContainer>
-</main>
+        {openCart && (
+          <CartWrapper openCart={openCart} isTablet={isTablet}>
+            <Cart />
+          </CartWrapper>
+        )}
+      </MainContainer>
+    </main>
   );
 
 }
