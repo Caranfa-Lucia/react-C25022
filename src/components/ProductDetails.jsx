@@ -49,7 +49,7 @@ const ProductDetails = ({
                     style={buttonStyle}
                     onMouseEnter={() => setButtonHover(true)}
                     onMouseLeave={() => setButtonHover(false)}
-                    onClick={() => handleCount(id, name, price)}>
+                    onClick={() => handleCount(id, name, price, image)}>
                     Agregar al carrito
                 </div>
                 {count > 0 &&

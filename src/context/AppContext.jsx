@@ -13,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [authLoading, setAuthLoading] = useState(true);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [showBlockedAdminModal, setShowBlockedAdminModal] = useState(false);
+     const [search, setSearch]= useState("")
 
   const {
     productos,
@@ -37,7 +38,7 @@ export const AppProvider = ({ children }) => {
     if (storedGroupedProducts) {
       const parsed = JSON.parse(storedGroupedProducts);
       const reconstructed = parsed.flatMap(p =>
-        Array(p.quantity).fill({ id: p.id, name: p.name, price: p.price })
+        Array(p.quantity).fill({ id: p.id, name: p.name, price: p.price, image: p.image })
       );
       setProductList(reconstructed);
       setCount(reconstructed.length);
@@ -46,8 +47,8 @@ export const AppProvider = ({ children }) => {
     setAuthLoading(false);
   }, []);
 
-  const handleCount = (id, name, price) => {
-    const newProduct = { id, name, price };
+  const handleCount = (id, name, price, image) => {
+    const newProduct = { id, name, price, image };
     setCount(prev => prev + 1);
     setProductList(prev => [...prev, newProduct]);
   };
@@ -65,11 +66,11 @@ export const AppProvider = ({ children }) => {
     setCount(0);
     localStorage.removeItem('groupedProducts');
   };
-
+console.log({productList})
   const productMap = productList.reduce((acc, product) => {
-    const { id, name, price } = product;
+    const { id, name, price, image } = product;
     if (!acc[id]) {
-      acc[id] = { id, name, price, quantity: 1 };
+      acc[id] = { id, name, price, quantity: 1, image };
     } else {
       acc[id].quantity += 1;
     }
@@ -85,6 +86,8 @@ export const AppProvider = ({ children }) => {
       localStorage.removeItem('groupedProducts');
     }
   }, [groupedProducts]);
+
+      const productFilter = productos.filter((producto)=> producto?.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <AppContext.Provider
@@ -115,6 +118,9 @@ export const AppProvider = ({ children }) => {
         showBlockedAdminModal,
         setShowBlockedAdminModal,
         obtenerProductos,
+        search, 
+        setSearch,
+        productFilter
       }}
     >
       {children}
