@@ -1,20 +1,18 @@
 import React from 'react';
 import ProductCard from '../components/ProductCard';
-import ProductDetailSection from './ProductDetailSection';
-
 
 function Gallery({
   setCount = () => { },
   setProductList = () => { },
   handleCount = () => { },
   productos,
-  cargando,
+  loading,
   error
 }) {
 
   return (
     <section style={galleryStyle}>
-      {cargando && <p>Cargando productos...</p>}
+      {loading && <p>Cargando productos...</p>}
       {error &&
         <p>Ha ocurrido un error en la carga de productos, por favor, vuelve a intentar más tarde.</p>
       }

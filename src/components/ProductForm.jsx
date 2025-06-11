@@ -88,7 +88,6 @@ function ProductForm({ selectedProduct, onSubmit, onClose }) {
     );
 }
 
-// Estilos compartidos
 const FormContainer = styled.form`
   max-width: 500px;
   margin: 40px auto;

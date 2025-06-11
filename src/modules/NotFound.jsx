@@ -1,36 +1,68 @@
 import React from "react";
-import "../styles/NotFound.css";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const Container = styled.div`
+  background-color: #1e1e1e;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+`;
+
+const Content = styled.div`
+  max-width: 600px;
+`;
+
+const Title = styled.h1`
+  font-size: 8rem;
+  margin-bottom: 0.5rem;
+  color: #f2b632;
+`;
+
+const Subtitle = styled.p`
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+`;
+
+const Text = styled.p`
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #cccccc;
+`;
+
+const Button = styled(Link)`
+  background-color: #4ca996;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #3a8678;
+  }
+`;
 
 const NotFound = () => {
   return (
-    <div className="notfound-container">
-      <div className="notfound-content">
-        <h1 className="notfound-title">404</h1>
-        <p className="notfound-subtitle">Ups... Página no encontrada</p>
-        <p className="notfound-text">
-          La URL ingresada no existe. Por favor, verifica la URL y vuelve a intentarlo.
-        </p>
-        <button style={confirmButtonStyle}>
-          <Link to="/home" style={{ textDecoration: 'none', color: '#fff' }}>
-            Ir al inicio
-          </Link>
-        </button>
-      </div>
-    </div>
+    <Container>
+      <Content>
+        <Title>404</Title>
+        <Subtitle>Ups... Página no encontrada</Subtitle>
+        <Text>
+          La URL ingresada no existe. Por favor, verifica la dirección e intenta de nuevo.
+        </Text>
+        <Button to="/home">Ir al inicio</Button>
+      </Content>
+    </Container>
   );
 };
-
-const confirmButtonStyle = {
-  backgroundColor: "#4ca996",
-  color: "#fff",
-  padding: "10px 20px",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
-  marginTop: "20px",
-  fontSize: "14px",
-  marginLeft: '10px',
-}
 
 export default NotFound;
