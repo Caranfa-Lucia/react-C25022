@@ -1,50 +1,4 @@
-/* import React from 'react'
-import { Helmet } from "react-helmet-async";
-
-const AboutUs = () => {
-    return (
-        <div style={{ textAlign: "center", minHeight: "70vh", marginTop: "50px" }}>
-            <Helmet>
-                <title>Sobre nosotros!</title>
-                <meta name="description" content="Descripción de la sección." />
-            </Helmet>
-            <h1>Título de la sección</h1>
-            <div style={{ width: "80%", textAlign: "center", margin: "30px auto" }}>
-                <p style={{ textAlign: "justify", marginBottom: "20px" }}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae?
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quaerat, enim quibusdam sit maiores iure ratione adipisci ad eligendi dicta doloribus numquam rerum sint, temporibus cupiditate dignissimos atque. Cumque, eum!
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa similique recusandae perferendis commodi placeat repellendus labore accusamus provident cum! Tempore minus enim ipsa id ex ducimus corporis nostrum, quae unde?
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum alias illo, doloremque dolore quisquam ipsa laborum esse veritatis dignissimos cumque, vitae necessitatibus nam perspiciatis eum nihil? Maxime recusandae optio aliquam.
-                </p>
-                <p style={{ textAlign: "justify", marginBottom: "20px" }}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae?
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quaerat, enim quibusdam sit maiores iure ratione adipisci ad eligendi dicta doloribus numquam rerum sint, temporibus cupiditate dignissimos atque. Cumque, eum!
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa similique recusandae perferendis commodi placeat repellendus labore accusamus provident cum! Tempore minus enim ipsa id ex ducimus corporis nostrum, quae unde?
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum alias illo, doloremque dolore quisquam ipsa laborum esse veritatis dignissimos cumque, vitae necessitatibus nam perspiciatis eum nihil? Maxime recusandae optio aliquam.
-                </p>
-                <p style={{ textAlign: "justify", marginBottom: "20px" }}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae?
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quaerat, enim quibusdam sit maiores iure ratione adipisci ad eligendi dicta doloribus numquam rerum sint, temporibus cupiditate dignissimos atque. Cumque, eum!
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa similique recusandae perferendis commodi placeat repellendus labore accusamus provident cum! Tempore minus enim ipsa id ex ducimus corporis nostrum, quae unde?
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum alias illo, doloremque dolore quisquam ipsa laborum esse veritatis dignissimos cumque, vitae necessitatibus nam perspiciatis eum nihil? Maxime recusandae optio aliquam.
-                </p>
-                <p style={{ textAlign: "justify", marginBottom: "20px" }}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae?
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quaerat, enim quibusdam sit maiores iure ratione adipisci ad eligendi dicta doloribus numquam rerum sint, temporibus cupiditate dignissimos atque. Cumque, eum!
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa similique recusandae perferendis commodi placeat repellendus labore accusamus provident cum! Tempore minus enim ipsa id ex ducimus corporis nostrum, quae unde?
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum alias illo, doloremque dolore quisquam ipsa laborum esse veritatis dignissimos cumque, vitae necessitatibus nam perspiciatis eum nihil? Maxime recusandae optio aliquam.
-                </p>
-            </div>
-        </div>
-    )
-}
-
-export default AboutUs */
-import React from 'react';
+import React, { useState } from 'react';
 
 const AboutUs = () => {
     const styles = {
@@ -214,26 +168,24 @@ const AboutUs = () => {
         }
     };
 
-    const [hoveredCard, setHoveredCard] = React.useState(null);
-    const [isHoveringButton, setIsHoveringButton] = React.useState(false);
+    const [hoveredCard, setHoveredCard] = useState(null);
+    const [isHoveringButton, setIsHoveringButton] = useState(false);
 
     return (
         <div style={styles.container}>
             <div style={styles.decorativeShape1}></div>
             <div style={styles.decorativeShape2}></div>
-            
-            {/* Header Section */}
+
             <div style={styles.header}>
                 <h1 style={styles.title}>Sobre Nosotros</h1>
                 <div style={styles.titleUnderline}></div>
             </div>
 
-            {/* Content Section */}
             <div style={styles.contentWrapper}>
                 <div style={styles.contentCard}>
-                    {/* Primera sección */}
-                    <div style={{marginBottom: '40px'}}>
-                        <h2 style={{...styles.sectionTitle, position: 'relative'}}>
+
+                    <div style={{ marginBottom: '40px' }}>
+                        <h2 style={{ ...styles.sectionTitle, position: 'relative' }}>
                             <span style={styles.sectionTitleBefore}></span>
                             Nuestra Historia
                         </h2>
@@ -242,7 +194,6 @@ const AboutUs = () => {
                         </p>
                     </div>
 
-                    {/* Segunda sección destacada */}
                     <div style={styles.highlightSection}>
                         <h2 style={styles.sectionTitle}>Nuestra Misión</h2>
                         <p style={styles.paragraph}>
@@ -250,20 +201,18 @@ const AboutUs = () => {
                         </p>
                     </div>
 
-                    {/* Tercera sección */}
-                    <div style={{marginBottom: '40px'}}>
-                        <h2 style={{...styles.sectionTitle, textAlign: 'right', paddingRight: '20px', paddingLeft: '0'}}>
+                    <div style={{ marginBottom: '40px' }}>
+                        <h2 style={{ ...styles.sectionTitle, textAlign: 'right', paddingRight: '20px', paddingLeft: '0' }}>
                             Nuestra Visión
-                            <span style={{...styles.sectionTitleBefore, left: 'auto', right: '0'}}></span>
+                            <span style={{ ...styles.sectionTitleBefore, left: 'auto', right: '0' }}></span>
                         </h2>
                         <p style={styles.paragraph}>
                             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
                         </p>
                     </div>
 
-                    {/* Cards Section */}
                     <div style={styles.cardsContainer}>
-                        <div 
+                        <div
                             style={{
                                 ...styles.card,
                                 ...(hoveredCard === 'innovation' ? styles.cardHover : {})
@@ -277,8 +226,8 @@ const AboutUs = () => {
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quaerat, enim quibusdam sit maiores iure ratione adipisci ad eligendi dicta doloribus numquam rerum sint.
                             </p>
                         </div>
-                        
-                        <div 
+
+                        <div
                             style={{
                                 ...styles.card,
                                 ...(hoveredCard === 'commitment' ? styles.cardHover : {})
@@ -293,10 +242,9 @@ const AboutUs = () => {
                             </p>
                         </div>
                     </div>
-                    
-                    {/* Call to Action */}
+
                     <div style={styles.ctaContainer}>
-                        <a 
+                        <a
                             href="https://www.linkedin.com/in/lucia-caranfa/"
                             target="_blank"
                             rel="noopener noreferrer"

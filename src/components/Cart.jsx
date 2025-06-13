@@ -1,352 +1,8 @@
-/* import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { useAppContext } from '../context/AppContext';
-import { Link, useLocation } from 'react-router-dom';
-
-const slideInRight = keyframes`
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0%);
-    opacity: 1;
-  }
-`;
-
-const Cart = () => {
-  const location = useLocation();
-  const isCartPage = location.pathname === "/cart";
-
-  const {
-    count,
-    groupedProducts,
-    handleClearCart,
-    handleRemoveItem
-  } = useAppContext();
-
-  return (
-    <>
-      {count === 0 ? (
-        <>
-          <EmptyProductList>¡El carrito está vacío!</EmptyProductList>
-          {isCartPage && (
-            <ContinueShoppingWrapper>
-              <Link to="/home" style={{ paddingBottom: "50px" }}>
-                <i className="la la-chevron-left"></i> Ir al inicio
-              </Link>
-            </ContinueShoppingWrapper>
-          )}
-        </>
-      ) : (
-        isCartPage ? (
-          <CartPageWrapper>
-            <StyledCartContainer isCartPage={isCartPage}>
-              <SlideContainer>
-                <ListContainer>
-                  <StyledCartTitle>
-                    <div>¡El carrito posee {count} {count === 1 ? 'producto' : 'productos'}!</div>
-                    <StyledClearButton onClick={handleClearCart} isCartPage={isCartPage}>
-                      Vaciar carrito
-                      <i className="la la-cart-arrow-down" style={{ fontSize: '25px', marginLeft: '8px' }}></i>
-                    </StyledClearButton>
-                  </StyledCartTitle>
-
-                  <ul style={productsListStyle}>
-                    {groupedProducts.map((product) => (
-                      <StyledProductItem key={`Producto-${product.id}`} isCartPage={isCartPage}>
-                        <div style={{ gridArea: 'name' }}>
-                          {product.quantity} - {product.name}
-                        </div>
-                        <div style={{ gridArea: 'price' }}>
-                          ${product.price * product.quantity}
-                        </div>
-                        <DeleteButton style={{ gridArea: 'delete', justifySelf: 'end' }} onClick={() => handleRemoveItem(product.id)}>
-                          <i className="la la-trash" style={{ marginLeft: '8px', fontSize: '20px' }}></i>
-                        </DeleteButton>
-                      </StyledProductItem>
-                    ))}
-                  </ul>
-
-                  <StyledTotal isCartPage={isCartPage}>
-                    Total: ${groupedProducts.reduce((acc, product) => acc + product.price * product.quantity, 0)}
-                  </StyledTotal>
-                </ListContainer>
-              </SlideContainer>
-            </StyledCartContainer>
-            {isCartPage && (
-              <ContinueShoppingWrapper>
-                <Link to="/home">
-                  <i className="la la-chevron-left"></i> Seguir comprando
-                </Link>
-              </ContinueShoppingWrapper>
-            )}
-          </CartPageWrapper>
-        ) : (
-          <StyledCartContainer isCartPage={isCartPage}>
-            <SlideContainer>
-              <ListContainer>
-                <StyledCartTitle>
-                  <div>¡El carrito posee {count} {count === 1 ? 'producto' : 'productos'}!</div>
-                  <StyledClearButton onClick={handleClearCart} isCartPage={isCartPage}>
-                    Vaciar carrito
-                    <i className="la la-cart-arrow-down" style={{ fontSize: '25px', marginLeft: '8px' }}></i>
-                  </StyledClearButton>
-                </StyledCartTitle>
-
-                <ul style={productsListStyle}>
-                  {groupedProducts.map((product) => (
-                    <StyledProductItem key={`Producto-${product.id}`} isCartPage={isCartPage}>
-                      <div style={{ gridArea: 'name' }}>
-                        {product.quantity} - {product.name}
-                      </div>
-                      <div style={{ gridArea: 'price', justifySelf: 'end', marginRight: '25px' }}>
-                        ${product.price * product.quantity}
-                      </div>
-                      <DeleteButton style={{ gridArea: 'delete', justifySelf: 'end', marginRight: '25px' }} onClick={() => handleRemoveItem(product.id)}>
-                        <i className="la la-trash" style={{ marginLeft: '8px', fontSize: '20px' }}></i>
-                      </DeleteButton>
-                    </StyledProductItem>
-                  ))}
-                </ul>
-
-                <StyledTotal isCartPage={isCartPage}>
-                  Total: ${groupedProducts.reduce((acc, product) => acc + product.price * product.quantity, 0)}
-                </StyledTotal>
-              </ListContainer>
-            </SlideContainer>
-          </StyledCartContainer>
-        )
-      )}
-
-      {
-        !isCartPage && count > 0 && (
-          <PayButton>
-            <Link to="/cart" style={{ textDecoration: 'none', color: '#ededed' }}>
-              Ir a pagar
-            </Link>
-            <i className="la la-money-bill" style={{ fontSize: "30px", marginLeft: "10px" }}></i>
-          </PayButton>
-        )
-      }
-    </>
-  );
-};
-
-export default Cart;
-
-const CartPageWrapper = styled.div`
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const StyledCartContainer = styled.div`
-  font-weight: 600;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 70vh;
-  width: 100%;
-  max-width: 800px;
-  overflow: visible;
-
-  @media (min-width: 768px) {
-    flex-direction: ${(props) => (props.isCartPage ? "column" : "column")};
-  }
-`;
-
-const SlideContainer = styled.div`
-overflow: visible;
-  animation: ${slideInRight} 0.5s ease forwards;
-`;
-
-const StyledCartTitle = styled.div`
-  font-weight: 600;
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 35px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
-  ${(props) =>
-    props.isCartPage
-      ? `
-  @media (max-width: 1145px) {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 10px;
-    justify-content: space-between;
-  }
-  `
-      : `
-  @media (max-width: 1145px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    justify-content: center;
-  }
-  `}
-`;
-
-const StyledClearButton = styled.button`
-  font-weight: 600;
-  font-size: 18px;
-  color: #ededed;
-  cursor: pointer;
-  background-color: #9272b4;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-
-  ${(props) =>
-    props.isCartPage
-      ? `
-    align-self: flex-end;
-    width: auto;
-        @media (max-width: 760px) {
-      width: 100%;
-      align-self: stretch;
-    }
-  `
-      : `
-    align-self: flex-end;
-
-    @media (max-width: 1145px) {
-      width: 100%;
-      align-self: stretch;
-    }
-  `}
-`;
-
-const ContinueShoppingWrapper = styled.div`
-  margin-top: 30px;
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-
-  a {
-    text-decoration: none;
-    color: #6433a6;
-    font-weight: 600;
-    font-size: 18px;
-    margin-left: 20px;
-  }
-
-  @media (max-width: 1145px) {
-    justify-content: flex-start;
-    a {
-      margin-left: 0;
-      margin-right: 20px;
-    }
-  }
-`;
-
-const StyledProductItem = styled.li`
-  display: grid;
-  grid-template-areas:
-    "name price"
-    "delete delete";
-  grid-template-columns: 1fr auto;
-  gap: 5px;
-  padding: 10px 0;
-  margin: ${(props) => (props.isCartPage ? "0 10px" : "0 20px")};
-  width: 100%;
-  border-bottom: 1px solid #ddd;
-  font-size: 15px;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    padding: 10px;
-    grid-template-areas:
-      "name price"
-      "delete delete";
-    grid-template-columns: 1fr auto;
-  }
-`;
-
-const StyledTotal = styled.div`
-  font-weight: 600;
-  font-size: 18px;
-  color: #888;
-  margin-top: 50px;
-  text-align: end;
-  margin-right: ${(props) => (props.isCartPage ? "20px" : "0px")};
-
-  @media (max-width: 768px) {
-    margin-right: 10px;
-  }
-`;
-
-const EmptyProductList = styled.div`
-  font-weight: 600;
-  font-size: 20px;
-  text-align: center;
-  min-height: 70vh;
-  margin-top: 50px;
-`;
-
-const ListContainer = styled.div`
-  width:   ${(props) => (props.isCartPage ? "600px" : "100%")};
-  min-width: 80%;
-  margin-right: 40px;
-    @media (max-width: 768px) {
-  width: 100%;	
-  }
-
-`;
-
-const productsListStyle = {
-  fontWeight: 400,
-  lineHeight: "25px",
-  fontSize: "15px",
-  listStyle: "none",
-  color: "#333",
-  marginTop: 15,
-  textAlign: "left"
-};
-
-const PayButton = styled.div`
-  font-weight: 600;
-  font-size: 18px;
-  color: #ededed;
-  cursor: pointer;
-  background-color: #a2d2c7;
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 20px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const DeleteButton = styled.button`
-  background: none;
-  border: none;
-  color: #b83333;
-  cursor: pointer;
-  transition: color 0.2s;
-  font-size: 14px;
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    color: #ff0000;
-  }
-`; */
-
-
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useAppContext } from '../context/AppContext';
 import { Link, useLocation } from 'react-router-dom';
 
-// Animaciones
 const slideInRight = keyframes`
   from {
     transform: translateX(100%);
@@ -425,7 +81,7 @@ const Cart = () => {
   } = useAppContext();
 
   const total = groupedProducts.reduce((acc, product) => acc + product.price * product.quantity, 0);
-  console.log({groupedProducts})
+  console.log({ groupedProducts })
 
   return (
     <CartMainWrapper isCartPage={isCartPage}>
@@ -464,13 +120,13 @@ const Cart = () => {
                 {groupedProducts.map((product, index) => (
                   <ProductItem key={`Producto-${product.id}`} isCartPage={isCartPage} index={index}>
                     <ProductImage isCartPage={isCartPage}>
-                      <ImagePlaceholder 
+                      <ImagePlaceholder
                         hasImage={product.image && typeof product.image === 'string' && product.image.startsWith('http')}
                         isCartPage={isCartPage}
                       >
                         {product.image && typeof product.image === 'string' && product.image.startsWith('http') ? (
-                          <ProductImg 
-                            src={product.image} 
+                          <ProductImg
+                            src={product.image}
                             alt={product.name}
                             isCartPage={isCartPage}
                             onError={(e) => {
@@ -479,14 +135,14 @@ const Cart = () => {
                             }}
                           />
                         ) : null}
-                        <FallbackIcon 
+                        <FallbackIcon
                           isCartPage={isCartPage}
-                          style={{ 
-                            display: product.image && typeof product.image === 'string' && product.image.startsWith('http') ? 'none' : 'flex' 
+                          style={{
+                            display: product.image && typeof product.image === 'string' && product.image.startsWith('http') ? 'none' : 'flex'
                           }}
                         >
-                          {typeof product.image === 'string' && !product.image.startsWith('http') 
-                            ? product.image 
+                          {typeof product.image === 'string' && !product.image.startsWith('http')
+                            ? product.image
                             : '📦'
                           }
                         </FallbackIcon>
@@ -547,7 +203,6 @@ const Cart = () => {
 
 export default Cart;
 
-// Contenedor principal - MODIFICADO PARA USAR FLEXBOX CORRECTAMENTE
 const CartMainWrapper = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isCartPage'].includes(prop),
 })`
@@ -555,9 +210,9 @@ const CartMainWrapper = styled.div.withConfig({
   max-height: ${({ isCartPage }) => isCartPage ? 'none' : '80vh'};
   display: flex;
   flex-direction: column;
-  background: ${({ isCartPage }) => 
-    isCartPage 
-      ? 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' 
+  background: ${({ isCartPage }) =>
+    isCartPage
+      ? 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
       : 'transparent'
   };
   border-radius: ${({ isCartPage }) => isCartPage ? '0' : '20px'};
@@ -578,7 +233,6 @@ const CartMainWrapper = styled.div.withConfig({
   }
 `;
 
-// Contenedor del carrito vacío
 const EmptyCartContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isCartPage'].includes(prop),
 })`
@@ -611,7 +265,6 @@ const EmptyCartSubtext = styled.div`
   margin-bottom: 2rem;
 `;
 
-// Contenedor principal del carrito - MODIFICADO PARA USAR FLEX CORRECTAMENTE
 const StyledCartContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isCartPage'].includes(prop),
 })`
@@ -619,21 +272,21 @@ const StyledCartContainer = styled.div.withConfig({
   flex-direction: column;
   flex: 1;
   min-height: 0; /* Importante para permitir que el scroll funcione */
-  background: ${({ isCartPage }) => 
-    isCartPage 
-      ? 'rgba(255, 255, 255, 0.95)' 
+  background: ${({ isCartPage }) =>
+    isCartPage
+      ? 'rgba(255, 255, 255, 0.95)'
       : 'transparent'
   };
   border-radius: ${({ isCartPage }) => isCartPage ? '20px' : '0'};
   backdrop-filter: ${({ isCartPage }) => isCartPage ? 'blur(20px)' : 'none'};
-  box-shadow: ${({ isCartPage }) => 
-    isCartPage 
-      ? '0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)' 
+  box-shadow: ${({ isCartPage }) =>
+    isCartPage
+      ? '0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
       : 'none'
   };
-  border: ${({ isCartPage }) => 
-    isCartPage 
-      ? '1px solid rgba(255, 255, 255, 0.3)' 
+  border: ${({ isCartPage }) =>
+    isCartPage
+      ? '1px solid rgba(255, 255, 255, 0.3)'
       : 'none'
   };
   padding: ${({ isCartPage }) => isCartPage ? '2rem' : '0'};
@@ -655,7 +308,6 @@ const SlideContainer = styled.div`
   min-height: 0; /* Importante para permitir que el scroll funcione */
 `;
 
-// Header del carrito
 const CartHeader = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isCartPage'].includes(prop),
 })`
@@ -729,7 +381,6 @@ const CartTitleText = styled.h2`
   }
 `;
 
-// Botón limpiar carrito
 const ClearCartButton = styled.button.withConfig({
   shouldForwardProp: (prop) => !['isCartPage'].includes(prop),
 })`
@@ -773,7 +424,6 @@ const ButtonIcon = styled.span`
   font-size: 1.1rem;
 `;
 
-// Lista de productos - MODIFICADO PARA PERMITIR SCROLL CORRECTO
 const ProductsList = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isCartPage'].includes(prop),
 })`
@@ -797,7 +447,6 @@ const ProductsList = styled.div.withConfig({
   }
 `;
 
-// Item de producto
 const ProductItem = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isCartPage', 'index'].includes(prop),
 })`
@@ -1001,7 +650,6 @@ const RemoveIcon = styled.span`
   line-height: 1;
 `;
 
-// Resumen del carrito - MODIFICADO PARA NO CRECER
 const CartSummary = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isCartPage'].includes(prop),
 })`
@@ -1049,7 +697,6 @@ const TotalAmount = styled.span`
   text-shadow: 0 1px 2px rgba(102, 126, 234, 0.1);
 `;
 
-// Botón de pago - MODIFICADO PARA SER SIEMPRE VISIBLE
 const PayButtonContainer = styled.div`
   margin-top: 1.5rem;
   animation: ${fadeIn} 0.6s ease-out 0.3s backwards;
@@ -1115,7 +762,6 @@ const PayButtonIcon = styled.span`
   font-size: 1.3rem;
 `;
 
-// Acciones de la página del carrito
 const CartPageActions = styled.div`
   display: flex;
   justify-content: space-between;

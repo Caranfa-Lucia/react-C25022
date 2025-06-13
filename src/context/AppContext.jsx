@@ -13,7 +13,7 @@ export const AppProvider = ({ children }) => {
   const [authLoading, setAuthLoading] = useState(true);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [showBlockedAdminModal, setShowBlockedAdminModal] = useState(false);
-     const [search, setSearch]= useState("")
+  const [search, setSearch] = useState("")
 
   const {
     productos,
@@ -66,7 +66,7 @@ export const AppProvider = ({ children }) => {
     setCount(0);
     localStorage.removeItem('groupedProducts');
   };
-console.log({productList})
+  console.log({ productList })
   const productMap = productList.reduce((acc, product) => {
     const { id, name, price, image } = product;
     if (!acc[id]) {
@@ -87,7 +87,7 @@ console.log({productList})
     }
   }, [groupedProducts]);
 
-      const productFilter = productos.filter((producto)=> producto?.name.toLowerCase().includes(search.toLowerCase()))
+  const productFilter = productos.filter((producto) => producto?.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <AppContext.Provider
@@ -118,7 +118,7 @@ console.log({productList})
         showBlockedAdminModal,
         setShowBlockedAdminModal,
         obtenerProductos,
-        search, 
+        search,
         setSearch,
         productFilter
       }}

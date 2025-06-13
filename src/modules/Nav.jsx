@@ -56,7 +56,7 @@ function Nav() {
     <NavbarContainer>
       <NavbarBrand>
         <Link to="/home" onClick={handleLinkClick}>
-         <img src={logo} alt="Lulishop Logo" height={"55px"} width={"150px"} />
+          <img src={logo} alt="Lulishop Logo" height={"55px"} width={"150px"} />
         </Link>
       </NavbarBrand>
 

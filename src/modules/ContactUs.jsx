@@ -22,14 +22,12 @@ const ContactUs = () => {
     const handleSubmit = async (evento) => {
         evento.preventDefault();
         setIsSubmitting(true);
-        
-        // Simular envío
+
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         alert(`Formulario enviado por: ${formData.nombre}\nEmail: ${formData.email}`);
         setIsSubmitting(false);
-        
-        // Limpiar formulario
+
         setFormData({
             nombre: '',
             email: '',
@@ -254,7 +252,6 @@ const ContactUs = () => {
         }
     };
 
-    // Agregar keyframes para el loader
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = `
@@ -279,19 +276,16 @@ const ContactUs = () => {
         <div style={styles.container}>
             <div style={styles.decorativeShape1}></div>
             <div style={styles.decorativeShape2}></div>
-            
-            {/* Header */}
+
             <div style={styles.header}>
                 <h1 style={styles.title}>Contáctanos</h1>
                 <p style={styles.subtitle}>Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos pronto.</p>
                 <div style={styles.titleUnderline}></div>
             </div>
 
-            {/* Form Container */}
             <div style={styles.formContainer}>
                 <div style={styles.formCard}>
                     <form onSubmit={handleSubmit} style={styles.form}>
-                        {/* Nombre y Email */}
                         <div style={styles.inputRow}>
                             <div style={styles.inputGroup}>
                                 <label style={styles.label}>Nombre completo *</label>
@@ -329,7 +323,6 @@ const ContactUs = () => {
                             </div>
                         </div>
 
-                        {/* Teléfono y Asunto */}
                         <div style={styles.inputRow}>
                             <div style={styles.inputGroup}>
                                 <label style={styles.label}>Teléfono</label>
@@ -370,7 +363,6 @@ const ContactUs = () => {
                             </div>
                         </div>
 
-                        {/* Mensaje */}
                         <div style={styles.inputGroup}>
                             <label style={styles.label}>Mensaje *</label>
                             <textarea
@@ -388,8 +380,7 @@ const ContactUs = () => {
                             />
                         </div>
 
-                        {/* Botón de envío */}
-                        <div style={{textAlign: 'center', marginTop: '20px'}}>
+                        <div style={{ textAlign: 'center', marginTop: '20px' }}>
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
@@ -414,21 +405,20 @@ const ContactUs = () => {
                                 {isSubmitting ? (
                                     <>
                                         <span style={styles.loader}></span>
-                                        <span style={{marginLeft: '10px'}}>Enviando...</span>
+                                        <span style={{ marginLeft: '10px' }}>Enviando...</span>
                                     </>
                                 ) : (
                                     <>
                                         <span>Enviar Mensaje</span>
-                                        <span style={{marginLeft: '8px'}}>✉️</span>
+                                        <span style={{ marginLeft: '8px' }}>✉️</span>
                                     </>
                                 )}
                             </button>
                         </div>
                     </form>
 
-                    {/* Información de contacto */}
                     <div style={styles.contactInfo}>
-                        <div 
+                        <div
                             style={styles.contactItem}
                             onMouseEnter={(e) => handleContactItemHover(e, true)}
                             onMouseLeave={(e) => handleContactItemHover(e, false)}
@@ -439,8 +429,8 @@ const ContactUs = () => {
                                 <div style={styles.contactText}>luciacaranfa@gmail.com</div>
                             </a>
                         </div>
-                        
-                        <div 
+
+                        <div
                             style={styles.contactItem}
                             onMouseEnter={(e) => handleContactItemHover(e, true)}
                             onMouseLeave={(e) => handleContactItemHover(e, false)}
@@ -451,16 +441,16 @@ const ContactUs = () => {
                                 <div style={styles.contactText}>+54 11 1234-5678</div>
                             </a>
                         </div>
-                        
-                        <div 
+
+                        <div
                             style={styles.contactItem}
                             onMouseEnter={(e) => handleContactItemHover(e, true)}
                             onMouseLeave={(e) => handleContactItemHover(e, false)}
                         >
-                            <a 
-                                href="https://maps.google.com/?q=Buenos+Aires,+Argentina" 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
+                            <a
+                                href="https://maps.google.com/?q=Buenos+Aires,+Argentina"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 style={styles.contactLink}
                             >
                                 <div style={styles.contactIcon}>📍</div>
@@ -468,16 +458,16 @@ const ContactUs = () => {
                                 <div style={styles.contactText}>Capital Federal, Buenos Aires, Argentina</div>
                             </a>
                         </div>
-                        
-                        <div 
+
+                        <div
                             style={styles.contactItem}
                             onMouseEnter={(e) => handleContactItemHover(e, true)}
                             onMouseLeave={(e) => handleContactItemHover(e, false)}
                         >
-                            <a 
-                                href="https://www.linkedin.com/in/lucia-caranfa/" 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
+                            <a
+                                href="https://www.linkedin.com/in/lucia-caranfa/"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 style={styles.contactLink}
                             >
                                 <div style={styles.contactIcon}>💼</div>

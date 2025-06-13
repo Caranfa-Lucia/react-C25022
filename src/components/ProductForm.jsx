@@ -29,8 +29,7 @@ function ProductForm({ selectedProduct, onSubmit, onClose }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProduct({ ...product, [name]: value });
-        
-        // Limpiar error del campo cuando el usuario empieza a escribir
+
         if (errors[name]) {
             setErrors({ ...errors, [name]: '' });
         }
@@ -53,8 +52,7 @@ function ProductForm({ selectedProduct, onSubmit, onClose }) {
         if (!validarFormulario()) return;
 
         setIsSubmitting(true);
-        
-        // Simular un pequeño delay para mostrar el estado de carga
+
         setTimeout(() => {
             onSubmit(product);
             setProduct({ id: '', name: '', price: '', description: '', image: '' });
@@ -91,10 +89,10 @@ function ProductForm({ selectedProduct, onSubmit, onClose }) {
                                 Nombre del Producto
                             </Label>
                             <InputContainer hasError={errors.name}>
-                                <Input 
-                                    type="text" 
-                                    name="name" 
-                                    value={product.name} 
+                                <Input
+                                    type="text"
+                                    name="name"
+                                    value={product.name}
                                     onChange={handleChange}
                                     placeholder="Ej: iPhone 15 Pro"
                                 />
@@ -111,11 +109,11 @@ function ProductForm({ selectedProduct, onSubmit, onClose }) {
                                 Precio
                             </Label>
                             <InputContainer hasError={errors.price}>
-                                <PriceInput 
-                                    type="number" 
-                                    name="price" 
-                                    value={product.price} 
-                                    onChange={handleChange} 
+                                <PriceInput
+                                    type="number"
+                                    name="price"
+                                    value={product.price}
+                                    onChange={handleChange}
                                     min="0"
                                     step="0.01"
                                     placeholder="0.00"
@@ -134,9 +132,9 @@ function ProductForm({ selectedProduct, onSubmit, onClose }) {
                                 Descripción
                             </Label>
                             <InputContainer hasError={errors.description}>
-                                <TextArea 
-                                    name="description" 
-                                    value={product.description} 
+                                <TextArea
+                                    name="description"
+                                    value={product.description}
                                     onChange={handleChange}
                                     placeholder="Describe las características principales del producto..."
                                     rows="4"
@@ -157,10 +155,10 @@ function ProductForm({ selectedProduct, onSubmit, onClose }) {
                                 URL de la Imagen
                             </Label>
                             <InputContainer hasError={errors.image}>
-                                <Input 
-                                    type="url" 
-                                    name="image" 
-                                    value={product.image} 
+                                <Input
+                                    type="url"
+                                    name="image"
+                                    value={product.image}
                                     onChange={handleChange}
                                     placeholder="https://ejemplo.com/imagen.jpg"
                                 />
@@ -241,7 +239,6 @@ const FormContainer = styled.form`
     animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     
-    /* Scrollbar personalizado */
     &::-webkit-scrollbar {
         width: 8px;
     }
@@ -268,7 +265,6 @@ const FormContainer = styled.form`
         background: linear-gradient(135deg, #8a57c8, #5d3a7e);
     }
     
-    /* Para Firefox */
     scrollbar-width: thin;
     scrollbar-color:#b0bfff rgba(0, 0, 0, 0.05);
     
