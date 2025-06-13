@@ -94,7 +94,6 @@ const float = keyframes`
   }
 `;
 
-// Contenedor principal de la tarjeta
 const CardContainer = styled.div`
     width: 280px;
     height: 380px;
@@ -155,7 +154,6 @@ animation: ${css`${fadeIn}`} 0.6s ease-out;
     }
 `;
 
-// Contenedor de la imagen
 const ImageContainer = styled.div`
     position: relative;
     width: 100%;
@@ -182,7 +180,6 @@ const ImageContainer = styled.div`
     }
 `;
 
-// Imagen del producto
 const ProductImage = styled.img`
     width: 100%;
     height: 100%;
@@ -197,7 +194,6 @@ const ProductImage = styled.img`
     };
 `;
 
-// Overlay de la imagen
 const ImageOverlay = styled.div`
     position: absolute;
     top: 0;
@@ -214,7 +210,6 @@ const ImageOverlay = styled.div`
     z-index: 1;
 `;
 
-// Contenedor del contenido
 const ContentContainer = styled.div`
     position: relative;
     z-index: 3;
@@ -225,7 +220,6 @@ const ContentContainer = styled.div`
     justify-content: space-between;
 `;
 
-// Nombre del producto
 const ProductName = styled.div`
     font-size: ${({ isHovered }) => isHovered ? '1.25rem' : '1.1rem'};
     font-weight: 600;
@@ -246,7 +240,6 @@ const ProductName = styled.div`
     `}
 `;
 
-// Precio del producto
 const ProductPrice = styled.div`
     font-size: ${({ isHovered }) => isHovered ? '1.4rem' : '1.2rem'};
     font-weight: 700;
@@ -260,7 +253,6 @@ ${({ isHovered }) => isHovered && css`
 `}
 `;
 
-// Link de detalles
 const DetailsLink = styled(Link)`
     text-decoration: none;
     font-weight: 600;
@@ -273,7 +265,6 @@ const DetailsLink = styled(Link)`
     }
 `;
 
-// Botón agregar al carrito
 const AddToCartButton = styled.div`
     background: ${({ buttonHover, isHovered }) => {
         if (buttonHover) return 'rgba(255, 255, 255, 0.95)';

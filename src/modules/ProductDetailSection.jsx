@@ -4,14 +4,14 @@ import { useLocation } from 'react-router-dom';
 import ProductDetails from '../components/ProductDetails'
 
 const ProductDetailSection = () => {
-    
+
     const location = useLocation();
     const { id, name, price, src, description } = location.state || {};
 
-     const {
+    const {
         count,
         handleCount,
-      } = useAppContext();
+    } = useAppContext();
 
     const productDetailsProps = {
         id,

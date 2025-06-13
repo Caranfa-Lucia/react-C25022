@@ -1,105 +1,3 @@
-/* import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { useAppContext } from '../context/AppContext';
-import Gallery from './Gallery';
-import Cart from '../components/Cart';
-import { Helmet } from 'react-helmet-async';
-
-function Home() {
-  const {
-    productos,
-    loading,
-    error,
-    setCount,
-    setProductList,
-    openCart,
-    setOpenCart,
-    handleCount,
-    search,
-    setSearch,
-    productFilter
-  } = useAppContext();
-
-  const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
-
-  useEffect(() => {
-    setOpenCart(false);
-
-    const handleResize = () => {
-      setIsTablet(window.innerWidth <= 900);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const galleryProps = {
-    setCount,
-    setProductList,
-    loading,
-    error,
-    handleCount
-  };
-
-  return (
-    <main>
-      <Helmet>
-        <title>Bienvenido a mi Ecommerce!</title>
-        <meta name="description" content="Galería y home del ecommerce." />
-      </Helmet>
-      <MainContainer>
-        <input
-          type='text'
-          placeholder='Buscar productos...'
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        {!(openCart && isTablet) && (
-          <GalleryWrapper openCart={openCart} isTablet={isTablet}>
-            <Gallery  {...galleryProps} productos={productFilter} />
-          </GalleryWrapper>
-        )}
-
-        {openCart && (
-          <CartWrapper openCart={openCart} isTablet={isTablet}>
-            <Cart />
-          </CartWrapper>
-        )}
-      </MainContainer>
-    </main>
-  );
-
-}
-const MainContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 40px;
-  background-color: #ededed;
-
-  @media (max-width: 1145px) {
-    justify-content: center;
-  }
-`;
-
-const GalleryWrapper = styled.div`
-  width: ${({ openCart, isTablet }) => {
-    if (openCart) return isTablet ? '10%' : '60%';
-    return '95%';
-  }};
-  transition: width 0.8s ease;
-`;
-
-const CartWrapper = styled.div`
-  width: ${({ openCart, isTablet }) => (openCart ? (isTablet ? '90%' : '40%') : '0%')};
-  transition: width 0.8s ease;
-  overflow: hidden;
-  white-space: nowrap;
-`;
-
-export default Home; */
-
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useAppContext } from '../context/AppContext';
@@ -128,7 +26,7 @@ function Home() {
     setOpenCart(false);
 
     const handleResize = () => {
-   setIsTablet(window.innerWidth <= 1144);
+      setIsTablet(window.innerWidth <= 1144);
     };
 
     window.addEventListener('resize', handleResize);
@@ -149,7 +47,7 @@ function Home() {
         <title>Bienvenido a mi Ecommerce!</title>
         <meta name="description" content="Galería y home del ecommerce." />
       </Helmet>
-      
+
       <HeaderSection>
         <SearchContainer>
           <SearchInput
@@ -179,7 +77,6 @@ function Home() {
   );
 }
 
-// Animaciones
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -209,7 +106,6 @@ const shimmer = keyframes`
   }
 `;
 
-// Contenedor principal
 const MainWrapper = styled.main`
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -228,7 +124,6 @@ const MainWrapper = styled.main`
   }
 `;
 
-// Sección del header
 const HeaderSection = styled.section`
   position: relative;
   z-index: 10;
@@ -245,7 +140,6 @@ const HeaderSection = styled.section`
   }
 `;
 
-// Contenedor de búsqueda
 const SearchContainer = styled.div`
   position: relative;
   max-width: 500px;
@@ -253,7 +147,6 @@ const SearchContainer = styled.div`
   animation: ${fadeIn} 0.6s ease-out;
 `;
 
-// Input de búsqueda
 const SearchInput = styled.input`
   width: 100%;
   padding: 1rem 3rem 1rem 1.5rem;
@@ -297,7 +190,6 @@ const SearchInput = styled.input`
   }
 `;
 
-// Ícono de búsqueda
 const SearchIcon = styled.span`
   position: absolute;
   right: 1.5rem;
@@ -318,7 +210,6 @@ const SearchIcon = styled.span`
   }
 `;
 
-// Contenedor principal del contenido
 const MainContainer = styled.div`
   position: relative;
   z-index: 5;
@@ -340,7 +231,6 @@ const MainContainer = styled.div`
   }
 `;
 
-// Wrapper de la galería
 const GalleryWrapper = styled.div.withConfig({
   shouldForwardProp: (prop) => !['openCart', 'isTablet'].includes(prop),
 })`
@@ -397,7 +287,6 @@ const GalleryWrapper = styled.div.withConfig({
   }
 `;
 
-// Wrapper del carrito
 const CartWrapper = styled.div`
   width: ${({ openCart, isTablet }) => (openCart ? (isTablet ? '100%' : '38%') : '0%')};
   height: 30%;
