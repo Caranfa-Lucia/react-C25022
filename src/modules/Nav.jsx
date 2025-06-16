@@ -9,8 +9,8 @@ import logo from '../images/logo.png.png';
 
 function Nav() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const isNotHomePage = location.pathname !== "/home";
+  //const navigate = useNavigate();
+  const isAdminPage = location.pathname === "/admin" || location.pathname === "/cart";
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -22,16 +22,23 @@ function Nav() {
     setIsLoggedIn,
     showModal,
     setShowModal,
+    setShowBlockedModal,
     isAdminLoggedIn,
     setIsAdminLoggedIn
   } = useAppContext();
 
-  const handleCartClick = () => {
-    if (!isNotHomePage) {
+  const handleAdminCartClick = () => {
+    if (isAdminPage) {
       setOpenCart(!openCart);
-    } else {
-      navigate('/cart');
+      setShowBlockedModal(true);
     }
+    setMenuOpen(false);
+  };
+
+  const handleCartClick = () => {
+    if (location.pathname === "/cart") return;
+
+    setOpenCart(prev => !prev);
     setMenuOpen(false);
   };
 
@@ -55,7 +62,13 @@ function Nav() {
   return (
     <NavbarContainer>
       <NavbarBrand>
-        <Link to="/home" onClick={handleLinkClick}>
+        <Link
+          to="/home"
+          onClick={() => {
+            handleLinkClick();
+            setSearch("");
+          }}
+        >
           <img src={logo} alt="Lulishop Logo" height={"55px"} width={"150px"} />
         </Link>
       </NavbarBrand>
@@ -68,7 +81,15 @@ function Nav() {
 
       <NavList open={menuOpen}>
         <NavItem>
-          <NavLink to="/home" $active={location.pathname === "/home"} onClick={handleLinkClick}>Inicio</NavLink>
+          <NavLink
+            to="/home"
+            $active={location.pathname === "/home"}
+            onClick={() => {
+              handleLinkClick();
+              setSearch("");
+            }}
+          >
+            Inicio</NavLink>
         </NavItem>
         <NavItem>
           <NavLink to="/aboutUs" $active={location.pathname === "/aboutUs"} onClick={handleLinkClick}>Acerca de</NavLink>
@@ -83,14 +104,21 @@ function Nav() {
         </NavItem>
         {isAdminLoggedIn && (
           <NavItem>
-            <NavLink to="/admin" $active={location.pathname === "/admin"} onClick={handleLinkClick}>
+            <NavLink
+              to="/admin"
+              $active={location.pathname === "/admin"}
+              onClick={() => {
+                handleLinkClick();
+                setSearch("");
+              }}
+            >
               <i className="las la-user-secret" style={{ fontSize: "24px" }}></i>
               <AdminText>Admin</AdminText>
             </NavLink>
           </NavItem>
         )}
         <CartContainer>
-          {!isNotHomePage && (
+          {!isAdminPage && (
             <ArrowIcon
               src={arrow}
               alt="flecha"
@@ -101,7 +129,7 @@ function Nav() {
           <CartImage
             src={cart}
             alt="carrito"
-            onClick={handleCartClick}
+            onClick={isAdminPage ? handleAdminCartClick : handleCartClick}
           />
           <Counter>{count}</Counter>
         </CartContainer>

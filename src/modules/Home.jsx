@@ -23,11 +23,16 @@ function Home() {
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
 
   useEffect(() => {
+    setSearch("")
+  }, []);
+
+  useEffect(() => {
     setOpenCart(false);
 
     const handleResize = () => {
       setIsTablet(window.innerWidth <= 1144);
     };
+    handleResize();
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -56,19 +61,34 @@ function Home() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          {search?.length > 0 && (
+            <ClearSearchButton onClick={() => setSearch('')}>
+              ✖
+            </ClearSearchButton>
+          )}
           <SearchIcon>🔍</SearchIcon>
         </SearchContainer>
       </HeaderSection>
 
       <MainContainer>
         {!(openCart && isTablet) && (
-          <GalleryWrapper openCart={openCart} isTablet={isTablet}>
-            <Gallery {...galleryProps} productos={productFilter} />
+          <GalleryWrapper $opencart={openCart} $istablet={isTablet}>
+            {productFilter.length > 0 || loading ? (
+              <Gallery {...galleryProps} productos={productFilter} />
+            ) : (
+              <EmptyState>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 9.75h4.5m-4.5 3h4.5m1.5-9H8.25c-.621 0-1.19.354-1.447.918L3.053 11.25c-.24.51-.24 1.09 0 1.6l3.75 8.333c.257.564.826.917 1.447.917h7.5c.621 0 1.19-.353 1.447-.917l3.75-8.333c.24-.51.24-1.09 0-1.6l-3.75-8.332A1.5 1.5 0 0016.5 3z" />
+                </svg>
+                <h2>Sin resultados</h2>
+                <p>No se encontraron productos que coincidan con tu búsqueda.</p>
+              </EmptyState>
+            )}
           </GalleryWrapper>
         )}
 
         {openCart && (
-          <CartWrapper openCart={openCart} isTablet={isTablet}>
+          <CartWrapper $opencart={openCart} $istablet={isTablet}>
             <Cart />
           </CartWrapper>
         )}
@@ -234,8 +254,8 @@ const MainContainer = styled.div`
 const GalleryWrapper = styled.div.withConfig({
   shouldForwardProp: (prop) => !['openCart', 'isTablet'].includes(prop),
 })`
-  width: ${({ openCart, isTablet }) => {
-    if (openCart) return isTablet ? '0%' : '58%';
+  width: ${({ $opencart, $istablet }) => {
+    if ($opencart) return $istablet ? '0%' : '58%';
     return '100%';
   }};
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -288,7 +308,7 @@ const GalleryWrapper = styled.div.withConfig({
 `;
 
 const CartWrapper = styled.div`
-  width: ${({ openCart, isTablet }) => (openCart ? (isTablet ? '100%' : '38%') : '0%')};
+  width: ${({ $opencart, $istablet }) => ($opencart ? ($istablet ? '100%' : '38%') : '0%')};
   height: 30%;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
@@ -300,7 +320,7 @@ const CartWrapper = styled.div`
     0 8px 32px rgba(0, 0, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  animation: ${({ openCart }) => openCart ? slideIn : 'none'} 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: ${({ $opencart }) => $opencart ? slideIn : 'none'} 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 
   &::before {
@@ -325,7 +345,7 @@ const CartWrapper = styled.div`
   }
 
   @media (max-width: 1145px) {
-    width: ${({ openCart }) => (openCart ? '100%' : '0%')} !important;
+    width: ${({ $opencart }) => ($opencart ? '100%' : '0%')} !important;
     max-width: 800px;
     margin: 0 auto;
   }
@@ -334,5 +354,81 @@ const CartWrapper = styled.div`
     border-radius: 16px;
   }
 `;
+
+const EmptyState = styled.div`
+  width: 100%;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #444;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  animation: ${fadeIn} 0.6s ease-out;
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  svg {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    padding: 3rem 1.5rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+
+    svg {
+      width: 60px;
+      height: 60px;
+    }
+  }
+`;
+
+
+const ClearSearchButton = styled.span`
+  position: absolute;
+  right: 3rem; 
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  margin-right: 2rem;
+  border: 1px solid #000;
+  border-radius: 50%;
+  padding: 0px 5px;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    right: 2.75rem;
+  }
+`;
+
 
 export default Home;

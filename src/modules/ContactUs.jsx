@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { keyframes } from 'styled-components';
+import { useAppContext } from '../context/AppContext';
+import Cart from '../components/Cart';
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +14,24 @@ const ContactUs = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
+    const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
+
+    const {
+        openCart,
+        setOpenCart,    
+    } = useAppContext();
+
+    useEffect(() => {
+        setOpenCart(false);
+
+        const handleResize = () => {
+            setIsTablet(window.innerWidth <= 1144);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -44,7 +66,9 @@ const ContactUs = () => {
             fontFamily: 'Arial, sans-serif',
             position: 'relative',
             overflow: 'hidden',
-            padding: '40px 20px'
+            padding: '40px 20px',
+            display: 'flex',
+            justifyContent: 'space-between',
         },
         decorativeShape1: {
             position: 'absolute',
@@ -67,12 +91,6 @@ const ContactUs = () => {
             borderRadius: '50%',
             filter: 'blur(80px)',
             zIndex: 1
-        },
-        header: {
-            textAlign: 'center',
-            marginBottom: '50px',
-            position: 'relative',
-            zIndex: 2
         },
         title: {
             fontSize: 'clamp(2rem, 4vw, 3.5rem)',
@@ -274,212 +292,298 @@ const ContactUs = () => {
 
     return (
         <div style={styles.container}>
-            <div style={styles.decorativeShape1}></div>
-            <div style={styles.decorativeShape2}></div>
+            <ContentContainer $opencart={openCart} $istablet={isTablet}>
+                <div style={styles.decorativeShape1}></div>
+                <div style={styles.decorativeShape2}></div>
+               <h1 style={styles.title}>Contáctanos</h1>
+                    <p style={styles.subtitle}>Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos pronto.</p>
+                    <div style={styles.titleUnderline}></div>
 
-            <div style={styles.header}>
-                <h1 style={styles.title}>Contáctanos</h1>
-                <p style={styles.subtitle}>Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos pronto.</p>
-                <div style={styles.titleUnderline}></div>
-            </div>
 
-            <div style={styles.formContainer}>
-                <div style={styles.formCard}>
-                    <form onSubmit={handleSubmit} style={styles.form}>
-                        <div style={styles.inputRow}>
+                <div style={styles.formContainer}>
+                    <div style={styles.formCard}>
+                        <form onSubmit={handleSubmit} style={styles.form}>
+                            <div style={styles.inputRow}>
+                                <div style={styles.inputGroup}>
+                                    <label style={styles.label}>Nombre completo *</label>
+                                    <input
+                                        type="text"
+                                        name="nombre"
+                                        value={formData.nombre}
+                                        onChange={handleInputChange}
+                                        onFocus={() => setFocusedField('nombre')}
+                                        onBlur={() => setFocusedField(null)}
+                                        placeholder="Tu nombre completo"
+                                        required
+                                        style={{
+                                            ...styles.input,
+                                            ...(focusedField === 'nombre' ? styles.inputFocused : {})
+                                        }}
+                                    />
+                                </div>
+                                <div style={styles.inputGroup}>
+                                    <label style={styles.label}>Email *</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        onFocus={() => setFocusedField('email')}
+                                        onBlur={() => setFocusedField(null)}
+                                        placeholder="tu@email.com"
+                                        required
+                                        style={{
+                                            ...styles.input,
+                                            ...(focusedField === 'email' ? styles.inputFocused : {})
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={styles.inputRow}>
+                                <div style={styles.inputGroup}>
+                                    <label style={styles.label}>Teléfono</label>
+                                    <input
+                                        type="tel"
+                                        name="telefono"
+                                        value={formData.telefono}
+                                        onChange={handleInputChange}
+                                        onFocus={() => setFocusedField('telefono')}
+                                        onBlur={() => setFocusedField(null)}
+                                        placeholder="+54 11 1234-5678"
+                                        style={{
+                                            ...styles.input,
+                                            ...(focusedField === 'telefono' ? styles.inputFocused : {})
+                                        }}
+                                    />
+                                </div>
+                                <div style={styles.inputGroup}>
+                                    <label style={styles.label}>Asunto *</label>
+                                    <select
+                                        name="asunto"
+                                        value={formData.asunto}
+                                        onChange={handleInputChange}
+                                        onFocus={() => setFocusedField('asunto')}
+                                        onBlur={() => setFocusedField(null)}
+                                        required
+                                        style={{
+                                            ...styles.select,
+                                            ...(focusedField === 'asunto' ? styles.inputFocused : {})
+                                        }}
+                                    >
+                                        <option value="">Selecciona un asunto</option>
+                                        <option value="consulta">Consulta general</option>
+                                        <option value="soporte">Soporte técnico</option>
+                                        <option value="ventas">Información de ventas</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div style={styles.inputGroup}>
-                                <label style={styles.label}>Nombre completo *</label>
-                                <input
-                                    type="text"
-                                    name="nombre"
-                                    value={formData.nombre}
+                                <label style={styles.label}>Mensaje *</label>
+                                <textarea
+                                    name="mensaje"
+                                    value={formData.mensaje}
                                     onChange={handleInputChange}
-                                    onFocus={() => setFocusedField('nombre')}
+                                    onFocus={() => setFocusedField('mensaje')}
                                     onBlur={() => setFocusedField(null)}
-                                    placeholder="Tu nombre completo"
+                                    placeholder="Escribe tu mensaje aquí..."
                                     required
                                     style={{
-                                        ...styles.input,
-                                        ...(focusedField === 'nombre' ? styles.inputFocused : {})
+                                        ...styles.textarea,
+                                        ...(focusedField === 'mensaje' ? styles.inputFocused : {})
                                     }}
                                 />
                             </div>
-                            <div style={styles.inputGroup}>
-                                <label style={styles.label}>Email *</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    onFocus={() => setFocusedField('email')}
-                                    onBlur={() => setFocusedField(null)}
-                                    placeholder="tu@email.com"
-                                    required
-                                    style={{
-                                        ...styles.input,
-                                        ...(focusedField === 'email' ? styles.inputFocused : {})
-                                    }}
-                                />
-                            </div>
-                        </div>
 
-                        <div style={styles.inputRow}>
-                            <div style={styles.inputGroup}>
-                                <label style={styles.label}>Teléfono</label>
-                                <input
-                                    type="tel"
-                                    name="telefono"
-                                    value={formData.telefono}
-                                    onChange={handleInputChange}
-                                    onFocus={() => setFocusedField('telefono')}
-                                    onBlur={() => setFocusedField(null)}
-                                    placeholder="+54 11 1234-5678"
+                            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
                                     style={{
-                                        ...styles.input,
-                                        ...(focusedField === 'telefono' ? styles.inputFocused : {})
+                                        ...styles.submitButton,
+                                        ...(isSubmitting ? styles.submitButtonDisabled : {}),
+                                        ...(!isSubmitting ? styles.submitButtonHover : {})
                                     }}
-                                />
-                            </div>
-                            <div style={styles.inputGroup}>
-                                <label style={styles.label}>Asunto *</label>
-                                <select
-                                    name="asunto"
-                                    value={formData.asunto}
-                                    onChange={handleInputChange}
-                                    onFocus={() => setFocusedField('asunto')}
-                                    onBlur={() => setFocusedField(null)}
-                                    required
-                                    style={{
-                                        ...styles.select,
-                                        ...(focusedField === 'asunto' ? styles.inputFocused : {})
+                                    onMouseEnter={(e) => {
+                                        if (!isSubmitting) {
+                                            e.target.style.transform = 'translateY(-2px)';
+                                            e.target.style.boxShadow = '0 15px 35px rgba(102, 126, 234, 0.4)';
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (!isSubmitting) {
+                                            e.target.style.transform = 'translateY(0)';
+                                            e.target.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.3)';
+                                        }
                                     }}
                                 >
-                                    <option value="">Selecciona un asunto</option>
-                                    <option value="consulta">Consulta general</option>
-                                    <option value="soporte">Soporte técnico</option>
-                                    <option value="ventas">Información de ventas</option>
-                                    <option value="otro">Otro</option>
-                                </select>
+                                    {isSubmitting ? (
+                                        <>
+                                            <span style={styles.loader}></span>
+                                            <span style={{ marginLeft: '10px' }}>Enviando...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span>Enviar Mensaje</span>
+                                            <span style={{ marginLeft: '8px' }}>✉️</span>
+                                        </>
+                                    )}
+                                </button>
                             </div>
-                        </div>
+                        </form>
 
-                        <div style={styles.inputGroup}>
-                            <label style={styles.label}>Mensaje *</label>
-                            <textarea
-                                name="mensaje"
-                                value={formData.mensaje}
-                                onChange={handleInputChange}
-                                onFocus={() => setFocusedField('mensaje')}
-                                onBlur={() => setFocusedField(null)}
-                                placeholder="Escribe tu mensaje aquí..."
-                                required
-                                style={{
-                                    ...styles.textarea,
-                                    ...(focusedField === 'mensaje' ? styles.inputFocused : {})
-                                }}
-                            />
-                        </div>
-
-                        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                            <button
-                                type="submit"
-                                disabled={isSubmitting}
-                                style={{
-                                    ...styles.submitButton,
-                                    ...(isSubmitting ? styles.submitButtonDisabled : {}),
-                                    ...(!isSubmitting ? styles.submitButtonHover : {})
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!isSubmitting) {
-                                        e.target.style.transform = 'translateY(-2px)';
-                                        e.target.style.boxShadow = '0 15px 35px rgba(102, 126, 234, 0.4)';
-                                    }
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isSubmitting) {
-                                        e.target.style.transform = 'translateY(0)';
-                                        e.target.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.3)';
-                                    }
-                                }}
+                        <div style={styles.contactInfo}>
+                            <div
+                                style={styles.contactItem}
+                                onMouseEnter={(e) => handleContactItemHover(e, true)}
+                                onMouseLeave={(e) => handleContactItemHover(e, false)}
                             >
-                                {isSubmitting ? (
-                                    <>
-                                        <span style={styles.loader}></span>
-                                        <span style={{ marginLeft: '10px' }}>Enviando...</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span>Enviar Mensaje</span>
-                                        <span style={{ marginLeft: '8px' }}>✉️</span>
-                                    </>
-                                )}
-                            </button>
-                        </div>
-                    </form>
+                                <a href="mailto:luciacaranfa@gmail.com" style={styles.contactLink}>
+                                    <div style={styles.contactIcon}>📧</div>
+                                    <div style={styles.contactTitle}>Email</div>
+                                    <div style={styles.contactText}>luciacaranfa@gmail.com</div>
+                                </a>
+                            </div>
 
-                    <div style={styles.contactInfo}>
-                        <div
-                            style={styles.contactItem}
-                            onMouseEnter={(e) => handleContactItemHover(e, true)}
-                            onMouseLeave={(e) => handleContactItemHover(e, false)}
-                        >
-                            <a href="mailto:luciacaranfa@gmail.com" style={styles.contactLink}>
-                                <div style={styles.contactIcon}>📧</div>
-                                <div style={styles.contactTitle}>Email</div>
-                                <div style={styles.contactText}>luciacaranfa@gmail.com</div>
-                            </a>
-                        </div>
-
-                        <div
-                            style={styles.contactItem}
-                            onMouseEnter={(e) => handleContactItemHover(e, true)}
-                            onMouseLeave={(e) => handleContactItemHover(e, false)}
-                        >
-                            <a href="tel:+541112345678" style={styles.contactLink}>
-                                <div style={styles.contactIcon}>📞</div>
-                                <div style={styles.contactTitle}>Teléfono</div>
-                                <div style={styles.contactText}>+54 11 1234-5678</div>
-                            </a>
-                        </div>
-
-                        <div
-                            style={styles.contactItem}
-                            onMouseEnter={(e) => handleContactItemHover(e, true)}
-                            onMouseLeave={(e) => handleContactItemHover(e, false)}
-                        >
-                            <a
-                                href="https://maps.google.com/?q=Buenos+Aires,+Argentina"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={styles.contactLink}
+                            <div
+                                style={styles.contactItem}
+                                onMouseEnter={(e) => handleContactItemHover(e, true)}
+                                onMouseLeave={(e) => handleContactItemHover(e, false)}
                             >
-                                <div style={styles.contactIcon}>📍</div>
-                                <div style={styles.contactTitle}>Dirección</div>
-                                <div style={styles.contactText}>Capital Federal, Buenos Aires, Argentina</div>
-                            </a>
-                        </div>
+                                <a href="tel:+541112345678" style={styles.contactLink}>
+                                    <div style={styles.contactIcon}>📞</div>
+                                    <div style={styles.contactTitle}>Teléfono</div>
+                                    <div style={styles.contactText}>+54 11 1234-5678</div>
+                                </a>
+                            </div>
 
-                        <div
-                            style={styles.contactItem}
-                            onMouseEnter={(e) => handleContactItemHover(e, true)}
-                            onMouseLeave={(e) => handleContactItemHover(e, false)}
-                        >
-                            <a
-                                href="https://www.linkedin.com/in/lucia-caranfa/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={styles.contactLink}
+                            <div
+                                style={styles.contactItem}
+                                onMouseEnter={(e) => handleContactItemHover(e, true)}
+                                onMouseLeave={(e) => handleContactItemHover(e, false)}
                             >
-                                <div style={styles.contactIcon}>💼</div>
-                                <div style={styles.contactTitle}>LinkedIn</div>
-                                <div style={styles.contactText}>Contactame y trabajemos juntos</div>
-                            </a>
+                                <a
+                                    href="https://maps.google.com/?q=Buenos+Aires,+Argentina"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={styles.contactLink}
+                                >
+                                    <div style={styles.contactIcon}>📍</div>
+                                    <div style={styles.contactTitle}>Dirección</div>
+                                    <div style={styles.contactText}>Capital Federal, Buenos Aires, Argentina</div>
+                                </a>
+                            </div>
+
+                            <div
+                                style={styles.contactItem}
+                                onMouseEnter={(e) => handleContactItemHover(e, true)}
+                                onMouseLeave={(e) => handleContactItemHover(e, false)}
+                            >
+                                <a
+                                    href="https://www.linkedin.com/in/lucia-caranfa/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={styles.contactLink}
+                                >
+                                    <div style={styles.contactIcon}>💼</div>
+                                    <div style={styles.contactTitle}>LinkedIn</div>
+                                    <div style={styles.contactText}>Contactame y trabajemos juntos</div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </ContentContainer>
+            {openCart && (
+                <CartWrapper $opencart={openCart} $istablet={isTablet}>
+                    <Cart />
+                </CartWrapper>
+            )}
         </div>
     );
 };
+
+
+const shimmer = keyframes`
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+`;
+
+const slideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const CartWrapper = styled.div`
+  width: ${({ $opencart, $istablet }) => ($opencart ? ($istablet ? '100%' : '38%') : '0%')};
+  height: 30%;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: ${({ $opencart }) => $opencart ? slideIn : 'none'} 0.8s ease;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+    background-size: 200% 100%;
+    animation: ${shimmer} 3s infinite linear;
+    border-radius: 24px 24px 0 0;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 28px 80px rgba(0, 0, 0, 0.15),
+      0 12px 40px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  @media (max-width: 1145px) {
+    width: ${({ $opencart }) => ($opencart ? '100%' : '0%')} !important;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 16px;
+  }
+`;
+
+const ContentContainer = styled.div`
+  flex: 1;
+  padding: 40px;
+  transition: all 0.5s ease;
+  width: ${({ $opencart, $istablet }) => ($opencart ? ($istablet ? '0%' : '40%') : '100%')};
+  display: ${({ $opencart, $istablet }) => ($opencart && $istablet ? 'none' : 'block')};
+  opacity: ${({ $opencart, $istablet }) => ($opencart && $istablet ? '0' : '1')};
+  height: ${({ $opencart, $istablet }) => ($opencart && $istablet ? '0' : 'auto')};
+  overflow: hidden;
+  transition: all 0.4s ease;
+`;
 
 export default ContactUs;
