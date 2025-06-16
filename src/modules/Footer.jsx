@@ -210,7 +210,6 @@ function Footer() {
     }
   };
 
-  // Estado para detectar tamaño de pantalla
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
 
   React.useEffect(() => {

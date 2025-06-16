@@ -9,7 +9,6 @@ import logo from '../images/logo.png.png';
 
 function Nav() {
   const location = useLocation();
-  //const navigate = useNavigate();
   const isAdminPage = location.pathname === "/admin" || location.pathname === "/cart";
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -297,7 +296,7 @@ const AdminText = styled.span`
 const CartContainer = styled.li`
   display: flex;
   align-items: center;
-  background-color: #4a6784; /* Slightly lighter background for cart section */
+  background-color: #4a6784;
   border-radius: 25px;
   padding: 8px 15px;
   margin-left: 20px;

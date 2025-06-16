@@ -18,7 +18,7 @@ const ContactUs = () => {
 
     const {
         openCart,
-        setOpenCart,    
+        setOpenCart,
     } = useAppContext();
 
     useEffect(() => {
@@ -295,9 +295,9 @@ const ContactUs = () => {
             <ContentContainer $opencart={openCart} $istablet={isTablet}>
                 <div style={styles.decorativeShape1}></div>
                 <div style={styles.decorativeShape2}></div>
-               <h1 style={styles.title}>Contáctanos</h1>
-                    <p style={styles.subtitle}>Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos pronto.</p>
-                    <div style={styles.titleUnderline}></div>
+                <h1 style={styles.title}>Contáctanos</h1>
+                <p style={styles.subtitle}>Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos pronto.</p>
+                <div style={styles.titleUnderline}></div>
 
 
                 <div style={styles.formContainer}>

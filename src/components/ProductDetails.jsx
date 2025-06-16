@@ -13,12 +13,12 @@ const ProductDetails = ({
     price = 0,
     image = "",
     count = 1,
-    handleCount = () => { console.log('Producto agregado al carrito') },
+    handleCount = () => {},
 }) => {
     const [buttonHover, setButtonHover] = useState(false)
     const [payHover, setPayHover] = useState(false)
     const [backHover, setBackHover] = useState(false)
-const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
+    const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
 
     const {
         openCart,
@@ -43,7 +43,7 @@ const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
         minHeight: '100vh',
         background: 'linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%)',
         padding: '32px 16px',
-                    display: 'flex',
+        display: 'flex',
     }
 
     const cardStyle = {
@@ -255,111 +255,111 @@ const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
     return (
         <div style={containerStyle}>
             <ContentContainer $opencart={openCart} $istablet={isTablet}>
-            <div style={cardStyle}>
-                <div style={gridStyle}>
+                <div style={cardStyle}>
+                    <div style={gridStyle}>
 
-                    <div style={imageContainerStyle}>
-                        <div style={imageWrapperStyle}>
-                            <img
-                                src={image}
-                                alt={name}
-                                style={imageStyle}
-                                onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-                                onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-                            />
-                        </div>
-                    </div>
-
-                    <div style={detailsStyle}>
-                        <div>
-                            <h1 style={titleStyle}>
-                                {name}
-                            </h1>
-
-                            <div style={priceContainerStyle}>
-                                <span style={priceStyle}>
-                                    ${price.toLocaleString()}
-                                </span>
-                                <span style={badgeStyle}>
-                                    IVA incluido
-                                </span>
-                            </div>
-
-                            <p style={descriptionStyle}>
-                                {description}
-                            </p>
-
-                            <div style={featuresGridStyle}>
-                                <div style={featureCardStyle}>
-                                    <div style={featureLabelStyle}>Envío</div>
-                                    <div style={featureValueStyle}>Gratis</div>
-                                </div>
-                                <div style={featureCardStyle}>
-                                    <div style={featureLabelStyle}>Garantía</div>
-                                    <div style={featureValueStyle}>1 año</div>
-                                </div>
+                        <div style={imageContainerStyle}>
+                            <div style={imageWrapperStyle}>
+                                <img
+                                    src={image}
+                                    alt={name}
+                                    style={imageStyle}
+                                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                                />
                             </div>
                         </div>
 
-                        <div style={buttonsContainerStyle}>
-                            <button
-                                style={addToCartButtonStyle}
-                                onMouseEnter={() => setButtonHover(true)}
-                                onMouseLeave={() => setButtonHover(false)}
-                                onClick={() => handleCount(id, name, price, image)}
-                            >
-                                <ShoppingCart size={24} />
-                                Agregar al carrito
-                            </button>
+                        <div style={detailsStyle}>
+                            <div>
+                                <h1 style={titleStyle}>
+                                    {name}
+                                </h1>
 
-                            {count > 0 && (
-                                <Link to="/cart">
+                                <div style={priceContainerStyle}>
+                                    <span style={priceStyle}>
+                                        ${price.toLocaleString()}
+                                    </span>
+                                    <span style={badgeStyle}>
+                                        IVA incluido
+                                    </span>
+                                </div>
+
+                                <p style={descriptionStyle}>
+                                    {description}
+                                </p>
+
+                                <div style={featuresGridStyle}>
+                                    <div style={featureCardStyle}>
+                                        <div style={featureLabelStyle}>Envío</div>
+                                        <div style={featureValueStyle}>Gratis</div>
+                                    </div>
+                                    <div style={featureCardStyle}>
+                                        <div style={featureLabelStyle}>Garantía</div>
+                                        <div style={featureValueStyle}>1 año</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={buttonsContainerStyle}>
+                                <button
+                                    style={addToCartButtonStyle}
+                                    onMouseEnter={() => setButtonHover(true)}
+                                    onMouseLeave={() => setButtonHover(false)}
+                                    onClick={() => handleCount(id, name, price, image)}
+                                >
+                                    <ShoppingCart size={24} />
+                                    Agregar al carrito
+                                </button>
+
+                                {count > 0 && (
+                                    <Link to="/cart">
+                                        <button
+                                            style={payButtonStyle}
+                                            onMouseEnter={() => setPayHover(true)}
+                                            onMouseLeave={() => setPayHover(false)}
+                                        >
+                                            <CreditCard size={24} />
+                                            Ir a pagar
+                                        </button>
+                                    </Link>
+                                )}
+
+                                <Link to="/home">
                                     <button
-                                        style={payButtonStyle}
-                                        onMouseEnter={() => setPayHover(true)}
-                                        onMouseLeave={() => setPayHover(false)}
+                                        style={backButtonStyle}
+                                        onMouseEnter={() => setBackHover(true)}
+                                        onMouseLeave={() => setBackHover(false)}
                                     >
-                                        <CreditCard size={24} />
-                                        Ir a pagar
+                                        <ArrowLeft size={20} />
+                                        Volver a la tienda
                                     </button>
                                 </Link>
-                            )}
-
-                            <Link to="/home">
-                                <button
-                                    style={backButtonStyle}
-                                    onMouseEnter={() => setBackHover(true)}
-                                    onMouseLeave={() => setBackHover(false)}
-                                >
-                                    <ArrowLeft size={20} />
-                                    Volver a la tienda
-                                </button>
-                            </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div style={infoSectionStyle}>
-                <h2 style={infoTitleStyle}>Información adicional</h2>
-                <div style={infoGridStyle}>
-                    <div style={{ ...infoCardStyle, backgroundColor: '#ecfdf5' }}>
-                        <div style={infoIconStyle}>🚚</div>
-                        <h3 style={infoCardTitleStyle}>Envío gratis</h3>
-                        <p style={infoCardDescStyle}>En compras superiores a $50</p>
-                    </div>
-                    <div style={{ ...infoCardStyle, backgroundColor: '#eff6ff' }}>
-                        <div style={infoIconStyle}>🔒</div>
-                        <h3 style={infoCardTitleStyle}>Compra segura</h3>
-                        <p style={infoCardDescStyle}>Protección de datos garantizada</p>
-                    </div>
-                    <div style={{ ...infoCardStyle, backgroundColor: '#faf5ff' }}>
-                        <div style={infoIconStyle}>💎</div>
-                        <h3 style={infoCardTitleStyle}>Calidad premium</h3>
-                        <p style={infoCardDescStyle}>Productos seleccionados</p>
+                <div style={infoSectionStyle}>
+                    <h2 style={infoTitleStyle}>Información adicional</h2>
+                    <div style={infoGridStyle}>
+                        <div style={{ ...infoCardStyle, backgroundColor: '#ecfdf5' }}>
+                            <div style={infoIconStyle}>🚚</div>
+                            <h3 style={infoCardTitleStyle}>Envío gratis</h3>
+                            <p style={infoCardDescStyle}>En compras superiores a $50</p>
+                        </div>
+                        <div style={{ ...infoCardStyle, backgroundColor: '#eff6ff' }}>
+                            <div style={infoIconStyle}>🔒</div>
+                            <h3 style={infoCardTitleStyle}>Compra segura</h3>
+                            <p style={infoCardDescStyle}>Protección de datos garantizada</p>
+                        </div>
+                        <div style={{ ...infoCardStyle, backgroundColor: '#faf5ff' }}>
+                            <div style={infoIconStyle}>💎</div>
+                            <h3 style={infoCardTitleStyle}>Calidad premium</h3>
+                            <p style={infoCardDescStyle}>Productos seleccionados</p>
+                        </div>
                     </div>
                 </div>
-            </div>
             </ContentContainer>
             {openCart && (
                 <CartWrapper $opencart={openCart} $istablet={isTablet}>

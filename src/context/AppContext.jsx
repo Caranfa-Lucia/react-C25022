@@ -48,16 +48,16 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-  if (!productos || productos.length === 0) return;
+    if (!productos || productos.length === 0) return;
 
-  setProductList((prevList) => {
-    const updatedList = prevList.filter(product =>
-      productos.some(p => p.id === product.id)
-    );
-    setCount(updatedList.length);
-    return updatedList;
-  });
-}, [productos]);
+    setProductList((prevList) => {
+      const updatedList = prevList.filter(product =>
+        productos.some(p => p.id === product.id)
+      );
+      setCount(updatedList.length);
+      return updatedList;
+    });
+  }, [productos]);
 
   const handleCount = (id, name, price, image) => {
     const newProduct = { id, name, price, image };
@@ -81,13 +81,13 @@ export const AppProvider = ({ children }) => {
 
   const handleIncrementItem = (productId) => {
     const existingProduct = productList.find(product => product.id === productId);
-    
+
     if (existingProduct) {
-      const newProduct = { 
-        id: existingProduct.id, 
-        name: existingProduct.name, 
-        price: existingProduct.price, 
-        image: existingProduct.image 
+      const newProduct = {
+        id: existingProduct.id,
+        name: existingProduct.name,
+        price: existingProduct.price,
+        image: existingProduct.image
       };
       setProductList(prev => [...prev, newProduct]);
       setCount(prev => prev + 1);
@@ -97,7 +97,7 @@ export const AppProvider = ({ children }) => {
   const handleDecrementItem = (productId) => {
     setProductList((prevList) => {
       const productIndex = prevList.findIndex(product => product.id === productId);
-      
+
       if (productIndex !== -1) {
         const updatedList = [
           ...prevList.slice(0, productIndex),
@@ -106,31 +106,31 @@ export const AppProvider = ({ children }) => {
         setCount(updatedList.length);
         return updatedList;
       }
-      
+
       return prevList;
     });
   };
 
   const productMap = productList.reduce((acc, product) => {
-  const existing = acc[product.id];
-  if (!existing) {
-    acc[product.id] = { id: product.id, quantity: 1 };
-  } else {
-    acc[product.id].quantity += 1;
-  }
-  return acc;
-}, {});
+    const existing = acc[product.id];
+    if (!existing) {
+      acc[product.id] = { id: product.id, quantity: 1 };
+    } else {
+      acc[product.id].quantity += 1;
+    }
+    return acc;
+  }, {});
 
-const groupedProducts = Object.values(productMap).map(({ id, quantity }) => {
-  const currentProduct = productos.find(p => p.id === id);
-  return {
-    id,
-    name: currentProduct?.name || "Producto desconocido",
-    price: currentProduct?.price || 0,
-    image: currentProduct?.image || "",
-    quantity
-  };
-});
+  const groupedProducts = Object.values(productMap).map(({ id, quantity }) => {
+    const currentProduct = productos.find(p => p.id === id);
+    return {
+      id,
+      name: currentProduct?.name || "Producto desconocido",
+      price: currentProduct?.price || 0,
+      image: currentProduct?.image || "",
+      quantity
+    };
+  });
 
   useEffect(() => {
     if (groupedProducts.length > 0) {
@@ -166,8 +166,8 @@ const groupedProducts = Object.values(productMap).map(({ id, quantity }) => {
         groupedProducts,
         handleRemoveItem,
         handleClearCart,
-        handleIncrementItem,  
-        handleDecrementItem,  
+        handleIncrementItem,
+        handleDecrementItem,
         isAdminLoggedIn,
         setIsAdminLoggedIn,
         showBlockedAdminModal,
