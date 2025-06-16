@@ -79,41 +79,41 @@ const Cart = () => {
     groupedProducts,
     handleClearCart,
     handleRemoveItem,
-    handleIncrementItem, 
-        handleDecrementItem,
+    handleIncrementItem,
+    handleDecrementItem,
   } = useAppContext();
 
   const total = groupedProducts.reduce((acc, product) => acc + product.price * product.quantity, 0);
 
- return (
+  return (
     <CartMainWrapper isCartPage={isCartPage}>
-{count === 0 ? (
-  <div style={{
-    display: "flex", 
-    flexDirection: "column",
-    height: "100%"
-  }}>
-    {!isCartPage && (
-      <CloseButton onClick={() => setOpenCart(false)} isEmpty={true}>
-        X
-      </CloseButton>
-    )}
-    <EmptyCartContainer isCartPage={isCartPage}>
-      <EmptyCartIcon>🛒</EmptyCartIcon>
-      <EmptyProductList>¡El carrito está vacío!</EmptyProductList>
-      <EmptyCartSubtext>Agrega productos para comenzar tu compra</EmptyCartSubtext>
-      {isCartPage && (
-        <ContinueShoppingWrapper>
-          <StyledLink to="/home">
-            <LinkIcon>←</LinkIcon>
-            Ir al inicio
-          </StyledLink>
-        </ContinueShoppingWrapper>
-      )}
-    </EmptyCartContainer>
-  </div>
-) : (
-         <>
+      {count === 0 ? (
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%"
+        }}>
+          {!isCartPage && (
+            <CloseButton onClick={() => setOpenCart(false)} isEmpty={true}>
+              X
+            </CloseButton>
+          )}
+          <EmptyCartContainer isCartPage={isCartPage}>
+            <EmptyCartIcon>🛒</EmptyCartIcon>
+            <EmptyProductList>¡El carrito está vacío!</EmptyProductList>
+            <EmptyCartSubtext>Agrega productos para comenzar tu compra</EmptyCartSubtext>
+            {isCartPage && (
+              <ContinueShoppingWrapper>
+                <StyledLink to="/home">
+                  <LinkIcon>←</LinkIcon>
+                  Ir al inicio
+                </StyledLink>
+              </ContinueShoppingWrapper>
+            )}
+          </EmptyCartContainer>
+        </div>
+      ) : (
+        <>
           <StyledCartContainer isCartPage={isCartPage}>
             <SlideContainer>
               <CartHeader isCartPage={isCartPage}>
@@ -128,9 +128,9 @@ const Cart = () => {
                   Vaciar carrito
                 </ClearCartButton>
                 {!isCartPage && (
-                <CloseButton onClick={()=>setOpenCart(false)}>
-          X
-        </CloseButton>
+                  <CloseButton onClick={() => setOpenCart(false)}>
+                    X
+                  </CloseButton>
                 )}
               </CartHeader>
 
@@ -171,7 +171,7 @@ const Cart = () => {
                       <QuantitySection>
                         <QuantityLabel>Cantidad:</QuantityLabel>
                         <QuantityControls>
-                          <QuantityButton 
+                          <QuantityButton
                             onClick={() => handleDecrementItem(product.id)}
                             disabled={product.quantity <= 1}
                           >
@@ -769,7 +769,6 @@ const CloseButton = styled.div.withConfig({
     order: ${({ isEmpty }) => isEmpty ? 'unset' : 2};
     margin-left: auto;
     margin-bottom: ${({ isEmpty }) => isEmpty ? '0.5rem' : '50px'};
-    /* Asegurar que se mantenga en la parte superior */
     ${({ isEmpty }) => isEmpty && `
       position: relative;
       z-index: 10;
@@ -955,7 +954,7 @@ const QuantityLabel = styled.span`
   font-weight: 500;
 `;
 
- const QuantityControls = styled.div`
+const QuantityControls = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
