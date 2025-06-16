@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { keyframes } from 'styled-components';
+import { useAppContext } from '../context/AppContext';
+import Cart from '../components/Cart';
 
 const AboutUs = () => {
     const styles = {
@@ -7,7 +11,9 @@ const AboutUs = () => {
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             fontFamily: 'Arial, sans-serif',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            display: 'flex',
+            justifyContent: 'center'
         },
         decorativeShape1: {
             position: 'absolute',
@@ -165,14 +171,34 @@ const AboutUs = () => {
         arrow: {
             fontSize: '18px',
             transition: 'transform 0.3s ease'
-        }
+        },
     };
 
     const [hoveredCard, setHoveredCard] = useState(null);
     const [isHoveringButton, setIsHoveringButton] = useState(false);
 
+    const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
+
+    const {
+        openCart,
+        setOpenCart,
+    } = useAppContext();
+
+    useEffect(() => {
+        setOpenCart(false);
+
+        const handleResize = () => {
+            setIsTablet(window.innerWidth <= 1144);
+        };
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <div style={styles.container}>
+                        <ContentContainer $opencart={openCart} $istablet={isTablet}>
             <div style={styles.decorativeShape1}></div>
             <div style={styles.decorativeShape2}></div>
 
@@ -181,7 +207,7 @@ const AboutUs = () => {
                 <div style={styles.titleUnderline}></div>
             </div>
 
-            <div style={styles.contentWrapper}>
+           <ContentWrapper $opencart={openCart} $istablet={isTablet}>
                 <div style={styles.contentCard}>
 
                     <div style={{ marginBottom: '40px' }}>
@@ -268,9 +294,100 @@ const AboutUs = () => {
                         </a>
                     </div>
                 </div>
-            </div>
+            </ContentWrapper>
+            </ContentContainer>
+            {openCart && (
+                <CartWrapper $opencart={openCart} $istablet={isTablet}>
+                    <Cart />
+                </CartWrapper>
+            )}
         </div>
     );
 };
+
+const shimmer = keyframes`
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+`;
+
+const slideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const CartWrapper = styled.div`
+  width: ${({ $opencart, $istablet }) => ($opencart ? ($istablet ? '100%' : '38%') : '0%')};
+  height: 30%;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: ${({ $opencart }) => $opencart ? slideIn : 'none'} 0.8s ease;
+  position: relative;
+  margin: 40px 20px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+    background-size: 200% 100%;
+    animation: ${shimmer} 3s infinite linear;
+    border-radius: 24px 24px 0 0;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 28px 80px rgba(0, 0, 0, 0.15),
+      0 12px 40px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  @media (max-width: 1145px) {
+    width: ${({ $opencart }) => ($opencart ? '100%' : '0%')} !important;
+    max-width: 800px;
+    margin: 40px 20px;
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 16px;
+  }
+`;
+
+const ContentContainer = styled.div`
+  width: ${({ $opencart, $istablet }) => ($opencart ? ($istablet ? '0%' : '60%') : '100%')};
+  display: ${({ $opencart, $istablet }) => ($opencart && $istablet ? 'none' : 'block')};
+  opacity: ${({ $opencart, $istablet }) => ($opencart && $istablet ? '0' : '1')};
+  height: ${({ $opencart, $istablet }) =>($opencart && $istablet ? '0' : 'auto')};
+  overflow: hidden;
+  transition: all 0.4s ease;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+  padding: 40px;
+  transition: all 0.5s ease;
+  display: ${({ $opencart, $istablet }) => ($opencart && $istablet ? 'none' : 'block')};
+`;
 
 export default AboutUs;

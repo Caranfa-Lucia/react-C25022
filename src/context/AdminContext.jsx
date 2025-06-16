@@ -22,7 +22,7 @@ export const AdminProvider = ({ children }) => {
 
             await obtenerProductos();
 
-            toast.success("Producto agregado al carrito!");
+            toast.success("Producto agregado correctamente!");
         } catch (error) {
             console.error(error);
             toast.error("Error al agregar producto.");

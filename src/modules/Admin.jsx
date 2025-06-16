@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import { AdminContext } from '../context/AdminContext';
 import { useAppContext } from '../context/AppContext';
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
 import ProductForm from "../components/ProductForm";
 import { Helmet } from "react-helmet-async";
 
 const Admin = () => {
-    const { productos } = useAppContext();
+    const { productos, search, setSearch, productFilter } = useAppContext();
     const { loading, error, addProduct, deleteProduct, saveEditedProduct, open, setOpen } = useContext(AdminContext);
     const [selectedProduct, setselectedProduct] = useState(null);
 
@@ -44,6 +44,23 @@ const Admin = () => {
                             <ProductCount>{productos?.length || 0}</ProductCount>
                         </SectionTitle>
 
+                        <HeaderSection>
+                            <SearchContainer>
+                                <SearchInput
+                                    type='text'
+                                    placeholder='Buscar productos...'
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                                {search?.length > 0 && (
+                                    <ClearSearchButton onClick={() => setSearch('')}>
+                                        ✖
+                                    </ClearSearchButton>
+                                )}
+                                <SearchIcon>🔍</SearchIcon>
+                            </SearchContainer>
+                        </HeaderSection>
+
                         <ProductGrid>
                             <AddProductCard onClick={() => {
                                 setselectedProduct(null);
@@ -52,52 +69,55 @@ const Admin = () => {
                                 <AddIcon>+</AddIcon>
                                 <AddText>Agregar nuevo producto</AddText>
                             </AddProductCard>
-                            {productos?.map((product) => (
-                                <ProductCard key={`${product.id}-${product.name}`}>
-                                    <ProductImageContainer>
-                                        <ProductImage src={product.image} alt={product.name} />
-                                        <ProductOverlay>
-                                            <QuickActions>
-                                                <QuickActionButton
-                                                    onClick={() => {
-                                                        setselectedProduct(product);
-                                                        setOpen(true);
-                                                    }}
-                                                    title="Editar producto"
-                                                >
-                                                    ✏️
-                                                </QuickActionButton>
-                                                <QuickActionButton
-                                                    onClick={() => deleteProduct(product.id)}
-                                                    title="Eliminar producto"
-                                                    danger
-                                                >
-                                                    🗑️
-                                                </QuickActionButton>
-                                            </QuickActions>
-                                        </ProductOverlay>
-                                    </ProductImageContainer>
 
-                                    <ProductInfo>
-                                        <ProductName>{product.name}</ProductName>
-                                        <ProductPrice>${product.price}</ProductPrice>
-                                    </ProductInfo>
+                            {(productos?.length > 0 && productFilter?.length > 0) && (
+                                productFilter.map((product) => (
+                                    <ProductCard key={`${product.id}-${product.name}`}>
+                                        <ProductImageContainer>
+                                            <ProductImage src={product.image} alt={product.name} />
+                                            <ProductOverlay>
+                                                <QuickActions>
+                                                    <QuickActionButton
+                                                        onClick={() => {
+                                                            setselectedProduct(product);
+                                                            setOpen(true);
+                                                        }}
+                                                        title="Editar producto"
+                                                    >
+                                                        ✏️
+                                                    </QuickActionButton>
+                                                    <QuickActionButton
+                                                        onClick={() => deleteProduct(product.id)}
+                                                        title="Eliminar producto"
+                                                        $danger
+                                                    >
+                                                        🗑️
+                                                    </QuickActionButton>
+                                                </QuickActions>
+                                            </ProductOverlay>
+                                        </ProductImageContainer>
 
-                                    <ButtonGroup>
-                                        <EditButton onClick={() => {
-                                            setselectedProduct(product);
-                                            setOpen(true);
-                                        }}>
-                                            <ButtonIcon>✏️</ButtonIcon>
-                                            Editar
-                                        </EditButton>
-                                        <DeleteButton onClick={() => deleteProduct(product.id)}>
-                                            <ButtonIcon>🗑️</ButtonIcon>
-                                            Eliminar
-                                        </DeleteButton>
-                                    </ButtonGroup>
-                                </ProductCard>
-                            ))}
+                                        <ProductInfo>
+                                            <ProductName>{product.name}</ProductName>
+                                            <ProductPrice>${product.price}</ProductPrice>
+                                        </ProductInfo>
+
+                                        <ButtonGroup>
+                                            <EditButton onClick={() => {
+                                                setselectedProduct(product);
+                                                setOpen(true);
+                                            }}>
+                                                <ButtonIcon>✏️</ButtonIcon>
+                                                Editar
+                                            </EditButton>
+                                            <DeleteButton onClick={() => deleteProduct(product.id)}>
+                                                <ButtonIcon>🗑️</ButtonIcon>
+                                                Eliminar
+                                            </DeleteButton>
+                                        </ButtonGroup>
+                                    </ProductCard>
+                                ))
+                            )}
                         </ProductGrid>
                     </ProductsSection>
                 </>
@@ -265,6 +285,7 @@ const ProductGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
+      margin-top: 20px;
     
     @media (max-width: 768px) {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -359,7 +380,7 @@ const QuickActionButton = styled.button`
     height: 50px;
     border: none;
     border-radius: 50%;
-    background: ${props => props.danger ? 'rgba(244, 67, 54, 0.9)' : 'rgba(33, 150, 243, 0.9)'};
+    background: ${props => props.$danger ? 'rgba(244, 67, 54, 0.9)' : 'rgba(33, 150, 243, 0.9)'};
     color: white;
     font-size: 1.2rem;
     cursor: pointer;
@@ -370,7 +391,7 @@ const QuickActionButton = styled.button`
     
     &:hover {
         transform: scale(1.1);
-        background: ${props => props.danger ? '#f44336' : '#2196f3'};
+        background: ${props => props.$danger ? '#f44336' : '#2196f3'};
     }
 `;
 
@@ -537,6 +558,127 @@ const ModalBackdrop = styled.div`
     @media (max-width: 768px) {
         padding: 1rem;
     }
+`;
+
+const HeaderSection = styled.section`
+  position: relative;
+  z-index: 10;
+  padding: 2rem 2rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem 1rem;
+  }
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const SearchContainer = styled.div`
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  animation: ${fadeIn} 0.6s ease-out;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 1rem 3rem 1rem 1.5rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #333;
+  font-weight: 500;
+
+  &::placeholder {
+    color: #888;
+    font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+    transform: translateY(-2px);
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.15),
+      0 0 0 3px rgba(102, 126, 234, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 1);
+  }
+
+  &:hover:not(:focus) {
+    transform: translateY(-1px);
+    box-shadow: 
+      0 10px 36px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding: 0.875rem 2.5rem 0.875rem 1.25rem;
+  }
+`;
+
+const SearchIcon = styled.span`
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  ${SearchInput}:focus + & {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    right: 1.25rem;
+    font-size: 1.1rem;
+  }
+`;
+
+const ClearSearchButton = styled.span`
+  position: absolute;
+  right: 3rem; 
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  margin-right: 2rem;
+  border: 1px solid #000;
+  border-radius: 50%;
+  padding: 0px 5px;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    right: 2.75rem;
+  }
 `;
 
 export default Admin;

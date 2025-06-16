@@ -75,32 +75,45 @@ const Cart = () => {
 
   const {
     count,
+    setOpenCart,
     groupedProducts,
     handleClearCart,
-    handleRemoveItem
+    handleRemoveItem,
+    handleIncrementItem, 
+        handleDecrementItem,
   } = useAppContext();
 
   const total = groupedProducts.reduce((acc, product) => acc + product.price * product.quantity, 0);
-  console.log({ groupedProducts })
 
-  return (
+ return (
     <CartMainWrapper isCartPage={isCartPage}>
-      {count === 0 ? (
-        <EmptyCartContainer isCartPage={isCartPage}>
-          <EmptyCartIcon>🛒</EmptyCartIcon>
-          <EmptyProductList>¡El carrito está vacío!</EmptyProductList>
-          <EmptyCartSubtext>Agrega productos para comenzar tu compra</EmptyCartSubtext>
-          {isCartPage && (
-            <ContinueShoppingWrapper>
-              <StyledLink to="/home">
-                <LinkIcon>←</LinkIcon>
-                Ir al inicio
-              </StyledLink>
-            </ContinueShoppingWrapper>
-          )}
-        </EmptyCartContainer>
-      ) : (
-        <>
+{count === 0 ? (
+  <div style={{
+    display: "flex", 
+    flexDirection: "column",
+    height: "100%"
+  }}>
+    {!isCartPage && (
+      <CloseButton onClick={() => setOpenCart(false)} isEmpty={true}>
+        X
+      </CloseButton>
+    )}
+    <EmptyCartContainer isCartPage={isCartPage}>
+      <EmptyCartIcon>🛒</EmptyCartIcon>
+      <EmptyProductList>¡El carrito está vacío!</EmptyProductList>
+      <EmptyCartSubtext>Agrega productos para comenzar tu compra</EmptyCartSubtext>
+      {isCartPage && (
+        <ContinueShoppingWrapper>
+          <StyledLink to="/home">
+            <LinkIcon>←</LinkIcon>
+            Ir al inicio
+          </StyledLink>
+        </ContinueShoppingWrapper>
+      )}
+    </EmptyCartContainer>
+  </div>
+) : (
+         <>
           <StyledCartContainer isCartPage={isCartPage}>
             <SlideContainer>
               <CartHeader isCartPage={isCartPage}>
@@ -114,6 +127,11 @@ const Cart = () => {
                   <ButtonIcon>🗑️</ButtonIcon>
                   Vaciar carrito
                 </ClearCartButton>
+                {!isCartPage && (
+                <CloseButton onClick={()=>setOpenCart(false)}>
+          X
+        </CloseButton>
+                )}
               </CartHeader>
 
               <ProductsList isCartPage={isCartPage}>
@@ -149,8 +167,22 @@ const Cart = () => {
                       </ImagePlaceholder>
                     </ProductImage>
                     <ProductInfo>
-                      <ProductName>{product.name}</ProductName>
-                      <ProductQuantity>Cantidad: {product.quantity}</ProductQuantity>
+                      <ProductName>{product.name} - ${product.price} c/u</ProductName>
+                      <QuantitySection>
+                        <QuantityLabel>Cantidad:</QuantityLabel>
+                        <QuantityControls>
+                          <QuantityButton 
+                            onClick={() => handleDecrementItem(product.id)}
+                            disabled={product.quantity <= 1}
+                          >
+                            -
+                          </QuantityButton>
+                          <QuantityDisplay>{product.quantity}</QuantityDisplay>
+                          <QuantityButton onClick={() => handleIncrementItem(product.id)}>
+                            +
+                          </QuantityButton>
+                        </QuantityControls>
+                      </QuantitySection>
                       <ProductPrice>${(product.price * product.quantity).toLocaleString()}</ProductPrice>
                     </ProductInfo>
                     <ProductActions>
@@ -240,9 +272,16 @@ const EmptyCartContainer = styled.div.withConfig({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: ${({ isCartPage }) => isCartPage ? '60vh' : '100%'};
+  height: ${({ isCartPage }) => isCartPage ? '60vh' : 'calc(100% - 60px)'};
   text-align: center;
   animation: ${fadeIn} 0.6s ease-out;
+  flex: 1;
+  
+  @media (max-width: 768px) {
+    height: ${({ isCartPage }) => isCartPage ? '50vh' : 'auto'};
+    flex: 1;
+    justify-content: center;
+  }
 `;
 
 const EmptyCartIcon = styled.div`
@@ -271,7 +310,7 @@ const StyledCartContainer = styled.div.withConfig({
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 0; /* Importante para permitir que el scroll funcione */
+  min-height: 0;
   background: ${({ isCartPage }) =>
     isCartPage
       ? 'rgba(255, 255, 255, 0.95)'
@@ -305,7 +344,7 @@ const SlideContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 0; /* Importante para permitir que el scroll funcione */
+  min-height: 0; 
 `;
 
 const CartHeader = styled.div.withConfig({
@@ -318,7 +357,8 @@ const CartHeader = styled.div.withConfig({
   padding-bottom: 1rem;
   border-bottom: 2px solid rgba(102, 126, 234, 0.1);
   position: relative;
-  flex-shrink: 0; /* No se encoge */
+  flex-shrink: 0; 
+  flex-wrap: wrap;
 
   &::after {
     content: '';
@@ -337,7 +377,8 @@ const CartHeader = styled.div.withConfig({
   }
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: row;
+        align-items: flex-start;
     gap: 1rem;
     align-items: stretch;
     margin-bottom: 1rem;
@@ -348,6 +389,11 @@ const CartTitleSection = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    order: 1;
+  }
 `;
 
 const CartBadge = styled.div`
@@ -389,6 +435,7 @@ const ClearCartButton = styled.button.withConfig({
   border: none;
   border-radius: 12px;
   padding: 0.75rem 1.5rem;
+  margin-right: 20px;
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
@@ -417,6 +464,7 @@ const ClearCartButton = styled.button.withConfig({
     justify-content: center;
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
+        order: 3;
   }
 `;
 
@@ -430,7 +478,7 @@ const ProductsList = styled.div.withConfig({
   flex: 1;
   overflow-y: auto;
   padding-right: 0.5rem;
-  min-height: 0; /* Importante para permitir que el scroll funcione */
+  min-height: 0; 
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -655,7 +703,7 @@ const CartSummary = styled.div.withConfig({
 })`
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  flex-shrink: 0; /* No se encoge */
+  flex-shrink: 0;
 `;
 
 const SummaryLine = styled.div`
@@ -700,11 +748,33 @@ const TotalAmount = styled.span`
 const PayButtonContainer = styled.div`
   margin-top: 1.5rem;
   animation: ${fadeIn} 0.6s ease-out 0.3s backwards;
-  flex-shrink: 0; /* No se encoge */
+  flex-shrink: 0;
   position: sticky;
   bottom: 0;
   background: inherit;
   padding-top: 1rem;
+`;
+
+const CloseButton = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['isEmpty'].includes(prop),
+})`
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-bottom: ${({ isEmpty }) => isEmpty ? '1rem' : '50px'};
+  
+  @media (max-width: 768px) {
+    align-self: flex-end;
+    order: ${({ isEmpty }) => isEmpty ? 'unset' : 2};
+    margin-left: auto;
+    margin-bottom: ${({ isEmpty }) => isEmpty ? '0.5rem' : '50px'};
+    /* Asegurar que se mantenga en la parte superior */
+    ${({ isEmpty }) => isEmpty && `
+      position: relative;
+      z-index: 10;
+    `}
+  }
 `;
 
 const PayButton = styled(Link)`
@@ -871,4 +941,58 @@ const CheckoutIcon = styled.span`
   ${CheckoutButton}:hover & {
     transform: translateX(3px);
   }
+`;
+
+const QuantitySection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const QuantityLabel = styled.span`
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+`;
+
+ const QuantityControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const QuantityButton = styled.button`
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  transition: background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #f5f5f5;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:active:not(:disabled) {
+    background: #e9e9e9;
+  }
+`;
+
+const QuantityDisplay = styled.span`
+  min-width: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
 `;

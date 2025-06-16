@@ -13,7 +13,7 @@ const BlockedSectionModal = () => {
     setShowBlockedAdminModal
   } = useAppContext();
 
-  const blockedModalText = "Por favor, inicie sesión como cliente para ingresar a la sección del carrito y realizar el pago.";
+  const blockedModalText = "Por favor, inicie sesión como cliente para ingresar a la sección del carrito o realizar un pago.";
   const blockedAdminModalText = "Por favor, inicie sesión como administrador para ingresar al panel de administración.";
 
   const handleClose = () => {
