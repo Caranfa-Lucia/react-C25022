@@ -101,7 +101,7 @@ const ProductDetails = ({
                                     </Link>
                                 )}
 
-                                <Link to="/home">
+                                <Link style={{textDecoration: 'none'}} to="/home">
                                     <BackButton>
                                         <ArrowLeft size={20} />
                                         Volver a la tienda
