@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react';
 
 const LoginModal = ({
-  showModal,
-  isLoggedIn,
-  setIsLoggedIn,
-  setShowModal,
-  isAdminLoggedIn,
-  setIsAdminLoggedIn
+  showModal = false,
+  isLoggedIn = false,
+  setIsLoggedIn = () => { },
+  setShowModal = () => { },
+  isAdminLoggedIn = false,
+  setIsAdminLoggedIn = () => { }
 }) => {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
@@ -23,225 +23,6 @@ const LoginModal = ({
       setIsVisible(false);
     }
   }, [showModal]);
-
-  const styles = {
-    overlay: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
-      opacity: isVisible ? 1 : 0,
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      padding: '20px'
-    },
-    modal: {
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-      padding: '40px',
-      borderRadius: '24px',
-      width: '100%',
-      maxWidth: '420px',
-      color: 'white',
-      boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1)',
-      transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.9) translateY(20px)',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      position: 'relative',
-      overflow: 'hidden'
-    },
-    modalGlow: {
-      position: 'absolute',
-      top: '-50%',
-      left: '-50%',
-      width: '200%',
-      height: '200%',
-      background: 'radial-gradient(circle, rgba(76, 169, 150, 0.1) 0%, transparent 70%)',
-      pointerEvents: 'none'
-    },
-    header: {
-      textAlign: 'center',
-      marginBottom: '32px',
-      position: 'relative',
-      zIndex: 2
-    },
-    title: {
-      fontSize: '28px',
-      fontWeight: '700',
-      background: 'linear-gradient(135deg, #ffffff 0%, #4ca996 100%)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      backgroundClip: 'text',
-      marginBottom: '8px'
-    },
-    subtitle: {
-      fontSize: '16px',
-      color: 'rgba(255, 255, 255, 0.7)',
-      fontWeight: '400'
-    },
-    form: {
-      position: 'relative',
-      zIndex: 2
-    },
-    inputGroup: {
-      marginBottom: '24px',
-      position: 'relative'
-    },
-    inputWrapper: {
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center'
-    },
-    input: {
-      width: '100%',
-      padding: '16px 50px 16px 20px',
-      borderRadius: '12px',
-      border: '2px solid transparent',
-      background: 'rgba(255, 255, 255, 0.1)',
-      backdropFilter: 'blur(10px)',
-      color: 'white',
-      fontSize: '16px',
-      fontWeight: '500',
-      transition: 'all 0.3s ease',
-      outline: 'none',
-      boxSizing: 'border-box'
-    },
-    inputFocused: {
-      borderColor: '#4ca996',
-      background: 'rgba(255, 255, 255, 0.15)',
-      boxShadow: '0 0 0 4px rgba(76, 169, 150, 0.2)',
-      transform: 'translateY(-2px)'
-    },
-    inputError: {
-      borderColor: '#ff6b6b',
-      background: 'rgba(255, 107, 107, 0.1)',
-      boxShadow: '0 0 0 4px rgba(255, 107, 107, 0.2)'
-    },
-    inputIcon: {
-      position: 'absolute',
-      left: '16px',
-      fontSize: '18px',
-      color: 'rgba(255, 255, 255, 0.6)',
-      pointerEvents: 'none'
-    },
-    passwordToggle: {
-      position: 'absolute',
-      right: '16px',
-      background: 'none',
-      border: 'none',
-      color: 'rgba(255, 255, 255, 0.6)',
-      cursor: 'pointer',
-      fontSize: '18px',
-      padding: '4px',
-      borderRadius: '4px',
-      transition: 'color 0.3s ease'
-    },
-    errorText: {
-      color: '#ff6b6b',
-      fontSize: '14px',
-      marginTop: '8px',
-      fontWeight: '500',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '6px'
-    },
-    generalError: {
-      background: 'rgba(255, 107, 107, 0.1)',
-      color: '#ff6b6b',
-      border: '1px solid rgba(255, 107, 107, 0.3)',
-      borderRadius: '12px',
-      padding: '16px',
-      marginBottom: '24px',
-      fontSize: '14px',
-      textAlign: 'center',
-      fontWeight: '500',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '8px'
-    },
-    buttonRow: {
-      display: 'flex',
-      gap: '16px',
-      marginTop: '32px'
-    },
-    button: {
-      flex: 1,
-      padding: '16px 24px',
-      fontSize: '16px',
-      fontWeight: '600',
-      borderRadius: '12px',
-      border: 'none',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-      position: 'relative',
-      overflow: 'hidden',
-      textTransform: 'uppercase',
-      letterSpacing: '0.5px'
-    },
-    cancelButton: {
-      background: 'rgba(255, 255, 255, 0.1)',
-      color: 'rgba(255, 255, 255, 0.8)',
-      border: '2px solid rgba(255, 255, 255, 0.2)'
-    },
-    cancelButtonHover: {
-      background: 'rgba(255, 255, 255, 0.2)',
-      color: 'white',
-      transform: 'translateY(-2px)'
-    },
-    confirmButton: {
-      background: 'linear-gradient(135deg, #4ca996 0%, #3a8678 100%)',
-      color: 'white',
-      boxShadow: '0 8px 20px rgba(76, 169, 150, 0.3)'
-    },
-    confirmButtonHover: {
-      background: 'linear-gradient(135deg, #3a8678 0%, #2d6b5f 100%)',
-      transform: 'translateY(-2px)',
-      boxShadow: '0 12px 25px rgba(76, 169, 150, 0.4)'
-    },
-    loadingSpinner: {
-      width: '20px',
-      height: '20px',
-      border: '2px solid rgba(255, 255, 255, 0.3)',
-      borderTop: '2px solid white',
-      borderRadius: '50%',
-      animation: 'spin 1s linear infinite',
-      marginRight: '8px'
-    },
-    floatingElements: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      pointerEvents: 'none',
-      overflow: 'hidden'
-    },
-    floatingCircle1: {
-      position: 'absolute',
-      top: '-20px',
-      right: '-20px',
-      width: '100px',
-      height: '100px',
-      background: 'rgba(76, 169, 150, 0.1)',
-      borderRadius: '50%',
-      animation: 'float 6s ease-in-out infinite'
-    },
-    floatingCircle2: {
-      position: 'absolute',
-      bottom: '-30px',
-      left: '-30px',
-      width: '80px',
-      height: '80px',
-      background: 'rgba(255, 255, 255, 0.05)',
-      borderRadius: '50%',
-      animation: 'float 8s ease-in-out infinite reverse'
-    }
-  };
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -331,8 +112,8 @@ const LoginModal = ({
 
   if ((!isLoggedIn || !isAdminLoggedIn) && showModal) {
     return (
-      <div style={styles.overlay} onClick={(e) => e.target === e.currentTarget && handleClose()}>
-        <div style={styles.modal}>
+      <div style={dynamicStyles.overlay(isVisible)} onClick={(e) => e.target === e.currentTarget && handleClose()}>
+        <div style={dynamicStyles.modal(isVisible)}>
           <div style={styles.modalGlow}></div>
           <div style={styles.floatingElements}>
             <div style={styles.floatingCircle1}></div>
@@ -484,6 +265,228 @@ const LoginModal = ({
   }
 
   return null;
+};
+
+const dynamicStyles = {
+  overlay: (isVisible) => ({
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backdropFilter: 'blur(8px)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+    opacity: isVisible ? 1 : 0,
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    padding: '20px'
+  }),
+  modal: (isVisible) => ({
+    background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+    padding: '40px',
+    borderRadius: '24px',
+    width: '100%',
+    maxWidth: '420px',
+    color: 'white',
+    boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1)',
+    transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.9) translateY(20px)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    position: 'relative',
+    overflow: 'hidden'
+  })
+}
+
+const styles = {
+  modalGlow: {
+    position: 'absolute',
+    top: '-50%',
+    left: '-50%',
+    width: '200%',
+    height: '200%',
+    background: 'radial-gradient(circle, rgba(76, 169, 150, 0.1) 0%, transparent 70%)',
+    pointerEvents: 'none'
+  },
+  header: {
+    textAlign: 'center',
+    marginBottom: '32px',
+    position: 'relative',
+    zIndex: 2
+  },
+  title: {
+    fontSize: '28px',
+    fontWeight: '700',
+    background: 'linear-gradient(135deg, #ffffff 0%, #4ca996 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    marginBottom: '8px'
+  },
+  subtitle: {
+    fontSize: '16px',
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontWeight: '400'
+  },
+  form: {
+    position: 'relative',
+    zIndex: 2
+  },
+  inputGroup: {
+    marginBottom: '24px',
+    position: 'relative'
+  },
+  inputWrapper: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center'
+  },
+  input: {
+    width: '100%',
+    padding: '16px 50px 16px 20px',
+    borderRadius: '12px',
+    border: '2px solid transparent',
+    background: 'rgba(255, 255, 255, 0.1)',
+    backdropFilter: 'blur(10px)',
+    color: 'white',
+    fontSize: '16px',
+    fontWeight: '500',
+    transition: 'all 0.3s ease',
+    outline: 'none',
+    boxSizing: 'border-box'
+  },
+  inputFocused: {
+    borderColor: '#4ca996',
+    background: 'rgba(255, 255, 255, 0.15)',
+    boxShadow: '0 0 0 4px rgba(76, 169, 150, 0.2)',
+    transform: 'translateY(-2px)'
+  },
+  inputError: {
+    borderColor: '#ff6b6b',
+    background: 'rgba(255, 107, 107, 0.1)',
+    boxShadow: '0 0 0 4px rgba(255, 107, 107, 0.2)'
+  },
+  inputIcon: {
+    position: 'absolute',
+    left: '16px',
+    fontSize: '18px',
+    color: 'rgba(255, 255, 255, 0.6)',
+    pointerEvents: 'none'
+  },
+  passwordToggle: {
+    position: 'absolute',
+    right: '16px',
+    background: 'none',
+    border: 'none',
+    color: 'rgba(255, 255, 255, 0.6)',
+    cursor: 'pointer',
+    fontSize: '18px',
+    padding: '4px',
+    borderRadius: '4px',
+    transition: 'color 0.3s ease'
+  },
+  errorText: {
+    color: '#ff6b6b',
+    fontSize: '14px',
+    marginTop: '8px',
+    fontWeight: '500',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px'
+  },
+  generalError: {
+    background: 'rgba(255, 107, 107, 0.1)',
+    color: '#ff6b6b',
+    border: '1px solid rgba(255, 107, 107, 0.3)',
+    borderRadius: '12px',
+    padding: '16px',
+    marginBottom: '24px',
+    fontSize: '14px',
+    textAlign: 'center',
+    fontWeight: '500',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px'
+  },
+  buttonRow: {
+    display: 'flex',
+    gap: '16px',
+    marginTop: '32px'
+  },
+  button: {
+    flex: 1,
+    padding: '16px 24px',
+    fontSize: '16px',
+    fontWeight: '600',
+    borderRadius: '12px',
+    border: 'none',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    position: 'relative',
+    overflow: 'hidden',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px'
+  },
+  cancelButton: {
+    background: 'rgba(255, 255, 255, 0.1)',
+    color: 'rgba(255, 255, 255, 0.8)',
+    border: '2px solid rgba(255, 255, 255, 0.2)'
+  },
+  cancelButtonHover: {
+    background: 'rgba(255, 255, 255, 0.2)',
+    color: 'white',
+    transform: 'translateY(-2px)'
+  },
+  confirmButton: {
+    background: 'linear-gradient(135deg, #4ca996 0%, #3a8678 100%)',
+    color: 'white',
+    boxShadow: '0 8px 20px rgba(76, 169, 150, 0.3)'
+  },
+  confirmButtonHover: {
+    background: 'linear-gradient(135deg, #3a8678 0%, #2d6b5f 100%)',
+    transform: 'translateY(-2px)',
+    boxShadow: '0 12px 25px rgba(76, 169, 150, 0.4)'
+  },
+  loadingSpinner: {
+    width: '20px',
+    height: '20px',
+    border: '2px solid rgba(255, 255, 255, 0.3)',
+    borderTop: '2px solid white',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite',
+    marginRight: '8px'
+  },
+  floatingElements: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    pointerEvents: 'none',
+    overflow: 'hidden'
+  },
+  floatingCircle1: {
+    position: 'absolute',
+    top: '-20px',
+    right: '-20px',
+    width: '100px',
+    height: '100px',
+    background: 'rgba(76, 169, 150, 0.1)',
+    borderRadius: '50%',
+    animation: 'float 6s ease-in-out infinite'
+  },
+  floatingCircle2: {
+    position: 'absolute',
+    bottom: '-30px',
+    left: '-30px',
+    width: '80px',
+    height: '80px',
+    background: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: '50%',
+    animation: 'float 8s ease-in-out infinite reverse'
+  }
 };
 
 export default LoginModal;

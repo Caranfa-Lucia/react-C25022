@@ -5,7 +5,139 @@ import { useAppContext } from '../context/AppContext';
 import Cart from '../components/Cart';
 
 const AboutUs = () => {
-    const styles = {
+
+    const [hoveredCard, setHoveredCard] = useState(null);
+    const [isHoveringButton, setIsHoveringButton] = useState(false);
+
+    const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
+
+    const {
+        openCart,
+        setOpenCart,
+    } = useAppContext();
+
+    useEffect(() => {
+        setOpenCart(false);
+
+        const handleResize = () => {
+            setIsTablet(window.innerWidth <= 1144);
+        };
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return (
+        <div style={styles.container}>
+            <ContentContainer $opencart={openCart} $istablet={isTablet}>
+                <div style={styles.decorativeShape1}></div>
+                <div style={styles.decorativeShape2}></div>
+
+                <div style={styles.header}>
+                    <h1 style={styles.title}>Sobre Nosotros</h1>
+                    <div style={styles.titleUnderline}></div>
+                </div>
+
+                <ContentWrapper $opencart={openCart} $istablet={isTablet}>
+                    <div style={styles.contentCard}>
+
+                        <div style={{ marginBottom: '40px' }}>
+                            <h2 style={{ ...styles.sectionTitle, position: 'relative' }}>
+                                <span style={styles.sectionTitleBefore}></span>
+                                Nuestra Historia
+                            </h2>
+                            <p style={styles.paragraph}>
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
+                            </p>
+                        </div>
+
+                        <div style={styles.highlightSection}>
+                            <h2 style={styles.sectionTitle}>Nuestra Misión</h2>
+                            <p style={styles.paragraph}>
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
+                            </p>
+                        </div>
+
+                        <div style={{ marginBottom: '40px' }}>
+                            <h2 style={{ ...styles.sectionTitle, textAlign: 'right', paddingRight: '20px', paddingLeft: '0' }}>
+                                Nuestra Visión
+                                <span style={{ ...styles.sectionTitleBefore, left: 'auto', right: '0' }}></span>
+                            </h2>
+                            <p style={styles.paragraph}>
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
+                            </p>
+                        </div>
+
+                        <div style={styles.cardsContainer}>
+                            <div
+                                style={{
+                                    ...styles.card,
+                                    ...(hoveredCard === 'innovation' ? styles.cardHover : {})
+                                }}
+                                onMouseEnter={() => setHoveredCard('innovation')}
+                                onMouseLeave={() => setHoveredCard(null)}
+                            >
+                                <div style={styles.cardIcon}>⚡</div>
+                                <h3 style={styles.cardTitle}>Innovación</h3>
+                                <p style={styles.cardText}>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quaerat, enim quibusdam sit maiores iure ratione adipisci ad eligendi dicta doloribus numquam rerum sint.
+                                </p>
+                            </div>
+
+                            <div
+                                style={{
+                                    ...styles.card,
+                                    ...(hoveredCard === 'commitment' ? styles.cardHover : {})
+                                }}
+                                onMouseEnter={() => setHoveredCard('commitment')}
+                                onMouseLeave={() => setHoveredCard(null)}
+                            >
+                                <div style={styles.cardIcon}>👥</div>
+                                <h3 style={styles.cardTitle}>Compromiso</h3>
+                                <p style={styles.cardText}>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum alias illo, doloremque dolore quisquam ipsa laborum esse veritatis dignissimos cumque.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style={styles.ctaContainer}>
+                            <a
+                                href="https://www.linkedin.com/in/lucia-caranfa/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    window.open('https://www.linkedin.com/in/lucia-caranfa/', '_blank', 'noopener,noreferrer');
+                                }}
+                                style={{
+                                    ...styles.ctaButton,
+                                    transform: isHoveringButton ? 'scale(1.05)' : 'scale(1)',
+                                    boxShadow: isHoveringButton ? '0 15px 35px rgba(102, 126, 234, 0.4)' : '0 10px 25px rgba(102, 126, 234, 0.3)'
+                                }}
+                                onMouseEnter={() => setIsHoveringButton(true)}
+                                onMouseLeave={() => setIsHoveringButton(false)}
+                            >
+                                <span>Conoce más sobre nosotros</span>
+                                <span style={{
+                                    ...styles.arrow,
+                                    transform: isHoveringButton ? 'translateX(5px)' : 'translateX(0px)'
+                                }}>→</span>
+                            </a>
+                        </div>
+                    </div>
+                </ContentWrapper>
+            </ContentContainer>
+            {openCart && (
+                <CartWrapper $opencart={openCart} $istablet={isTablet}>
+                    <Cart />
+                </CartWrapper>
+            )}
+        </div>
+    );
+};
+
+const styles = {
         container: {
             minHeight: '100vh',
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -173,137 +305,6 @@ const AboutUs = () => {
             transition: 'transform 0.3s ease'
         },
     };
-
-    const [hoveredCard, setHoveredCard] = useState(null);
-    const [isHoveringButton, setIsHoveringButton] = useState(false);
-
-    const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
-
-    const {
-        openCart,
-        setOpenCart,
-    } = useAppContext();
-
-    useEffect(() => {
-        setOpenCart(false);
-
-        const handleResize = () => {
-            setIsTablet(window.innerWidth <= 1144);
-        };
-        handleResize();
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    return (
-        <div style={styles.container}>
-            <ContentContainer $opencart={openCart} $istablet={isTablet}>
-                <div style={styles.decorativeShape1}></div>
-                <div style={styles.decorativeShape2}></div>
-
-                <div style={styles.header}>
-                    <h1 style={styles.title}>Sobre Nosotros</h1>
-                    <div style={styles.titleUnderline}></div>
-                </div>
-
-                <ContentWrapper $opencart={openCart} $istablet={isTablet}>
-                    <div style={styles.contentCard}>
-
-                        <div style={{ marginBottom: '40px' }}>
-                            <h2 style={{ ...styles.sectionTitle, position: 'relative' }}>
-                                <span style={styles.sectionTitleBefore}></span>
-                                Nuestra Historia
-                            </h2>
-                            <p style={styles.paragraph}>
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
-                            </p>
-                        </div>
-
-                        <div style={styles.highlightSection}>
-                            <h2 style={styles.sectionTitle}>Nuestra Misión</h2>
-                            <p style={styles.paragraph}>
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
-                            </p>
-                        </div>
-
-                        <div style={{ marginBottom: '40px' }}>
-                            <h2 style={{ ...styles.sectionTitle, textAlign: 'right', paddingRight: '20px', paddingLeft: '0' }}>
-                                Nuestra Visión
-                                <span style={{ ...styles.sectionTitleBefore, left: 'auto', right: '0' }}></span>
-                            </h2>
-                            <p style={styles.paragraph}>
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sit vero quis repellendus iste error nemo minima facere odio esse ipsum dolorem harum placeat totam officiis porro dolore, minus repudiandae? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non ut beatae explicabo. Quod veniam possimus doloribus quo vero dolorem eos quia, pariatur, amet aspernatur ratione dolores asperiores expedita repellat voluptatem.
-                            </p>
-                        </div>
-
-                        <div style={styles.cardsContainer}>
-                            <div
-                                style={{
-                                    ...styles.card,
-                                    ...(hoveredCard === 'innovation' ? styles.cardHover : {})
-                                }}
-                                onMouseEnter={() => setHoveredCard('innovation')}
-                                onMouseLeave={() => setHoveredCard(null)}
-                            >
-                                <div style={styles.cardIcon}>⚡</div>
-                                <h3 style={styles.cardTitle}>Innovación</h3>
-                                <p style={styles.cardText}>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quaerat, enim quibusdam sit maiores iure ratione adipisci ad eligendi dicta doloribus numquam rerum sint.
-                                </p>
-                            </div>
-
-                            <div
-                                style={{
-                                    ...styles.card,
-                                    ...(hoveredCard === 'commitment' ? styles.cardHover : {})
-                                }}
-                                onMouseEnter={() => setHoveredCard('commitment')}
-                                onMouseLeave={() => setHoveredCard(null)}
-                            >
-                                <div style={styles.cardIcon}>👥</div>
-                                <h3 style={styles.cardTitle}>Compromiso</h3>
-                                <p style={styles.cardText}>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum alias illo, doloremque dolore quisquam ipsa laborum esse veritatis dignissimos cumque.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div style={styles.ctaContainer}>
-                            <a
-                                href="https://www.linkedin.com/in/lucia-caranfa/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    window.open('https://www.linkedin.com/in/lucia-caranfa/', '_blank', 'noopener,noreferrer');
-                                }}
-                                style={{
-                                    ...styles.ctaButton,
-                                    transform: isHoveringButton ? 'scale(1.05)' : 'scale(1)',
-                                    boxShadow: isHoveringButton ? '0 15px 35px rgba(102, 126, 234, 0.4)' : '0 10px 25px rgba(102, 126, 234, 0.3)'
-                                }}
-                                onMouseEnter={() => setIsHoveringButton(true)}
-                                onMouseLeave={() => setIsHoveringButton(false)}
-                            >
-                                <span>Conoce más sobre nosotros</span>
-                                <span style={{
-                                    ...styles.arrow,
-                                    transform: isHoveringButton ? 'translateX(5px)' : 'translateX(0px)'
-                                }}>→</span>
-                            </a>
-                        </div>
-                    </div>
-                </ContentWrapper>
-            </ContentContainer>
-            {openCart && (
-                <CartWrapper $opencart={openCart} $istablet={isTablet}>
-                    <Cart />
-                </CartWrapper>
-            )}
-        </div>
-    );
-};
 
 const shimmer = keyframes`
   0% {

@@ -10,6 +10,143 @@ function Footer() {
     { icon: Mail, href: 'mailto:luciacaranfa@gmail.com?subject=Contacto desde Mi Aplicación React&body=Hola Lucía,%0D%0A%0D%0AMe gustaría ponerme en contacto contigo...', label: 'Email' }
   ];
 
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleBrandHover = (e, isHover) => {
+    if (isHover) {
+      e.target.closest('div').style.transform = 'scale(1.1)';
+    } else {
+      e.target.closest('div').style.transform = 'scale(1)';
+    }
+  };
+
+  return (
+    <>
+      <style>
+        {`
+          @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+          }
+          
+          @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+          }
+          
+          .heart-pulse {
+            animation: pulse 2s ease-in-out infinite;
+          }
+        `}
+      </style>
+
+      <footer style={styles.footer}>
+        <div style={styles.backgroundPattern}>
+          <div style={styles.floatingElement1}></div>
+          <div style={styles.floatingElement2}></div>
+        </div>
+
+        <div style={styles.contentWrapper}>
+          <div style={isMobile ? styles.grid : styles.gridMd}>
+
+            <div style={styles.section}>
+              <div style={isMobile ? styles.brandContainer : styles.brandContainerLeft}>
+                <div
+                  style={styles.brandIcon}
+                  onMouseEnter={(e) => handleBrandHover(e, true)}
+                  onMouseLeave={(e) => handleBrandHover(e, false)}
+                >
+                  <Code size={24} />
+                </div>
+                <span style={styles.brandText}>Mi Aplicación React</span>
+              </div>
+              <p style={styles.description}>
+                Desarrollado con pasión y dedicación. El siguiente ecommerce es un proyecto utilizado como entrega final para el curso de React JS - Talento Tech.
+              </p>
+            </div>
+
+            <div style={styles.section}>
+              <h3 style={styles.sectionTitle}>Desarrollador</h3>
+              <div style={styles.developerInfo}>
+                <p style={styles.developerName}>
+                  <span style={styles.developerNameSpan}>Caranfa Lucía Paula Denise</span>
+                </p>
+                <div style={styles.commissionInfo}>
+                  <Calendar size={16} />
+                  <span>Comisión 25022</span>
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.section}>
+              <h3 style={styles.sectionTitle}>Conecta</h3>
+              <div style={isMobile ? styles.socialLinks : styles.socialLinksRight}>
+                {socialLinks.map((social, index) => {
+                  const IconComponent = social.icon;
+                  return (
+                    <a
+                      key={index}
+                      href={social.href}
+                      target={social.icon === Mail ? '_self' : '_blank'}
+                      rel={social.icon === Mail ? '' : 'noopener noreferrer'}
+                      aria-label={social.label}
+                      style={styles.socialLink}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                        e.currentTarget.style.transform = 'translateY(-4px) scale(1.1)';
+                        e.currentTarget.style.boxShadow = '0 8px 32px rgba(139, 92, 246, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                        e.currentTarget.style.transform = 'translateY(0px) scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                    >
+                      <IconComponent size={20} />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div style={styles.divider}></div>
+
+          <div style={isMobile ? styles.bottomSection : styles.bottomSectionMd}>
+            <div style={styles.copyright}>
+              <span>&copy; {currentYear} Mi Aplicación React.</span>
+              <span>Todos los derechos reservados.</span>
+            </div>
+
+            <div style={styles.madeWith}>
+              <span>Hecho con</span>
+              <Heart size={16} className="heart-pulse" style={{ color: '#ef4444' }} />
+              <span>y React</span>
+            </div>
+          </div>
+        </div>
+
+        <div style={styles.animatedBorder}></div>
+      </footer>
+    </>
+  );
+}
+
+
   const styles = {
     footer: {
       position: 'relative',
@@ -210,140 +347,5 @@ function Footer() {
     }
   };
 
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
-
-  React.useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const handleBrandHover = (e, isHover) => {
-    if (isHover) {
-      e.target.closest('div').style.transform = 'scale(1.1)';
-    } else {
-      e.target.closest('div').style.transform = 'scale(1)';
-    }
-  };
-
-  return (
-    <>
-      <style>
-        {`
-          @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-          }
-          
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-          }
-          
-          @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-          }
-          
-          .heart-pulse {
-            animation: pulse 2s ease-in-out infinite;
-          }
-        `}
-      </style>
-
-      <footer style={styles.footer}>
-        <div style={styles.backgroundPattern}>
-          <div style={styles.floatingElement1}></div>
-          <div style={styles.floatingElement2}></div>
-        </div>
-
-        <div style={styles.contentWrapper}>
-          <div style={isMobile ? styles.grid : styles.gridMd}>
-
-            <div style={styles.section}>
-              <div style={isMobile ? styles.brandContainer : styles.brandContainerLeft}>
-                <div
-                  style={styles.brandIcon}
-                  onMouseEnter={(e) => handleBrandHover(e, true)}
-                  onMouseLeave={(e) => handleBrandHover(e, false)}
-                >
-                  <Code size={24} />
-                </div>
-                <span style={styles.brandText}>Mi Aplicación React</span>
-              </div>
-              <p style={styles.description}>
-                Desarrollado con pasión y dedicación. El siguiente ecommerce es un proyecto utilizado como entrega final para el curso de React JS - Talento Tech.
-              </p>
-            </div>
-
-            <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>Desarrollador</h3>
-              <div style={styles.developerInfo}>
-                <p style={styles.developerName}>
-                  <span style={styles.developerNameSpan}>Caranfa Lucía Paula Denise</span>
-                </p>
-                <div style={styles.commissionInfo}>
-                  <Calendar size={16} />
-                  <span>Comisión 25022</span>
-                </div>
-              </div>
-            </div>
-
-            <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>Conecta</h3>
-              <div style={isMobile ? styles.socialLinks : styles.socialLinksRight}>
-                {socialLinks.map((social, index) => {
-                  const IconComponent = social.icon;
-                  return (
-                    <a
-                      key={index}
-                      href={social.href}
-                      target={social.icon === Mail ? '_self' : '_blank'}
-                      rel={social.icon === Mail ? '' : 'noopener noreferrer'}
-                      aria-label={social.label}
-                      style={styles.socialLink}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-                        e.currentTarget.style.transform = 'translateY(-4px) scale(1.1)';
-                        e.currentTarget.style.boxShadow = '0 8px 32px rgba(139, 92, 246, 0.4)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                        e.currentTarget.style.transform = 'translateY(0px) scale(1)';
-                        e.currentTarget.style.boxShadow = 'none';
-                      }}
-                    >
-                      <IconComponent size={20} />
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.divider}></div>
-
-          <div style={isMobile ? styles.bottomSection : styles.bottomSectionMd}>
-            <div style={styles.copyright}>
-              <span>&copy; {currentYear} Mi Aplicación React.</span>
-              <span>Todos los derechos reservados.</span>
-            </div>
-
-            <div style={styles.madeWith}>
-              <span>Hecho con</span>
-              <Heart size={16} className="heart-pulse" style={{ color: '#ef4444' }} />
-              <span>y React</span>
-            </div>
-          </div>
-        </div>
-
-        <div style={styles.animatedBorder}></div>
-      </footer>
-    </>
-  );
-}
 
 export default Footer;

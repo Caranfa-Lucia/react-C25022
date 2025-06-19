@@ -1,74 +1,7 @@
 import React, { useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { useAppContext } from '../context/AppContext';
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const slideInUp = keyframes`
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
-
-const slideInLeft = keyframes`
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-`;
-
-const pulse = keyframes`
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-`;
-
-const successPulse = keyframes`
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-`;
-
-const checkmarkAnimation = keyframes`
-  from {
-    stroke-dashoffset: 100;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-`;
-
-const spin = keyframes`
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-`;
+import { useNavigate } from 'react-router-dom';
 
 const CheckoutModal = ({
     open = false,
@@ -92,6 +25,7 @@ const CheckoutModal = ({
         cardName: '',
         document: ''
     });
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -247,6 +181,7 @@ const CheckoutModal = ({
             setTimeout(() => {
                 handleClearCart();
                 handleClose();
+                navigate('/home');
             }, 3000);
         }, 2500);
     };
@@ -364,16 +299,16 @@ const CheckoutModal = ({
                         </ModalHeader>
 
                         <StepsIndicator>
-                            <Step $active={currentStep >= 1} completed={currentStep > 1}>
-                                <StepNumber completed={currentStep > 1} $active={currentStep >= 1}>1</StepNumber>
+                            <Step $active={currentStep >= 1} $completed={currentStep > 1}>
+                                <StepNumber $completed={currentStep > 1} $active={currentStep >= 1}>1</StepNumber>
                                 <StepLabel>Datos personales</StepLabel>
                             </Step>
-                            <StepLine completed={currentStep > 1} />
-                            <Step $active={currentStep >= 2} completed={currentStep > 2}>
-                                <StepNumber completed={currentStep > 2} $active={currentStep >= 2}>2</StepNumber>
+                            <StepLine $completed={currentStep > 1} />
+                            <Step $active={currentStep >= 2} $completed={currentStep > 2}>
+                                <StepNumber $completed={currentStep > 2} $active={currentStep >= 2}>2</StepNumber>
                                 <StepLabel>Método de pago</StepLabel>
                             </Step>
-                            <StepLine completed={currentStep > 2} />
+                            <StepLine $completed={currentStep > 2} />
                             <Step $active={currentStep >= 3}>
                                 <StepNumber $active={currentStep >= 3}>3</StepNumber>
                                 <StepLabel>Confirmación</StepLabel>
@@ -597,6 +532,74 @@ const CheckoutModal = ({
 };
 
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const slideInUp = keyframes`
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+const slideInLeft = keyframes`
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+const pulse = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+`;
+
+const successPulse = keyframes`
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+const checkmarkAnimation = keyframes`
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+`;
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -681,8 +684,8 @@ const StepNumber = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: ${({ completed, $active }) =>
-        completed
+  background: ${({ $completed, $active }) =>
+        $completed
             ? 'linear-gradient(135deg, #10ac84, #1dd1a1)'
             : $active
                 ? 'linear-gradient(135deg, #667eea, #764ba2)'
@@ -707,8 +710,8 @@ const StepLabel = styled.span`
 const StepLine = styled.div`
   width: 60px;
   height: 2px;
-  background: ${({ completed }) =>
-        completed
+  background: ${({ $completed }) =>
+        $completed
             ? 'linear-gradient(90deg, #10ac84, #1dd1a1)'
             : '#e0e0e0'
     };

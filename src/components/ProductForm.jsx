@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function ProductForm({ selectedProduct, onSubmit, onClose }) {
+function ProductForm({
+    selectedProduct = null,
+    onSubmit = () => { },
+    onClose = () => { }
+}) {
     const [product, setProduct] = useState({
         id: '',
         name: '',

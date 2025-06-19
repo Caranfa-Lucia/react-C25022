@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet-async';
 
 function Home() {
   const {
-    productos,
     loading,
     error,
     setCount,
