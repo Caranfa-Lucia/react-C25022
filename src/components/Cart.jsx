@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useAppContext } from '../context/AppContext';
 import { Link, useLocation } from 'react-router-dom';
+import CheckoutModal from './CheckoutModal';
 
 const slideInRight = keyframes`
   from {
@@ -73,6 +74,8 @@ const Cart = () => {
   const location = useLocation();
   const isCartPage = location.pathname === "/cart";
 
+  const [openCheckout, setOpenCheckout] = useState(false);
+
   const {
     count,
     setOpenCart,
@@ -85,151 +88,158 @@ const Cart = () => {
 
   const total = groupedProducts.reduce((acc, product) => acc + product.price * product.quantity, 0);
 
+  const handleCheckout = () => {
+    setOpenCheckout(true);
+  };
+
   return (
-    <CartMainWrapper isCartPage={isCartPage}>
-      {count === 0 ? (
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%"
-        }}>
-          {!isCartPage && (
-            <CloseButton onClick={() => setOpenCart(false)} isEmpty={true}>
-              X
-            </CloseButton>
-          )}
-          <EmptyCartContainer isCartPage={isCartPage}>
-            <EmptyCartIcon>🛒</EmptyCartIcon>
-            <EmptyProductList>¡El carrito está vacío!</EmptyProductList>
-            <EmptyCartSubtext>Agrega productos para comenzar tu compra</EmptyCartSubtext>
-            {isCartPage && (
-              <ContinueShoppingWrapper>
-                <StyledLink to="/home">
-                  <LinkIcon>←</LinkIcon>
-                  Ir al inicio
-                </StyledLink>
-              </ContinueShoppingWrapper>
+    <>
+      <CartMainWrapper isCartPage={isCartPage}>
+        {count === 0 ? (
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100%"
+          }}>
+            {!isCartPage && (
+              <CloseButton onClick={() => setOpenCart(false)} isEmpty={true}>
+                X
+              </CloseButton>
             )}
-          </EmptyCartContainer>
-        </div>
-      ) : (
-        <>
-          <StyledCartContainer isCartPage={isCartPage}>
-            <SlideContainer>
-              <CartHeader isCartPage={isCartPage}>
-                <CartTitleSection>
-                  <CartBadge>{count}</CartBadge>
-                  <CartTitleText>
-                    {count === 1 ? 'Producto en tu carrito' : 'Productos en tu carrito'}
-                  </CartTitleText>
-                </CartTitleSection>
-                <ClearCartButton onClick={handleClearCart} isCartPage={isCartPage}>
-                  <ButtonIcon>🗑️</ButtonIcon>
-                  Vaciar carrito
-                </ClearCartButton>
-                {!isCartPage && (
-                  <CloseButton onClick={() => setOpenCart(false)}>
-                    X
-                  </CloseButton>
-                )}
-              </CartHeader>
+            <EmptyCartContainer isCartPage={isCartPage}>
+              <EmptyCartIcon>🛒</EmptyCartIcon>
+              <EmptyProductList>¡El carrito está vacío!</EmptyProductList>
+              <EmptyCartSubtext>Agrega productos para comenzar tu compra</EmptyCartSubtext>
+              {isCartPage && (
+                <ContinueShoppingWrapper>
+                  <StyledLink to="/home">
+                    <LinkIcon>←</LinkIcon>
+                    Ir al inicio
+                  </StyledLink>
+                </ContinueShoppingWrapper>
+              )}
+            </EmptyCartContainer>
+          </div>
+        ) : (
+          <>
+            <StyledCartContainer isCartPage={isCartPage}>
+              <SlideContainer>
+                <CartHeader isCartPage={isCartPage}>
+                  <CartTitleSection>
+                    <CartBadge>{count}</CartBadge>
+                    <CartTitleText>
+                      {count === 1 ? 'Producto en tu carrito' : 'Productos en tu carrito'}
+                    </CartTitleText>
+                  </CartTitleSection>
+                  <ClearCartButton onClick={handleClearCart} isCartPage={isCartPage}>
+                    <ButtonIcon>🗑️</ButtonIcon>
+                    Vaciar carrito
+                  </ClearCartButton>
+                  {!isCartPage && (
+                    <CloseButton onClick={() => setOpenCart(false)}>
+                      X
+                    </CloseButton>
+                  )}
+                </CartHeader>
 
-              <ProductsList isCartPage={isCartPage}>
-                {groupedProducts.map((product, index) => (
-                  <ProductItem key={`Producto-${product.id}`} isCartPage={isCartPage} index={index}>
-                    <ProductImage isCartPage={isCartPage}>
-                      <ImagePlaceholder
-                        hasImage={product.image && typeof product.image === 'string' && product.image.startsWith('http')}
-                        isCartPage={isCartPage}
-                      >
-                        {product.image && typeof product.image === 'string' && product.image.startsWith('http') ? (
-                          <ProductImg
-                            src={product.image}
-                            alt={product.name}
-                            isCartPage={isCartPage}
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                              e.target.nextSibling.style.display = 'flex';
-                            }}
-                          />
-                        ) : null}
-                        <FallbackIcon
+                <ProductsList isCartPage={isCartPage}>
+                  {groupedProducts.map((product, index) => (
+                    <ProductItem key={`Producto-${product.id}`} isCartPage={isCartPage} index={index}>
+                      <ProductImage isCartPage={isCartPage}>
+                        <ImagePlaceholder
+                          hasImage={product.image && typeof product.image === 'string' && product.image.startsWith('http')}
                           isCartPage={isCartPage}
-                          style={{
-                            display: product.image && typeof product.image === 'string' && product.image.startsWith('http') ? 'none' : 'flex'
-                          }}
                         >
-                          {typeof product.image === 'string' && !product.image.startsWith('http')
-                            ? product.image
-                            : '📦'
-                          }
-                        </FallbackIcon>
-                      </ImagePlaceholder>
-                    </ProductImage>
-                    <ProductInfo>
-                      <ProductName>{product.name} - ${product.price} c/u</ProductName>
-                      <QuantitySection>
-                        <QuantityLabel>Cantidad:</QuantityLabel>
-                        <QuantityControls>
-                          <QuantityButton
-                            onClick={() => handleDecrementItem(product.id)}
-                            disabled={product.quantity <= 1}
+                          {product.image && typeof product.image === 'string' && product.image.startsWith('http') ? (
+                            <ProductImg
+                              src={product.image}
+                              alt={product.name}
+                              isCartPage={isCartPage}
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <FallbackIcon
+                            isCartPage={isCartPage}
+                            style={{
+                              display: product.image && typeof product.image === 'string' && product.image.startsWith('http') ? 'none' : 'flex'
+                            }}
                           >
-                            -
-                          </QuantityButton>
-                          <QuantityDisplay>{product.quantity}</QuantityDisplay>
-                          <QuantityButton onClick={() => handleIncrementItem(product.id)}>
-                            +
-                          </QuantityButton>
-                        </QuantityControls>
-                      </QuantitySection>
-                      <ProductPrice>${(product.price * product.quantity).toLocaleString()}</ProductPrice>
-                    </ProductInfo>
-                    <ProductActions>
-                      <RemoveButton onClick={() => handleRemoveItem(product.id)}>
-                        <RemoveIcon>×</RemoveIcon>
-                      </RemoveButton>
-                    </ProductActions>
-                  </ProductItem>
-                ))}
-              </ProductsList>
+                            {typeof product.image === 'string' && !product.image.startsWith('http')
+                              ? product.image
+                              : '📦'
+                            }
+                          </FallbackIcon>
+                        </ImagePlaceholder>
+                      </ProductImage>
+                      <ProductInfo>
+                        <ProductName>{product.name} - ${product.price} c/u</ProductName>
+                        <QuantitySection>
+                          <QuantityLabel>Cantidad:</QuantityLabel>
+                          <QuantityControls>
+                            <QuantityButton
+                              onClick={() => handleDecrementItem(product.id)}
+                              disabled={product.quantity <= 1}
+                            >
+                              -
+                            </QuantityButton>
+                            <QuantityDisplay>{product.quantity}</QuantityDisplay>
+                            <QuantityButton onClick={() => handleIncrementItem(product.id)}>
+                              +
+                            </QuantityButton>
+                          </QuantityControls>
+                        </QuantitySection>
+                        <ProductPrice>${(product.price * product.quantity).toLocaleString()}</ProductPrice>
+                      </ProductInfo>
+                      <ProductActions>
+                        <RemoveButton onClick={() => handleRemoveItem(product.id)}>
+                          <RemoveIcon>×</RemoveIcon>
+                        </RemoveButton>
+                      </ProductActions>
+                    </ProductItem>
+                  ))}
+                </ProductsList>
 
-              <CartSummary isCartPage={isCartPage}>
-                <SummaryLine />
-                <TotalSection>
-                  <TotalLabel>Total a pagar:</TotalLabel>
-                  <TotalAmount>${total.toLocaleString()}</TotalAmount>
-                </TotalSection>
-              </CartSummary>
-            </SlideContainer>
-          </StyledCartContainer>
+                <CartSummary isCartPage={isCartPage}>
+                  <SummaryLine />
+                  <TotalSection>
+                    <TotalLabel>Total a pagar:</TotalLabel>
+                    <TotalAmount>${total.toLocaleString()}</TotalAmount>
+                  </TotalSection>
+                </CartSummary>
+              </SlideContainer>
+            </StyledCartContainer>
 
-          {!isCartPage && (
-            <PayButtonContainer>
-              <PayButton to="/cart">
-                <PayButtonText>Ir a pagar</PayButtonText>
-                <PayButtonIcon>💳</PayButtonIcon>
-              </PayButton>
-            </PayButtonContainer>
-          )}
+            {!isCartPage && (
+              <PayButtonContainer>
+                <PayButton to="/cart">
+                  <PayButtonText>Ir a pagar</PayButtonText>
+                  <PayButtonIcon>💳</PayButtonIcon>
+                </PayButton>
+              </PayButtonContainer>
+            )}
 
-          {isCartPage && (
-            <CartPageActions>
-              <ContinueShoppingWrapper>
-                <StyledLink to="/home">
-                  <LinkIcon>←</LinkIcon>
-                  Seguir comprando
-                </StyledLink>
-              </ContinueShoppingWrapper>
-              <CheckoutButton>
-                <CheckoutButtonText>Proceder al pago</CheckoutButtonText>
-                <CheckoutIcon>→</CheckoutIcon>
-              </CheckoutButton>
-            </CartPageActions>
-          )}
-        </>
-      )}
-    </CartMainWrapper>
+            {isCartPage && (
+              <CartPageActions>
+                <ContinueShoppingWrapper>
+                  <StyledLink to="/home">
+                    <LinkIcon>←</LinkIcon>
+                    Seguir comprando
+                  </StyledLink>
+                </ContinueShoppingWrapper>
+                <CheckoutButton>
+                  <CheckoutButtonText onClick={handleCheckout}>Proceder al pago</CheckoutButtonText>
+                  <CheckoutIcon>→</CheckoutIcon>
+                </CheckoutButton>
+              </CartPageActions>
+            )}
+          </>
+        )}
+      </CartMainWrapper>
+      <CheckoutModal open={openCheckout} onClose={() => setOpenCheckout(false)} cartTotal={total}></CheckoutModal>
+    </>
   );
 };
 
