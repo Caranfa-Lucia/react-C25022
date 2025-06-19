@@ -9,6 +9,7 @@ const Admin = () => {
     const { productos, search, setSearch, productFilter } = useAppContext();
     const { loading, error, addProduct, deleteProduct, saveEditedProduct, open, setOpen } = useContext(AdminContext);
     const [selectedProduct, setselectedProduct] = useState(null);
+    const [confirmDelete, setConfirmDelete] = useState({ open: false, productId: null });
 
     return (
         <Container>
@@ -75,26 +76,6 @@ const Admin = () => {
                                     <ProductCard key={`${product.id}-${product.name}`}>
                                         <ProductImageContainer>
                                             <ProductImage src={product.image} alt={product.name} />
-                                            <ProductOverlay>
-                                                <QuickActions>
-                                                    <QuickActionButton
-                                                        onClick={() => {
-                                                            setselectedProduct(product);
-                                                            setOpen(true);
-                                                        }}
-                                                        title="Editar producto"
-                                                    >
-                                                        ✏️
-                                                    </QuickActionButton>
-                                                    <QuickActionButton
-                                                        onClick={() => deleteProduct(product.id)}
-                                                        title="Eliminar producto"
-                                                        $danger
-                                                    >
-                                                        🗑️
-                                                    </QuickActionButton>
-                                                </QuickActions>
-                                            </ProductOverlay>
                                         </ProductImageContainer>
 
                                         <ProductInfo>
@@ -110,7 +91,7 @@ const Admin = () => {
                                                 <ButtonIcon>✏️</ButtonIcon>
                                                 Editar
                                             </EditButton>
-                                            <DeleteButton onClick={() => deleteProduct(product.id)}>
+                                            <DeleteButton onClick={() => setConfirmDelete({ open: true, productId: product.id })}>
                                                 <ButtonIcon>🗑️</ButtonIcon>
                                                 Eliminar
                                             </DeleteButton>
@@ -120,6 +101,28 @@ const Admin = () => {
                             )}
                         </ProductGrid>
                     </ProductsSection>
+
+                    {confirmDelete.open && (
+                        <ConfirmBackdrop onClick={() => setConfirmDelete({ open: false, productId: null })}>
+                            <ConfirmBox onClick={(e) => e.stopPropagation()}>
+                                <h3>¿Estás segura/o?</h3>
+                                <p>¿Querés eliminar este producto?</p>
+                                <ConfirmButtons>
+                                    <button
+                                        onClick={() => {
+                                            deleteProduct(confirmDelete.productId);
+                                            setConfirmDelete({ open: false, productId: null });
+                                        }}
+                                    >
+                                        Sí, eliminar
+                                    </button>
+                                    <button onClick={() => setConfirmDelete({ open: false, productId: null })}>
+                                        Cancelar
+                                    </button>
+                                </ConfirmButtons>
+                            </ConfirmBox>
+                        </ConfirmBackdrop>
+                    )}
                 </>
             )}
 
@@ -347,51 +350,6 @@ const ProductImage = styled.img`
     
     ${ProductImageContainer}:hover & {
         transform: scale(1.1);
-    }
-`;
-
-const ProductOverlay = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 16px;
-    
-    &.product-overlay {
-        opacity: 0;
-    }
-`;
-
-const QuickActions = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
-const QuickActionButton = styled.button`
-    width: 50px;
-    height: 50px;
-    border: none;
-    border-radius: 50%;
-    background: ${props => props.$danger ? 'rgba(244, 67, 54, 0.9)' : 'rgba(33, 150, 243, 0.9)'};
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    &:hover {
-        transform: scale(1.1);
-        background: ${props => props.$danger ? '#f44336' : '#2196f3'};
     }
 `;
 
@@ -678,6 +636,71 @@ const ClearSearchButton = styled.span`
 
   @media (max-width: 768px) {
     right: 2.75rem;
+  }
+`;
+
+const ConfirmBackdrop = styled.div`
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+`;
+
+const ConfirmBox = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  
+  h3 {
+    margin: 0 0 1rem;
+    font-size: 1.4rem;
+    color: #111827;
+  }
+
+  p {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+  }
+`;
+
+const ConfirmButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+
+  button {
+    padding: 0.7rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  button:first-child {
+    background: #ef4444;
+    color: white;
+
+    &:hover {
+      background: #dc2626;
+    }
+  }
+
+  button:last-child {
+    background: #e5e7eb;
+    color: #111827;
+
+    &:hover {
+      background: #d1d5db;
+    }
   }
 `;
 

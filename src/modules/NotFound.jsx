@@ -2,6 +2,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+const NotFound = () => {
+  return (
+    <Container>
+      <Content>
+        <Title>404</Title>
+        <Subtitle>Ups... Página no encontrada</Subtitle>
+        <Text>
+          La URL ingresada no existe. Por favor, verifica la dirección e intenta de nuevo.
+        </Text>
+        <Button to="/home">Ir al inicio</Button>
+      </Content>
+    </Container>
+  );
+};
+
 const Container = styled.div`
   background-color: #1e1e1e;
   color: #fff;
@@ -49,20 +64,5 @@ const Button = styled(Link)`
     background-color: #3a8678;
   }
 `;
-
-const NotFound = () => {
-  return (
-    <Container>
-      <Content>
-        <Title>404</Title>
-        <Subtitle>Ups... Página no encontrada</Subtitle>
-        <Text>
-          La URL ingresada no existe. Por favor, verifica la dirección e intenta de nuevo.
-        </Text>
-        <Button to="/home">Ir al inicio</Button>
-      </Content>
-    </Container>
-  );
-};
 
 export default NotFound;

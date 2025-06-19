@@ -2,7 +2,49 @@ import React from 'react';
 import { Code, Sparkles } from 'lucide-react';
 
 function Header() {
-    const headerStyle = {
+
+    return (
+        <>
+            <style>{cssAnimations}</style>
+            <header style={headerStyle}>
+                <div style={containerStyle}>
+
+                    <div style={iconContainerStyle}>
+                        <div
+                            style={iconWrapperStyle}
+                            className="icon-wrapper"
+                        >
+                            <Code size={18} color="white" />
+                            <div style={sparkleStyle}>
+                                <Sparkles size={10} />
+                            </div>
+                        </div>
+                    </div>
+
+                    <h1 style={mainTitleStyle}>
+                        Proyecto React - Ecommerce
+                    </h1>
+
+                    <div style={subtitleContainerStyle}>
+                        <span
+                            style={subtitlePillStyle}
+                            className="subtitle-pill"
+                        >
+                            <span style={statusDotStyle}></span>
+                            Caranfa Lucía Paula Denise - 25022
+                        </span>
+                    </div>
+
+                    <div style={decorativeLineStyle}>
+                        <div style={lineStyle}></div>
+                    </div>
+                </div>
+            </header>
+        </>
+    );
+}
+
+ const headerStyle = {
         background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #3730a3 100%)',
         padding: '0.5rem 1rem',
         boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
@@ -122,46 +164,5 @@ function Header() {
       transform: translateY(-2px);
     }
   `;
-
-    return (
-        <>
-            <style>{cssAnimations}</style>
-            <header style={headerStyle}>
-                <div style={containerStyle}>
-
-                    <div style={iconContainerStyle}>
-                        <div
-                            style={iconWrapperStyle}
-                            className="icon-wrapper"
-                        >
-                            <Code size={18} color="white" />
-                            <div style={sparkleStyle}>
-                                <Sparkles size={10} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <h1 style={mainTitleStyle}>
-                        Proyecto React - Ecommerce
-                    </h1>
-
-                    <div style={subtitleContainerStyle}>
-                        <span
-                            style={subtitlePillStyle}
-                            className="subtitle-pill"
-                        >
-                            <span style={statusDotStyle}></span>
-                            Caranfa Lucía Paula Denise - 25022
-                        </span>
-                    </div>
-
-                    <div style={decorativeLineStyle}>
-                        <div style={lineStyle}></div>
-                    </div>
-                </div>
-            </header>
-        </>
-    );
-}
 
 export default Header;

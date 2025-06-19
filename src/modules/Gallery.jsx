@@ -6,9 +6,9 @@ function Gallery({
   setCount = () => { },
   setProductList = () => { },
   handleCount = () => { },
-  productos,
-  loading,
-  error
+  productos = [],
+  loading = false,
+  error = false
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
