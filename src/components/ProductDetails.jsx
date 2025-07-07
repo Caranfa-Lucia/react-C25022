@@ -12,12 +12,12 @@ const ProductDetails = ({
     description = "",
     price = 0,
     image = "",
-    count = 1,
     handleCount = () => { },
+    quantity = 0,
+    handleIncrementItem = () => { },
+    handleDecrementItem = () => { },
+    handleRemoveItem = () => { }
 }) => {
-    const [buttonHover, setButtonHover] = useState(false)
-    const [payHover, setPayHover] = useState(false)
-    const [backHover, setBackHover] = useState(false)
     const [isTablet, setIsTablet] = useState(window.innerWidth <= 900);
 
     const {
@@ -36,6 +36,14 @@ const ProductDetails = ({
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    const handleMinus = () => {
+        if (quantity === 1) {
+            handleRemoveItem(id);
+        } else {
+            handleDecrementItem(id);
+        }
+    };
 
     return (
         <div style={containerStyle}>
@@ -87,12 +95,20 @@ const ProductDetails = ({
                             </div>
 
                             <div style={buttonsContainerStyle}>
-                                <AddToCartButton onClick={() => handleCount(id, name, price, image)}>
-                                    <ShoppingCart size={24} />
-                                    Agregar al carrito
-                                </AddToCartButton>
+                                {quantity > 0 ? (
+                                    <QuantitySelector>
+                                        <QuantityButton onClick={handleMinus}>-</QuantityButton>
+                                        <QuantityDisplay>{quantity}</QuantityDisplay>
+                                        <QuantityButton onClick={() => handleIncrementItem(id)}>+</QuantityButton>
+                                    </QuantitySelector>
+                                ) : (
+                                    <AddToCartButton onClick={() => handleCount(id, name, price, image)}>
+                                        <ShoppingCart size={24} />
+                                        Agregar al carrito
+                                    </AddToCartButton>
+                                )}
 
-                                {count > 0 && (
+                                {quantity > 0 && (
                                     <Link to="/cart">
                                         <PayButton>
                                             <CreditCard size={24} />
@@ -101,7 +117,7 @@ const ProductDetails = ({
                                     </Link>
                                 )}
 
-                                <Link style={{textDecoration: 'none'}} to="/home">
+                                <Link style={{ textDecoration: 'none' }} to="/home">
                                     <BackButton>
                                         <ArrowLeft size={20} />
                                         Volver a la tienda
@@ -220,6 +236,9 @@ const ContentContainer = styled.div`
   height: ${({ $opencart, $istablet }) => ($opencart && $istablet ? '0' : 'auto')};
   overflow: hidden;
   transition: all 0.4s ease;
+  @media (max-width: 768px) {
+    padding: 20px 15px;
+  }
 `;
 
 const AddToCartButton = styled.button`
@@ -449,5 +468,41 @@ const infoCardDescStyle = {
     color: '#6b7280'
 }
 
+const QuantitySelector = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+`;
+
+const QuantityButton = styled.button`
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  &:hover:not(:disabled) {
+    background: #e5e7eb;
+    color: #059669;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const QuantityDisplay = styled.span`
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #059669;
+`;
 
 export default ProductDetails

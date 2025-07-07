@@ -8,11 +8,23 @@ const ProductCard = ({
     src = "",
     name = "",
     description = "",
-    handleCount = () => { }
+    handleCount = () => { },
+    quantity = 0,
+    handleIncrementItem = () => { },
+    handleDecrementItem = () => { },
+    handleRemoveItem = () => { }
 }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [buttonHover, setButtonHover] = useState(false);
     const [imageHover, setImageHover] = useState(false);
+
+    const handleMinus = () => {
+        if (quantity === 1) {
+            handleRemoveItem(id);
+        } else {
+            handleDecrementItem(id);
+        }
+    };
 
     return (
         <CardContainer
@@ -41,16 +53,24 @@ const ProductCard = ({
                     + Ver detalles
                 </DetailsLink>
 
-                <AddToCartButton
-                    onMouseEnter={() => setButtonHover(true)}
-                    onMouseLeave={() => setButtonHover(false)}
-                    onClick={() => handleCount(id, name, price, src)}
-                    $buttonhover={buttonHover}
-                    $ishovered={isHovered}
-                >
-                    <ButtonText>Agregar al carrito</ButtonText>
-                    <ButtonIcon>🛒</ButtonIcon>
-                </AddToCartButton>
+                {quantity > 0 ? (
+                    <QuantitySelector>
+                        <QuantityButton onClick={handleMinus}>-</QuantityButton>
+                        <QuantityDisplay>{quantity}</QuantityDisplay>
+                        <QuantityButton onClick={() => handleIncrementItem(id)}>+</QuantityButton>
+                    </QuantitySelector>
+                ) : (
+                    <AddToCartButton
+                        onMouseEnter={() => setButtonHover(true)}
+                        onMouseLeave={() => setButtonHover(false)}
+                        onClick={() => handleCount(id, name, price, src)}
+                        $buttonhover={buttonHover}
+                        $ishovered={isHovered}
+                    >
+                        <ButtonText>Agregar al carrito</ButtonText>
+                        <ButtonIcon>🛒</ButtonIcon>
+                    </AddToCartButton>
+                )}
             </ContentContainer>
         </CardContainer>
     );
@@ -147,8 +167,9 @@ animation: ${css`${fadeIn}`} 0.6s ease-out;
     }
     
     @media (max-width: 768px) {
-        width: 260px;
-        height: 360px;
+        width: 300px;
+        height: 390px;
+        max-height: 450px;
         padding: 1.25rem;
     }
 `;
@@ -345,6 +366,43 @@ const ButtonIcon = styled.span`
     ${AddToCartButton}:hover & {
         transform: scale(1.2) rotate(10deg);
     }
+`;
+
+const QuantitySelector = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+`;
+
+const QuantityButton = styled.button`
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  &:hover:not(:disabled) {
+    background: #e5e7eb;
+    color: #059669;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const QuantityDisplay = styled.span`
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #059669;
 `;
 
 export default ProductCard;

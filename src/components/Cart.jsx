@@ -270,8 +270,8 @@ const CartMainWrapper = styled.div.withConfig({
   }
 
   @media (max-width: 768px) {
-    height: ${({ isCartPage }) => isCartPage ? '100%' : '75vh'};
-    max-height: ${({ isCartPage }) => isCartPage ? 'none' : '75vh'};
+    height: ${({ isCartPage }) => isCartPage ? '100%' : '150vh'};
+    max-height: ${({ isCartPage }) => isCartPage ? 'none' : '150vh'};
     padding: ${({ isCartPage }) => isCartPage ? '1rem' : '1rem'};
   }
 `;
@@ -284,12 +284,14 @@ const EmptyCartContainer = styled.div.withConfig({
   align-items: center;
   justify-content: center;
   height: ${({ isCartPage }) => isCartPage ? '60vh' : 'calc(100% - 60px)'};
+  min-height: ${({ isCartPage }) => isCartPage ? '80vh' : 'unset'};
   text-align: center;
   animation: ${fadeIn} 0.6s ease-out;
   flex: 1;
   
   @media (max-width: 768px) {
     height: ${({ isCartPage }) => isCartPage ? '50vh' : 'auto'};
+    min-height: ${({ isCartPage }) => isCartPage ? '80vh' : 'unset'};
     flex: 1;
     justify-content: center;
   }
