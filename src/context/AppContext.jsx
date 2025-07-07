@@ -96,8 +96,13 @@ export const AppProvider = ({ children }) => {
 
   const handleDecrementItem = (productId) => {
     setProductList((prevList) => {
+      const productCount = prevList.filter(product => product.id === productId).length;
+      if (productCount === 1) {
+        const updatedList = prevList.filter(product => product.id !== productId);
+        setCount(updatedList.length);
+        return updatedList;
+      }
       const productIndex = prevList.findIndex(product => product.id === productId);
-
       if (productIndex !== -1) {
         const updatedList = [
           ...prevList.slice(0, productIndex),
@@ -106,7 +111,6 @@ export const AppProvider = ({ children }) => {
         setCount(updatedList.length);
         return updatedList;
       }
-
       return prevList;
     });
   };

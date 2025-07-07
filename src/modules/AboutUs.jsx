@@ -40,8 +40,7 @@ const AboutUs = () => {
                 </div>
 
                 <ContentWrapper $opencart={openCart} $istablet={isTablet}>
-                    <div style={styles.contentCard}>
-
+                    <ContentCard>
                         <div style={{ marginBottom: '40px' }}>
                             <h2 style={{ ...styles.sectionTitle, position: 'relative' }}>
                                 <span style={styles.sectionTitleBefore}></span>
@@ -125,7 +124,7 @@ const AboutUs = () => {
                                 }}>→</span>
                             </a>
                         </div>
-                    </div>
+                    </ContentCard>
                 </ContentWrapper>
             </ContentContainer>
             {openCart && (
@@ -138,173 +137,165 @@ const AboutUs = () => {
 };
 
 const styles = {
-        container: {
-            minHeight: '100vh',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            fontFamily: 'Arial, sans-serif',
-            position: 'relative',
-            overflow: 'hidden',
-            display: 'flex',
-            justifyContent: 'center'
-        },
-        decorativeShape1: {
-            position: 'absolute',
-            top: '-10%',
-            left: '-10%',
-            width: '300px',
-            height: '300px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            borderRadius: '50%',
-            filter: 'blur(60px)',
-            zIndex: 1
-        },
-        decorativeShape2: {
-            position: 'absolute',
-            bottom: '-15%',
-            right: '-10%',
-            width: '400px',
-            height: '400px',
-            background: 'rgba(255, 255, 255, 0.08)',
-            borderRadius: '50%',
-            filter: 'blur(80px)',
-            zIndex: 1
-        },
-        header: {
-            textAlign: 'center',
-            padding: '80px 20px 40px',
-            position: 'relative',
-            zIndex: 2
-        },
-        title: {
-            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-            fontWeight: 'bold',
-            background: 'linear-gradient(45deg, #ffffff, #e2e8f0)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            marginBottom: '20px',
-            textShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        },
-        titleUnderline: {
-            width: '80px',
-            height: '4px',
-            background: 'linear-gradient(45deg, #ffffff, #e2e8f0)',
-            margin: '0 auto',
-            borderRadius: '2px'
-        },
-        contentWrapper: {
-            maxWidth: '1000px',
-            margin: '0 auto',
-            padding: '0 20px 80px',
-            position: 'relative',
-            zIndex: 2
-        },
-        contentCard: {
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '24px',
-            padding: 'clamp(30px, 5vw, 60px)',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.2)'
-        },
-        sectionTitle: {
-            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-            fontWeight: '600',
-            color: '#2d3748',
-            marginBottom: '20px',
-            position: 'relative',
-            paddingLeft: '20px'
-        },
-        sectionTitleBefore: {
-            content: '""',
-            position: 'absolute',
-            left: '0',
-            top: '0',
-            width: '4px',
-            height: '100%',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            borderRadius: '2px'
-        },
-        paragraph: {
-            fontSize: '1.1rem',
-            lineHeight: '1.8',
-            color: '#4a5568',
-            marginBottom: '40px',
-            textAlign: 'justify'
-        },
-        highlightSection: {
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1))',
-            padding: '30px',
-            borderRadius: '16px',
-            marginBottom: '40px'
-        },
-        cardsContainer: {
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '30px',
-            marginBottom: '40px'
-        },
-        card: {
-            background: '#ffffff',
-            padding: '30px',
-            borderRadius: '16px',
-            boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
-            border: '1px solid #e2e8f0',
-            textAlign: 'center',
-            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-        },
-        cardHover: {
-            transform: 'translateY(-5px)',
-            boxShadow: '0 15px 35px rgba(0, 0, 0, 0.15)'
-        },
-        cardIcon: {
-            width: '60px',
-            height: '60px',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 20px',
-            color: 'white',
-            fontSize: '24px'
-        },
-        cardTitle: {
-            fontSize: '1.3rem',
-            fontWeight: '600',
-            color: '#2d3748',
-            marginBottom: '15px'
-        },
-        cardText: {
-            fontSize: '1rem',
-            lineHeight: '1.6',
-            color: '#718096'
-        },
-        ctaContainer: {
-            textAlign: 'center',
-            marginTop: '50px'
-        },
-        ctaButton: {
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '10px',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            color: 'white',
-            padding: '15px 30px',
-            borderRadius: '50px',
-            textDecoration: 'none',
-            fontSize: '1.1rem',
-            fontWeight: '600',
-            boxShadow: '0 10px 25px rgba(102, 126, 234, 0.3)',
-            transition: 'all 0.3s ease',
-            border: 'none',
-            cursor: 'pointer'
-        },
-        arrow: {
-            fontSize: '18px',
-            transition: 'transform 0.3s ease'
-        },
-    };
+    container: {
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        fontFamily: 'Arial, sans-serif',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    decorativeShape1: {
+        position: 'absolute',
+        top: '-10%',
+        left: '-10%',
+        width: '300px',
+        height: '300px',
+        background: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: '50%',
+        filter: 'blur(60px)',
+        zIndex: 1
+    },
+    decorativeShape2: {
+        position: 'absolute',
+        bottom: '-15%',
+        right: '-10%',
+        width: '400px',
+        height: '400px',
+        background: 'rgba(255, 255, 255, 0.08)',
+        borderRadius: '50%',
+        filter: 'blur(80px)',
+        zIndex: 1
+    },
+    header: {
+        textAlign: 'center',
+        padding: '80px 20px 40px',
+        position: 'relative',
+        zIndex: 2
+    },
+    title: {
+        fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+        fontWeight: 'bold',
+        background: 'linear-gradient(45deg, #ffffff, #e2e8f0)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+        marginBottom: '20px',
+        textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    },
+    titleUnderline: {
+        width: '80px',
+        height: '4px',
+        background: 'linear-gradient(45deg, #ffffff, #e2e8f0)',
+        margin: '0 auto',
+        borderRadius: '2px'
+    },
+    contentWrapper: {
+        maxWidth: '1000px',
+        margin: '0 auto',
+        padding: '0 20px 80px',
+        position: 'relative',
+        zIndex: 2
+    },
+    sectionTitle: {
+        fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+        fontWeight: '600',
+        color: '#2d3748',
+        marginBottom: '20px',
+        position: 'relative',
+        paddingLeft: '20px'
+    },
+    sectionTitleBefore: {
+        content: '""',
+        position: 'absolute',
+        left: '0',
+        top: '0',
+        width: '4px',
+        height: '100%',
+        background: 'linear-gradient(135deg, #667eea, #764ba2)',
+        borderRadius: '2px'
+    },
+    paragraph: {
+        fontSize: '1.1rem',
+        lineHeight: '1.8',
+        color: '#4a5568',
+        marginBottom: '40px',
+        textAlign: 'justify'
+    },
+    highlightSection: {
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1))',
+        padding: '30px',
+        borderRadius: '16px',
+        marginBottom: '40px'
+    },
+    cardsContainer: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: '30px',
+        marginBottom: '40px'
+    },
+    card: {
+        background: '#ffffff',
+        padding: '30px',
+        borderRadius: '16px',
+        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+        border: '1px solid #e2e8f0',
+        textAlign: 'center',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+    },
+    cardHover: {
+        transform: 'translateY(-5px)',
+        boxShadow: '0 15px 35px rgba(0, 0, 0, 0.15)'
+    },
+    cardIcon: {
+        width: '60px',
+        height: '60px',
+        background: 'linear-gradient(135deg, #667eea, #764ba2)',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto 20px',
+        color: 'white',
+        fontSize: '24px'
+    },
+    cardTitle: {
+        fontSize: '1.3rem',
+        fontWeight: '600',
+        color: '#2d3748',
+        marginBottom: '15px'
+    },
+    cardText: {
+        fontSize: '1rem',
+        lineHeight: '1.6',
+        color: '#718096'
+    },
+    ctaContainer: {
+        textAlign: 'center',
+        marginTop: '50px'
+    },
+    ctaButton: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '10px',
+        background: 'linear-gradient(135deg, #667eea, #764ba2)',
+        color: 'white',
+        padding: '15px 30px',
+        borderRadius: '50px',
+        textDecoration: 'none',
+        fontSize: '1.1rem',
+        fontWeight: '600',
+        boxShadow: '0 10px 25px rgba(102, 126, 234, 0.3)',
+        transition: 'all 0.3s ease',
+        border: 'none',
+        cursor: 'pointer'
+    },
+    arrow: {
+        fontSize: '18px',
+        transition: 'transform 0.3s ease'
+    },
+};
 
 const shimmer = keyframes`
   0% {
@@ -389,6 +380,21 @@ const ContentWrapper = styled.div`
   padding: 40px;
   transition: all 0.5s ease;
   display: ${({ $opencart, $istablet }) => ($opencart && $istablet ? 'none' : 'block')};
+      @media (max-width: 768px) {
+  padding: 10px;
+    }
+`;
+
+const ContentCard = styled.div`
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: clamp(30px, 5vw, 60px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  @media (max-width: 768px) {
+  padding: 30px 15px;
+  }
 `;
 
 export default AboutUs;

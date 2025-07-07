@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import cart from '../images/cart.png';
 import arrow from '../images/arrow.png';
 import LoginModal from '../components/LoginModal';
 import styled from 'styled-components';
-import logo from '../images/logo.png.png';
+import logo from '../images/lulishop-logo.png';
 
 function Nav() {
   const location = useLocation();

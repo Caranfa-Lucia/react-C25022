@@ -9,9 +9,13 @@ const ProductDetailSection = () => {
     const { id, name, price, src, description } = location.state || {};
 
     const {
-        count,
         handleCount,
+        groupedProducts,
+        handleIncrementItem,
+        handleDecrementItem,
+        handleRemoveItem,
     } = useAppContext();
+    const quantity = groupedProducts.find(p => p.id === id)?.quantity || 0;
 
     const productDetailsProps = {
         id,
@@ -20,7 +24,10 @@ const ProductDetailSection = () => {
         price,
         image: src,
         handleCount,
-        count
+        quantity,
+        handleIncrementItem,
+        handleDecrementItem,
+        handleRemoveItem
     }
 
     return (
