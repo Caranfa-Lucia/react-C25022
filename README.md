@@ -27,7 +27,7 @@ Este repositorio contiene el código fuente de una tienda online desarrollada co
 
 ---
 
-## Usuarios registrados
+## 👤 Usuarios registrados
 
 CLIENTE
 
