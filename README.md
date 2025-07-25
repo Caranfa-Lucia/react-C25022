@@ -53,6 +53,7 @@ Password: admin
 
 ## 📂 Estructura del proyecto
 
+```plaintext
 📦 react-C25022
 ├── 📁 components       # Componentes reutilizables
 ├── 📁 pages            # Vistas del sitio (Home, Admin, etc.)
