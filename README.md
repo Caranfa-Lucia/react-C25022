@@ -65,17 +65,22 @@ Password: admin
 ```
 ---
 
-## 🧪 Cómo clonar y correr el proyecto localmente
-```
-   bash
+## 🧪 Cómo clonar y correr el proyecto localmente    
+
+1.Clonar el repositorio
+```bash
 git clone https://github.com/Caranfa-Lucia/react-C25022.git
 cd react-C25022
-
+```
+2.Instalar dependencias
+```bash
 npm install
+```
+3.Levantar servidor local
+```bash
 npm run dev
 ```
-
-El proyecto estará disponible en: http://localhost:5173
+4.El proyecto estará disponible en: http://localhost:5173
 
 ---
 
