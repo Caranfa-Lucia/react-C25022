@@ -62,18 +62,18 @@ Password: admin
 ├── 📁 utils            # Funciones auxiliares (helpers)
 ├── 📁 assets           # Imágenes y recursos estáticos
 └── App.js             # Configuración de rutas
-
+```
 ---
 
 ## 🧪 Cómo clonar y correr el proyecto localmente
-
-1. **Clonar el repositorio**
-   ```bash
+```
+   bash
 git clone https://github.com/Caranfa-Lucia/react-C25022.git
 cd react-C25022
 
 npm install
 npm run dev
+```
 
 El proyecto estará disponible en: http://localhost:5173
 
